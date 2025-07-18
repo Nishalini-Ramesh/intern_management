@@ -8,8 +8,6 @@ urlpatterns = [
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
-    path('', views.home, name='home'),
-
     # Dashboard routes
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('mentor_dashboard/', views.mentor_dashboard, name='mentor_dashboard'),
@@ -33,4 +31,20 @@ urlpatterns = [
     path('submit_task/', views.submit_task, name='submit_task'),
     path('view_tasks/', views.view_tasks, name='view_tasks'),
     path('intern_feedback/', views.intern_feedback, name='intern_feedback'),
+
+    path('main/', views.main, name='main'),
+    path('', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('forgot/', views.forgot_view, name='forgot'),
+    path('check-user/', views.check_user_exists, name='check_user_exists'),
+    path('choose-role/', views.choose_role_view, name='choose_role'),
+    path('intern-dashboard/', views.intern_dashboard, name='intern_dashboard'),
+    path('mentor-dashboard/', views.mentor_dashboard, name='mentor_dashboard'),
+    path('hr-dashboard/', views.hr_dashboard, name='hr_dashboard'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('tasks/', views.task_list, name='task_list'),
+    path('leave-request/', views.leave_request, name='leave_request'),
+    path('certificate/', views.issue_certificate, name='issue_certificate'),
+    path('logout/', views.logout_view, name='logout'),
+    
 ]
