@@ -251,8 +251,19 @@ def main_view(request):
     return render(request, 'main.html')
 
 
+from django.shortcuts import render
 
+def intern_list(request):
+    return render(request, 'intern_list.html')
 
+def add_intern(request):
+    return render(request, 'add_intern.html')
+
+def edit_intern(request):
+    return render(request, 'edit_intern.html')
+
+def assign_mentor(request):
+    return render(request, 'assign_mentor.html')
 
 
 

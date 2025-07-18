@@ -1,29 +1,21 @@
 
 from django.urls import path
-from . import views  
-
-# growtern/urls.py
-
-from django.urls import path
-from . import views  # Make sure you have at least one view
+from . import views
 
 urlpatterns = [
     path('feedback/', views.feedback_form, name='submit_feedback'),
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
-<<<<<<< HEAD
+    # You had a Git conflict here — I kept the likely correct version below 👇
     path('', views.main_page, name='home'),
 
-=======
->>>>>>> f66ecbac089cc3f2b812d5eafa79c10286aee5af
     # Dashboard routes
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('mentor_dashboard/', views.mentor_dashboard, name='mentor_dashboard'),
     path('intern_dashboard/', views.intern_dashboard, name='intern_dashboard'),
     path('hr_dashboard/', views.hr_dashboard, name='hr_dashboard'),
-    path('main/', views.main_page, name='main'),  # ✅ Corrected name in views
-
+   
     # HR-related views
     path('leave_request/', views.leave_request, name='leave_request'),
     path('edit_intern/', views.edit_intern, name='edit_intern'),
@@ -41,8 +33,7 @@ urlpatterns = [
     path('view_tasks/', views.view_tasks, name='view_tasks'),
     path('intern_feedback/', views.intern_feedback, name='intern_feedback'),
 
-
-    path('main/', views.main, name='main'),
+   
     path('', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('forgot/', views.forgot_view, name='forgot'),
@@ -56,8 +47,14 @@ urlpatterns = [
     path('leave-request/', views.leave_request, name='leave_request'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
     path('logout/', views.logout_view, name='logout'),
-    
+
+
+
+    path('', views.intern_list, name='home'),
+    path('interns/', views.intern_list, name='intern_list'),
+    path('add/', views.add_intern, name='add_intern'),
+    path('edit/', views.edit_intern, name='edit_intern'),
+    path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
+
+
 ]
-
-
-
