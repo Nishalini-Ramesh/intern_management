@@ -37,7 +37,9 @@ urlpatterns = [
     path('intern_feedback/', views.intern_feedback, name='intern_feedback'),
 
 
-    path('main/', views.main, name='main'),
+    
+    path('main/', views.main_view, name='main'),
+
     path('', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('forgot/', views.forgot_view, name='forgot'),
