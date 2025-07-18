@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Lists - Desktop</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5edf9;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      position: relative;
+      width: 900px;
+      min-height: 600px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .background-shape1,
+    .background-shape2 {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background-color: #e0c4f5;
+      transform: rotate(45deg);
+      z-index: 0;
+      opacity: 0.8;
+    }
+
+    .background-shape1 {
+      top: -80px;
+      left: -80px;
+    }
+
+    .background-shape2 {
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .back-arrow {
+      font-size: 28px;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .task-box {
+      background-color: #8e7ab5;
+      margin: 0 60px 30px;
+      border-radius: 12px;
+      padding: 30px;
+      color: white;
+      position: relative;
+      z-index: 1;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    .task-box h2 {
+      margin: 0 0 20px 0;
+      font-size: 22px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .task-item:last-child {
+      margin-bottom: 60px; /* Space for floating button */
+    }
+
+    .task-item input[type="text"] {
+      flex-grow: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      margin-right: 15px;
+      background-color: #e6d6f2;
+      font-size: 16px;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+    }
+
+    .add-button {
+      background-color: #4b2e83;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 30px;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+      position: absolute;
+      bottom: 30px;
+      right: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="background-shape1"></div>
+    <div class="background-shape2"></div>
+
+    <div class="header">
+      <div class="back-arrow">&#8592;</div>
+      <h1>TASK LISTS</h1>
+    </div>
+
+    <div class="task-box">
+      <h2>TASKS</h2>
+      <div class="task-item">
+        <input type="text" value="1. To draw the ULM ....." readonly />
+        <input type="checkbox" />
+      </div>
+      <div class="task-item">
+        <input type="text" value="2. To do the database..." readonly />
+        <input type="checkbox" />
+      </div>
+      <div class="task-item">
+        <input type="text" value="3. get approval for sch..." readonly />
+        <input type="checkbox" />
+      </div>
+      <div class="task-item">
+        <input type="text" value="4. ui model..." />
+        <input type="checkbox" />
+      </div>
+      <div class="add-button">+</div>
+    </div>
+  </div>
+</body>
+</html>
