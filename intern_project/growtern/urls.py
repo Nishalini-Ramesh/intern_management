@@ -1,3 +1,7 @@
+
+from django.urls import path
+from . import views  
+
 # growtern/urls.py
 
 from django.urls import path
@@ -32,6 +36,7 @@ urlpatterns = [
     path('view_tasks/', views.view_tasks, name='view_tasks'),
     path('intern_feedback/', views.intern_feedback, name='intern_feedback'),
 
+
     path('main/', views.main, name='main'),
     path('', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
@@ -48,3 +53,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     
 ]
+
+
+
