@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leave Approval</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url("{% static 'images/bg-purple.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: #a855f7;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .box {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    h2 {
+      color: #6b21a8;
+    }
+
+    .info {
+      text-align: left;
+      margin-top: 1rem;
+      color: #4c1d95;
+    }
+
+    .info p {
+      margin: 8px 0;
+    }
+
+    .buttons {
+      margin-top: 1rem;
+    }
+
+    .buttons button {
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+
+    .buttons button:hover {
+      background-color: #7e22ce;
+    }
+
+    #responseMessage {
+      display: none;
+      margin-top: 1.5rem;
+    }
+
+    #responseMessage p {
+      color: #16a34a;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🟣 Navbar -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_requests.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
+
+  <!-- 🟣 Main Content -->
+  <div class="box">
+    <h2>Leave Approval</h2>
+    <div class="info" id="leaveInfo"></div>
+
+    <div class="buttons" id="actionButtons">
+      <button onclick="handleDecision('Approved')">Approve</button>
+      <button onclick="handleDecision('Rejected')">Reject</button>
+    </div>
+
+    <div id="responseMessage">
+      <p>✅ Response sent to summary page!</p>
+      <button onclick="window.location.href='leave_summary.html'">Go to Summary Page</button>
+    </div>
+  </div>
+
+    <!-- Leave Approvals -->
+  <div class="container">
+    <h2>Pending Leave Requests</h2>
+
+    {% for leave in leaves %}
+      <div class="leave-card">
+        <p><strong>Name:</strong> {{ leave.name }}</p>
+        <p><strong>Role:</strong> {{ leave.role }}</p>
+        <p><strong>From:</strong> {{ leave.from_date }}</p>
+        <p><strong>To:</strong> {{ leave.to_date }}</p>
+        <p><strong>Reason:</strong> {{ leave.reason }}</p>
+        <p><strong>Status:</strong> {{ leave.status }}</p>
+
+        {% if leave.status == "Pending" %}
+        <form method="post" action="{% url 'leave_approval' %}">
+          {% csrf_token %}
+          <input type="hidden" name="leave_id" value="{{ leave.id }}">
+          <button type="submit" name="action" value="approve">Approve</button>
+          <button type="submit" name="action" value="reject" class="reject">Reject</button>
+        </form>
+        {% else %}
+          <p style="color: green;"><em>Decision already made.</em></p>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No leave requests to approve.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

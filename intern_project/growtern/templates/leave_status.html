@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leave Status</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url("{% static 'images/bg-purple.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #a855f7;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .status-box {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin: 50px auto;
+    }
+
+    h2 {
+      color: #6b21a8;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #4c1d95;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .status-tag {
+      display: inline-block;
+      background-color: #facc15;
+      color: #6b21a8;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔸 Navbar Section -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_requests.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
+
+  <!-- 🔹 Status Box -->
+  <div class="status-box">
+    {% if leave %}
+      <h2>Leave Request Submitted!</h2>
+      <p><strong>Name:</strong> {{ leave.intern.get_full_name }}</p>
+      <p><strong>Role:</strong> {{ leave.intern.role }}</p>
+      <p><strong>From:</strong> {{ leave.start_date }}</p>
+      <p><strong>To:</strong> {{ leave.end_date }}</p>
+      <p><strong>Reason:</strong> {{ leave.reason }}</p>
+      <div class="status-tag">{{ leave.status|title }}</div>
+
+      <a href="{% url 'leave_approval' %}">
+        <button type="button">Go to Approval Page</button>
+      </a>
+    {% else %}
+      <h2>No leave request found.</h2>
+      <p>You haven't submitted any leave request yet.</p>
+      <a href="{% url 'leave_request' %}">
+        <button type="button">Request Leave</button>
+      </a>
+    {% endif %}
+  </div>
+
+</body>
+</html>

@@ -2,8 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Feedback & Rating
-    path('feedback/', views.feedback_form, name='submit_feedback'),
+# Feedback and rating routes
+    path('feedback/', views.submit_feedback_view, name='submit_feedback'),
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
@@ -47,17 +47,12 @@ urlpatterns = [
 
     path('add/', views.add_intern, name='add_intern'),
     path('edit/', views.edit_intern, name='edit_intern'),
-]
-# urls.py
-from django.urls import path
-from . import views
-
-urlpatterns = [
     path('internship-report/', views.internship_report, name='internship_report'),
-]
-from django.urls import path
-from . import views
 
-urlpatterns = [
     path('upload/', views.upload_document, name='upload'),
+
+#leave request and approval routes
+    path('leave/request/', views.leave_request_view, name='leave_request'),
+    path('leave/status/', views.leave_status_view, name='leave_status'),
+    path('leave/approval/', views.leave_approval_view, name='leave_approval'),
 ]

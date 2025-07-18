@@ -112,42 +112,7 @@ def create_task(request):
         return redirect('task_list')
     return render(request, 'create_task.html')
 
-# -------------------- FEEDBACK --------------------
-def feedback_form(request):
-    if request.method == 'POST':
-        request.session['name'] = request.POST.get('name')
-        request.session['role'] = request.POST.get('role')
-        request.session['comments'] = request.POST.get('comments')
-        return redirect('rating')
-    return render(request, 'index.html')
 
-def rating_view(request):
-    if request.method == 'POST':
-        rating = request.POST.get('rating')
-        name = request.session.get('name')
-        role = request.session.get('role')
-        comments = request.session.get('comments')
-
-        if name and role and comments:
-            GeneralFeedback.objects.create(
-                name=name,
-                role=role,
-                comments=comments,
-                rating=rating
-            )
-            request.session.pop('name', None)
-            request.session.pop('role', None)
-            request.session.pop('comments', None)
-            return redirect('thank_you')
-        else:
-            return redirect('submit_feedback')
-    return render(request, 'rating.html')
-
-def thank_you(request):
-    return render(request, 'thankyou.html')
-
-def view_feedback(request):
-    return render(request, 'index.html')
 
 # -------------------- HR FUNCTIONS --------------------
 def leave_request(request):
@@ -225,3 +190,71 @@ from django.shortcuts import render
 
 def main_page(request):
     return render(request, 'main.html')  # Make sure this template exists in your templates folder
+
+from .models import LeaveRequest, GeneralFeedback
+
+def submit_feedback_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        role = request.POST.get('role')
+        comments = request.POST.get('comments')
+
+        feedback = GeneralFeedback.objects.create(
+            name=name,
+            role=role,
+            comments=comments,
+            rating=0  # default value
+        )
+        feedback.save()
+        messages.success(request, 'Feedback submitted successfully!')
+        return redirect('rating')  # assumes you’ve set a url pattern named 'rating'
+    
+    return render(request, 'index.html')
+
+def rating_view(request):
+    return render(request, 'rating.html')
+
+def thank_you(request):
+    return render(request, 'thankyou.html')
+
+@login_required
+def leave_request_view(request):
+    if request.method == 'POST':
+        form = LeaveRequestForm(request.POST)
+        if form.is_valid():
+            leave = form.save(commit=False)
+            leave.intern = request.user  # assuming ForeignKey to CustomUser
+            leave.save()
+            return redirect('leave_status')  # or any status/confirmation page
+    else:
+        form = LeaveRequestForm()
+    return render(request, 'leave_request.html', {'form': form})
+
+
+from django.utils import timezone
+
+@login_required
+def leave_approval_view(request):
+    leaves = LeaveRequest.objects.all().order_by('-submitted_on')
+
+    if request.method == 'POST':
+        leave_id = request.POST.get('leave_id')
+        action = request.POST.get('action')
+        leave = get_object_or_404(LeaveRequest, id=leave_id)
+
+        # ✅ Check if status is still pending
+        if leave.status == 'pending':
+            leave.status = 'Approved' if action == 'approve' else 'Rejected'
+            leave.reviewed_by = request.user
+            leave.reviewed_on = timezone.now()
+            leave.save()
+            messages.success(request, f'Leave has been {leave.status.lower()}.')
+
+        return redirect('leave_approval')
+
+    return render(request, 'leave_approval.html', {'leaves': leaves})
+
+@login_required
+def leave_status_view(request):
+    leave = LeaveRequest.objects.filter(intern=request.user).order_by('-submitted_on').first()
+    return render(request, 'leave_status.html', {'leave': leave})
