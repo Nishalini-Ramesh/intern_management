@@ -1,5 +1,3 @@
-
-
 from django.http import HttpResponse
 
 def home(request):
@@ -93,7 +91,7 @@ def assign_mentor(request):
     return render(request, 'assign_mentor.html')
 
 def issue_certificate(request):
-    return render(request, 'issue certificate.html')
+    return render(request, 'issue_certificate.html')
 
 def view_feedback(request):
     return render(request, 'index.html')
