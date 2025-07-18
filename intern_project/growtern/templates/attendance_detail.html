@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance Detail</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4eafd;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .container {
+      width: 500px;
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      color: #333;
+      cursor: pointer;
+      position: absolute;
+      top: 25px;
+      left: 25px;
+    }
+
+    .heading {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #2e2e2e;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+
+    .intern-card {
+      background-color: #c5a6f1;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .intern-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .intern-info {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .chart-box {
+      background-color: #a78bfa;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .chart-box h3 {
+      margin: 0 0 20px;
+      font-size: 18px;
+    }
+
+    .pie-chart {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      background: conic-gradient(#ffffff 0% 85%, #c084fc 85% 100%);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .chart-box .rate-label {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .chart-box .percentage {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin-top: 20px;
+    }
+
+    .growtern {
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="back-arrow">&#8592;</div>
+    <div class="heading">ATTENDANCE DETAIL</div>
+
+    <div class="intern-card">
+      <div class="intern-icon">👤</div>
+      <div class="intern-info">INTERN NAME<br>COLLEGE NAME</div>
+    </div>
+
+    <div class="chart-box">
+      <h3>ATTENDANCE CHART</h3>
+      <div class="pie-chart"></div>
+      <div class="rate-label">AVERAGE ATTENDANCE RATE:</div>
+      <div class="percentage">85%</div>
+    </div>
+
+    <div class="footer">© <span class="growtern">GROWTERN</span></div>
+  </div>
+
+</body>
+</html>
