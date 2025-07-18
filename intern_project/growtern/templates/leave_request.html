@@ -91,18 +91,24 @@
 </head>
 <body>
 
-  <!-- 🟣 Navbar -->
-  <div class="navbar">
-    <div class="logo">GROWTERN</div>
-    <div>
-      <a href="{% url 'login' %}">Login</a>
-      <a href="{% url 'intern_dashboard' %}">Dashboard</a>
-      <a href="{% url 'task_list' %}">Tasks</a>
-      <a href="{% url 'leave_request' %}">Leave</a>
-      <a href="{% url 'submit_feedback' %}">Feedback</a>
-      <a href="{% url 'issue_certificate' %}">Certificate</a>
-    </div>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+  <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+  <a href="{% url 'task_list' %}">Tasks</a>
+  <a href="{% url 'leave_request' %}">Leave</a>
+  <a href="{% url 'submit_feedback' %}">Feedback</a>
+  <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
+
   </div>
+</div>
+
 
   <!-- 🟣 Leave Request Form -->
   <div class="form-container">

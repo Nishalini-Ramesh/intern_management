@@ -98,7 +98,7 @@ class LeaveRequest(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     )
-    name = models.CharField(max_length=100, default='Intern')
+    name = models.CharField(max_length=100, default="Anonymous")
     ROLE_CHOICES = [
     ('Intern', 'Intern'),
     ('Mentor', 'Mentor'),

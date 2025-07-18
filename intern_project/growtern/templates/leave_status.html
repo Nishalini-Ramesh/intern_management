@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Leave Status</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <style>
-    body {
+ body {
       font-family: 'Nunito', sans-serif;
       background-image: url("{% static 'images/bg-purple.png' %}");
       background-size: cover;
@@ -90,29 +91,35 @@
     button:hover {
       background-color: #7e22ce;
     }
+  
   </style>
 </head>
 <body>
 
-  <!-- 🔸 Navbar Section -->
-  <div class="navbar">
-    <div class="logo">GROWTERN</div>
-    <div class="nav-links">
-      <a href="login.html">Login</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="tasks.html">Tasks</a>
-      <a href="leave_requests.html">Leave</a>
-      <a href="feedback.html">Feedback</a>
-      <a href="certificate.html">Certificate</a>
-    </div>
-  </div>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+  <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+  <a href="{% url 'task_list' %}">Tasks</a>
+  <a href="{% url 'leave_request' %}">Leave</a>
+  <a href="{% url 'submit_feedback' %}">Feedback</a>
+  <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
 
-  <!-- 🔹 Status Box -->
+  </div>
+</div>
+
+  <!-- Status Box -->
   <div class="status-box">
     {% if leave %}
       <h2>Leave Request Submitted!</h2>
-      <p><strong>Name:</strong> {{ leave.intern.get_full_name }}</p>
-      <p><strong>Role:</strong> {{ leave.intern.role }}</p>
+      <p><strong>Name:</strong> {{ leave.name }}</p>
+      <p><strong>Role:</strong> {{ leave.role }}</p>
       <p><strong>From:</strong> {{ leave.start_date }}</p>
       <p><strong>To:</strong> {{ leave.end_date }}</p>
       <p><strong>Reason:</strong> {{ leave.reason }}</p>

@@ -21,7 +21,6 @@ urlpatterns = [
     path('edit_intern/', views.edit_intern, name='edit_intern'),
     path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
-    path('view_feedback/', views.view_feedback, name='view_feedback'),
 
     # Mentor-related task routes
     path('assign_task/', views.assign_task, name='assign_task'),
@@ -35,7 +34,7 @@ urlpatterns = [
 
 
     path('main/', views.main_page, name='main'),
-    path('', views.login_view, name='login'),
+    path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('forgot/', views.forgot_view, name='forgot'),
     path('check-user/', views.check_user_exists, name='check_user_exists'),

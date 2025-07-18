@@ -1,6 +1,5 @@
 from django import forms
 from .models import LeaveRequest, GeneralFeedback
-
 class LeaveRequestForm(forms.ModelForm):
     class Meta:
         model = LeaveRequest
@@ -16,3 +15,10 @@ class GeneralFeedbackForm(forms.ModelForm):
     class Meta:
         model = GeneralFeedback
         fields = ['name', 'role', 'comments', 'rating']  # Add other fields if needed
+
+from .models import UploadedDocument
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = UploadedDocument
+        fields = ['document']

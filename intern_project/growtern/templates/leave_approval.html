@@ -11,14 +11,11 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding-bottom: 2rem;
     }
 
-    /* Navbar Styles */
     .navbar {
       background-color: #a855f7;
       padding: 1rem 2rem;
@@ -56,86 +53,84 @@
       max-width: 450px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       text-align: center;
-      margin-top: 3rem;
+      margin: 3rem auto;
     }
 
     h2 {
       color: #6b21a8;
     }
 
-    .info {
-      text-align: left;
-      margin-top: 1rem;
+    .leave-card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+    }
+
+    .leave-card p {
+      margin: 0.5rem 0;
       color: #4c1d95;
+      font-weight: bold;
     }
 
-    .info p {
-      margin: 8px 0;
-    }
-
-    .buttons {
+    form {
       margin-top: 1rem;
     }
 
-    .buttons button {
+    button {
       background-color: #9333ea;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 8px 16px;
       font-size: 1rem;
       border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
-      margin: 0.5rem;
+      margin-right: 10px;
     }
 
-    .buttons button:hover {
+    button:hover {
       background-color: #7e22ce;
     }
 
-    #responseMessage {
-      display: none;
-      margin-top: 1.5rem;
+    .reject {
+      background-color: #e11d48;
     }
 
-    #responseMessage p {
-      color: #16a34a;
-      font-weight: bold;
+    .reject:hover {
+      background-color: #be123c;
+    }
+
+    .container h2 {
+      color: #6b21a8;
+      text-align: center;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- 🟣 Navbar -->
-  <div class="navbar">
-    <div class="logo">GROWTERN</div>
-    <div class="nav-links">
-      <a href="login.html">Login</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="tasks.html">Tasks</a>
-      <a href="leave_requests.html">Leave</a>
-      <a href="feedback.html">Feedback</a>
-      <a href="certificate.html">Certificate</a>
-    </div>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+  <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+  <a href="{% url 'task_list' %}">Tasks</a>
+  <a href="{% url 'leave_request' %}">Leave</a>
+  <a href="{% url 'submit_feedback' %}">Feedback</a>
+  <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
+
   </div>
+</div>
 
-  <!-- 🟣 Main Content -->
-  <div class="box">
-    <h2>Leave Approval</h2>
-    <div class="info" id="leaveInfo"></div>
-
-    <div class="buttons" id="actionButtons">
-      <button onclick="handleDecision('Approved')">Approve</button>
-      <button onclick="handleDecision('Rejected')">Reject</button>
-    </div>
-
-    <div id="responseMessage">
-      <p>✅ Response sent to summary page!</p>
-      <button onclick="window.location.href='leave_summary.html'">Go to Summary Page</button>
-    </div>
-  </div>
-
-    <!-- Leave Approvals -->
+  <!-- 🟣 Leave Approvals -->
   <div class="container">
     <h2>Pending Leave Requests</h2>
 
@@ -143,25 +138,26 @@
       <div class="leave-card">
         <p><strong>Name:</strong> {{ leave.name }}</p>
         <p><strong>Role:</strong> {{ leave.role }}</p>
-        <p><strong>From:</strong> {{ leave.from_date }}</p>
-        <p><strong>To:</strong> {{ leave.to_date }}</p>
+        <p><strong>From:</strong> {{ leave.start_date|date:"F j, Y" }}</p>
+        <p><strong>To:</strong> {{ leave.end_date|date:"F j, Y" }}</p>
         <p><strong>Reason:</strong> {{ leave.reason }}</p>
-        <p><strong>Status:</strong> {{ leave.status }}</p>
+        <p><strong>Status:</strong> {{ leave.status|title }}</p>
 
-        {% if leave.status == "Pending" %}
-        <form method="post" action="{% url 'leave_approval' %}">
-          {% csrf_token %}
-          <input type="hidden" name="leave_id" value="{{ leave.id }}">
-          <button type="submit" name="action" value="approve">Approve</button>
-          <button type="submit" name="action" value="reject" class="reject">Reject</button>
-        </form>
+        {% if leave.status == "pending" %}
+          <form method="post" action="{% url 'leave_approval' %}">
+            {% csrf_token %}
+            <input type="hidden" name="leave_id" value="{{ leave.id }}">
+            <button type="submit" name="action" value="approve">Approve</button>
+            <button type="submit" name="action" value="reject" class="reject">Reject</button>
+          </form>
         {% else %}
-          <p style="color: green;"><em>Decision already made.</em></p>
+          <p><em style="color:#10b981;">Decision already made: {{ leave.status|title }}</em></p>
         {% endif %}
       </div>
     {% empty %}
-      <p>No leave requests to approve.</p>
+      <p style="color:#4c1d95; text-align:center;">No leave requests to approve.</p>
     {% endfor %}
   </div>
+
 </body>
 </html>
