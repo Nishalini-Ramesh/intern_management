@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit Feedback</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url("{% static 'images/bg-purple.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #a855f7;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Form Container */
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      margin: 2rem auto;
+    }
+
+    h2 {
+      color: #6b21a8;
+      margin-bottom: 1.5rem;
+    }
+
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    form textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    button {
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_requests.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
+
+  <!-- Feedback Form -->
+  <div class="form-container">
+    <h2>Submit Feedback</h2>
+<form method="post" action="{% url 'submit_feedback' %}">
+  {% csrf_token %}
+      <input type="text" name="name" placeholder="Your Name" required>
+
+      <select name="role" required>
+        <option value="" disabled selected>Select Your Role</option>
+        <option value="Intern">Intern</option>
+        <option value="Admin">Admin</option>
+        <option value="Mentor">Mentor</option>
+        <option value="Trainer">Trainer</option>
+      </select>
+
+      <textarea name="comments" placeholder="Your Feedback..." required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>
