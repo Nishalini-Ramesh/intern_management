@@ -8,7 +8,7 @@ urlpatterns = [
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
-    path('', views.home, name='home'),
+    path('', views.main_page, name='home'),
 
     # Dashboard routes
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
