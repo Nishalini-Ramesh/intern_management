@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.http import HttpResponse
 
 def home(request):
@@ -9,8 +8,6 @@ def signup(request):
    
 
 
-=======
->>>>>>> 8304507a1becb273597dac4355dd515b09eb96c1
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -165,13 +162,8 @@ def edit_intern(request):
 def assign_mentor(request):
     return render(request, 'assign_mentor.html')
 
-<<<<<<< HEAD
 def issue_certificate(request):
     return render(request, 'issue_certificate.html')
-=======
-def intern_list(request):
-    return render(request, 'intern_list.html')
->>>>>>> 8304507a1becb273597dac4355dd515b09eb96c1
 
 def add_intern(request):
     return render(request, 'add_intern.html')
@@ -195,3 +187,41 @@ def view_tasks(request):
 
 def intern_feedback(request):
     return render(request, 'internship report.html')
+
+# views.py
+from django.shortcuts import render
+
+def internship_report(request):
+    return render(request, 'internship_report.html')
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+
+def upload_document(request):
+    if request.method == 'POST' and request.FILES.get('document'):
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+        file_url = fs.url(filename)
+        return render(request, 'upload.html', {'file_url': file_url})
+    return render(request, 'upload.html')
+from django.shortcuts import render, redirect
+from .forms import DocumentForm
+from .models import UploadedDocument
+
+def upload_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_instance = form.save()  # Saves the file to MEDIA/uploads/
+            return render(request, 'upload.html', {
+                'form': DocumentForm(),
+                'uploaded_file_url': uploaded_instance.document.url
+            })
+    else:
+        form = DocumentForm()
+
+    return render(request, 'upload.html', {'form': form})
+from django.shortcuts import render
+
+def main_page(request):
+    return render(request, 'main.html')  # Make sure this template exists in your templates folder

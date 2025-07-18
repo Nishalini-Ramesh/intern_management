@@ -163,3 +163,13 @@ class InternDocument(models.Model):
 
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
+    
+
+from django.db import models
+
+class UploadedDocument(models.Model):
+    document = models.FileField(upload_to='uploads/')  # stored in MEDIA_ROOT/uploads/
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.document.name

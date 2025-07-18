@@ -7,7 +7,6 @@ urlpatterns = [
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
-<<<<<<< HEAD
     path('', views.main_page, name='home'),
 
     # Dashboard routes
@@ -16,13 +15,6 @@ urlpatterns = [
     path('intern_dashboard/', views.intern_dashboard, name='intern_dashboard'),
     path('hr_dashboard/', views.hr_dashboard, name='hr_dashboard'),
     path('main/', views.main_page, name='main'),  # ✅ Corrected name in views
-=======
-    # Dashboard Routes
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('mentor-dashboard/', views.mentor_dashboard, name='mentor_dashboard'),
-    path('intern-dashboard/', views.intern_dashboard, name='intern_dashboard'),
-    path('hr-dashboard/', views.hr_dashboard, name='hr_dashboard'),
->>>>>>> 8304507a1becb273597dac4355dd515b09eb96c1
 
     # HR-related views
     path('leave-request/', views.leave_request, name='leave_request'),
@@ -41,13 +33,8 @@ urlpatterns = [
     path('view_tasks/', views.view_tasks, name='view_tasks'),
     path('intern_feedback/', views.intern_feedback, name='intern_feedback'),
 
-<<<<<<< HEAD
 
     path('main/', views.main_page, name='main'),
-=======
-    # General Routes
-    path('main/', views.main_view, name='main'),
->>>>>>> 8304507a1becb273597dac4355dd515b09eb96c1
     path('', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('forgot/', views.forgot_view, name='forgot'),
@@ -57,7 +44,20 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     # Intern management
-    path('interns/', views.intern_list, name='intern_list'),
+
     path('add/', views.add_intern, name='add_intern'),
     path('edit/', views.edit_intern, name='edit_intern'),
+]
+# urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('internship-report/', views.internship_report, name='internship_report'),
+]
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('upload/', views.upload_document, name='upload'),
 ]
