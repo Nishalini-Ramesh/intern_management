@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from growtern import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('task/', views.task_list, name='task_list'),
+    path('create/', views.create_task, name='create_task'),
 ]
