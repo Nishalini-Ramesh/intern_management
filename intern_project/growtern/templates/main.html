@@ -49,7 +49,7 @@
       border-radius: 15px;
       padding: 30px;
       max-width: 400px;
-      margin: auto;
+      margin: 20px auto;
       text-align: center;
     }
 
@@ -68,9 +68,17 @@
       color: rgb(188, 84, 233);
       font-size: 2rem;
       font-weight: bold;
-      margin: 20px auto;
+      margin: 10px auto 5px;
       display: block;
       text-align: center;
+    }
+
+    .username-text {
+      color: #333;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
     .title-text {
@@ -88,25 +96,51 @@
   <div class="bg-shape2"></div>
 
   <!-- Main UI -->
-  <div class="container d-flex align-items-center justify-content-center vh-100 main-container">
+  <div class="container d-flex flex-column align-items-center justify-content-center vh-100 main-container">
     <div class="text-center">
 
-      <!-- Brand Name instead of Logo -->
+      <!-- Brand Name -->
       <div class="brand-text">GROWTERN</div>
 
-      <!-- Card Box -->
-      <div class="card-box text-white">
-        <div class="title-text">CLICK TO OPEN</div>
+      <!-- User Info -->
+      <!-- User Info -->
+{% if user.is_authenticated %}
+<div class="text-center mb-3">
+  <h4 class="mt-2 text-dark">{{ user.get_full_name }}</h4>
+  <p class="text-muted">{{ user.get_role_display }}</p>
+</div>
+{% endif %}
 
-        <button class="btn btn-custom w-100">LOGIN</button>
-        <button class="btn btn-custom w-100">DASHBOARD</button>
-        <button class="btn btn-custom w-100">TASKS</button>
-        <button class="btn btn-custom w-100">LEAVE REQUESTS</button>
-        <button class="btn btn-custom w-100">FEEDBACK</button>
-        <button class="btn btn-custom w-100">CERTIFICATE</button>
-      </div>
-    </div>
-  </div>
+
+       <div class="card-box text-white">
+  <div class="title-text">CLICK TO OPEN</div>
+
+  {% if not user.is_authenticated %}
+    <a href="{% url 'login' %}" class="btn btn-custom w-100">LOGIN</a>
+  {% endif %}
+
+  <a href="{% url 'admin_dashboard' %}" class="btn btn-custom w-100">DASHBOARD</a>
+  <a href="{% url 'task_list' %}" class="btn btn-custom w-100">TASKS</a>
+  <a href="#" class="btn btn-custom w-100">ATTENDANCE</a>
+  <a href="{% url 'leave_request' %}" class="btn btn-custom w-100">LEAVE REQUESTS</a>
+  <a href="#" class="btn btn-custom w-100">FEEDBACK</a>
+  <a href="#" class="btn btn-custom w-100">CERTIFICATE</a>
+
+  {% if user.is_authenticated %}
+    <button class="btn btn-danger w-100 mt-3" onclick="confirmLogout()">LOGOUT</button>
+  {% endif %}
+</div>
+
+      
+  <!-- Logout Confirmation Script --> 
+  <script>
+    function confirmLogout() {
+      if (confirm("Logout Confirm?")) {
+        window.location.href = "{% url 'logout' %}";
+      }
+    }
+  </script>
 
 </body>
+
 </html>
