@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intern Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f3fd 40%, #eee5f7 100%);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      position: relative;
+    }
+    .top-bar {
+      background-color: #7e57c2;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dashboard-container {
+      max-width: 600px;
+      margin: 40px auto 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .section-box {
+      background-color: #f3e8ff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .btn-action {
+      background-color: #a78bfa;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s ease;
+    }
+    .btn-action:hover {
+      background-color: #8e7cc3;
+    }
+    .growtern-text {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-weight: bold;
+      color: #7e57c2;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div>
+      <a href="{% url 'admin_dashboard' %}" class="text-white fs-4 text-decoration-none">&larr;</a>
+      <span class="ms-3 fw-bold">INTERN DASHBOARD</span>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg" style="background-color: darkorchid;">
+    <div class="container-fluid">
+      <span class="navbar-brand text-white brand-text">GROWTERN</span>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-white" href="#">Login</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'view_tasks' %}">Tasks</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Leave Requests</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'intern_feedback' %}">Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <div class="container dashboard-container">
+
+    <!-- Assigned Tasks -->
+    <div class="section-box">
+      <h6 class="fw-bold">ASSIGNED TASKS</h6>
+      <p class="fs-5 mb-0">9</p>
+      <h6 class="fw-bold mt-3">TASK TO COMPLETE</h6>
+      <p class="fs-5 mb-0">2</p>
+    </div>
+
+    <!-- Attendance -->
+    <div class="section-box">
+      <h6 class="fw-bold mb-3">ATTENDANCE</h6>
+      <p class="mb-1">THIS WEEK:</p>
+      <p class="mb-1">4 DAYS PRESENT</p>
+      <p class="mb-2">1 DAY ABSENT</p>
+      <i class="bi bi-pie-chart-fill fs-2 text-secondary"></i>
+    </div>
+
+    <!-- Feedback & Sessions -->
+    <div class="section-box">
+      <h6 class="fw-bold mb-3">RECENT FEEDBACK</h6>
+      <p><a href="#" class="text-decoration-none fw-semibold text-dark">VIEW UPCOMING EVENTS</a></p>
+      <p><a href="#" class="text-decoration-none fw-semibold text-dark">VIEW ALL SESSIONS</a></p>
+    </div>
+
+    <!-- Task Submission Section -->
+    <div class="section-box">
+      <a href="{% url 'submit_task' %}" class="btn-action w-100 mb-3">TASK SUBMISSION</a>
+      <div class="btn-group d-flex justify-content-center flex-wrap">
+        <a href="{% url 'view_tasks' %}" class="btn-action">UPLOAD DOCUMENTS</a>
+        <a href="{% url 'intern_feedback' %}" class="btn-action">INTERNSHIP REPORT</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Growtern Footer Text -->
+  <div class="growtern-text">GROWTERN</div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

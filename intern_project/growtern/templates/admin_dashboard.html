@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f3fd 40%, #eee5f7 100%);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      position: relative;
+    }
+    .top-bar {
+      background-color: #7e57c2;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-section, .btn-dashboard {
+      background-color: #f3e8ff;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+      padding: 16px;
+    }
+    .btn-dashboard {
+      width: 100%;
+      color: white;
+      background-color: #a78bfa;
+      font-weight: 600;
+      border: none;
+      margin-bottom: 10px;
+    }
+    .btn-dashboard:hover { background-color: #8e7cc3; }
+    .dashboard-container { max-width: 500px; margin: 40px auto 0 auto; text-align: center; }
+    .growtern-text {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-weight: bold;
+      color: #7e57c2;
+      font-size: 1.2rem;
+    }
+    a { text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR with BACK ARROW -->
+  <div class="top-bar">
+    <div>
+      <a href="{% url 'main' %}" class="text-white fs-4 text-decoration-none">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <span class="ms-3 fw-bold">ADMIN DASHBOARD</span>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-lg" style="background-color: darkorchid;">
+    <div class="container-fluid">
+      <span class="navbar-brand text-white brand-text">GROWTERN</span>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-white" href="#">Login</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Tasks</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Leave Requests</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Feedback</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Certificate</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD CONTENT -->
+  <div class="container dashboard-container">
+    <a href="{% url 'mentor_dashboard' %}"><button class="btn-dashboard">MENTOR DASHBOARD</button></a>
+    <a href="{% url 'intern_dashboard' %}"><button class="btn-dashboard">INTERN DASHBOARD</button></a>
+    <a href="{% url 'hr_dashboard' %}"><button class="btn-dashboard">HR DASHBOARD</button></a>
+
+    <div class="admin-section">
+      <h5 class="fw-bold">RECENT ACTIVITY</h5>
+      <p>SUJI SUBMITTED THE TASK</p>
+      <p>MENTOR 1 ASSIGNED TASK TO LAVANYA</p>
+      <p>INTERN RAM MISSED TWO DAYS</p>
+    </div>
+
+    <div class="admin-section">
+      <h6 class="fw-bold mb-2">ACTIVE INTERNS</h6>
+      <div class="fs-3">24</div>
+      <i class="bi bi-graph-up text-secondary fs-4"></i>
+    </div>
+  </div>
+
+  <div class="growtern-text">GROWTERN</div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

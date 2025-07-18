@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leave Request</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url('../images/bg-purple.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #6b21a8;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      color: #fde68a;
+    }
+
+    .navbar a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      margin: 3rem auto;
+    }
+
+    h2 {
+      color: #6b21a8;
+      margin-bottom: 1.5rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      height: 100px;
+      resize: none;
+    }
+
+    button {
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div>
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_request.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
+
+  <!-- Leave Form -->
+  <div class="form-container">
+    <h2>Request Leave</h2>
+    <form onsubmit="saveLeaveRequest(event)">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <select id="role" required>
+        <option value="" disabled selected>Select Role</option>
+        <option>Intern</option>
+        <option>Mentor</option>
+        <option>Admin</option>
+      </select>
+      <input type="date" id="from_date" required />
+      <input type="date" id="to_date" required />
+      <textarea id="reason" placeholder="Reason for leave" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Script -->
+  <script>
+    function saveLeaveRequest(event) {
+      event.preventDefault();
+
+      const data = {
+        name: document.getElementById('name').value,
+        role: document.getElementById('role').value,
+        from_date: document.getElementById('from_date').value,
+        to_date: document.getElementById('to_date').value,
+        reason: document.getElementById('reason').value,
+        status: 'Pending'
+      };
+
+      localStorage.setItem('leave_request', JSON.stringify(data));
+      window.location.href = 'leave_status.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task Feedback</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3eaff;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Background geometric shapes with stronger purple shades */
+    .bg-shape {
+      position: absolute;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 200px solid transparent;
+      border-right: 200px solid transparent;
+      border-bottom: 200px solid #a259ff;
+    }
+
+    .half-rect {
+      width: 300px;
+      height: 150px;
+      background-color: #c29ffa;
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+
+    .bg1 { top: -40px; left: -40px; transform: rotate(25deg); }
+    .bg2 { top: 300px; right: -100px; transform: rotate(-20deg); }
+    .bg3 { bottom: -50px; left: 200px; transform: rotate(45deg); }
+    .bg4 { top: 150px; left: 50%; transform: translateX(-50%) rotate(15deg); }
+
+    /* Main container */
+    .container {
+      width: 600px;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 40px;
+      z-index: 1;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      margin-right: 15px;
+      cursor: pointer;
+      color: #844cd9;
+      transition: transform 0.3s;
+    }
+
+    .back-arrow:hover {
+      transform: scale(1.2);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #5e2d91;
+      margin: 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #5a3d94;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #bbb;
+      background-color: #f7efff;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #a259ff;
+      box-shadow: 0 0 8px #c59cff;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stars span {
+      font-size: 28px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.2s ease;
+    }
+
+    .stars span.selected,
+    .stars span.hover {
+      color: #a259ff;
+    }
+
+    .rating-value {
+      font-size: 16px;
+      color: #5a3d94;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      background-color: #a259ff;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #8a3ee0;
+    }
+
+    .close-btn {
+      background-color: #d6c3f9;
+      color: #4b2e83;
+    }
+
+    .close-btn:hover {
+      background-color: #c5b0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Geometric Purple Background -->
+  <div class="bg-shape triangle bg1"></div>
+  <div class="bg-shape half-rect bg2"></div>
+  <div class="bg-shape triangle bg3"></div>
+  <div class="bg-shape half-rect bg4"></div>
+
+  <!-- Main Feedback Card -->
+  <div class="container">
+    <div class="header">
+      <div class="back-arrow">&#8592;</div>
+      <h1>TASK FEEDBACK</h1>
+    </div>
+
+    <div class="form-group">
+      <label for="task-title">TASK TITLE</label>
+      <input type="text" id="task-title" placeholder="Enter task title">
+    </div>
+
+    <div class="form-group">
+      <label for="intern-name">INTERN NAME</label>
+      <input type="text" id="intern-name" placeholder="Enter intern name">
+    </div>
+
+    <div class="form-group">
+      <label for="feedback">FEEDBACK</label>
+      <textarea id="feedback" placeholder="Write your feedback..."></textarea>
+    </div>
+
+    <div class="form-group rating">
+      <label>RATING</label>
+      <div class="stars" id="stars">
+        <span data-value="1">&#9733;</span>
+        <span data-value="2">&#9733;</span>
+        <span data-value="3">&#9733;</span>
+        <span data-value="4">&#9733;</span>
+        <span data-value="5">&#9733;</span>
+      </div>
+      <div class="rating-value" id="rating-value">0/5</div>
+    </div>
+
+    <div class="buttons">
+      <button class="button">SAVE</button>
+      <button class="button close-btn">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- Star Rating Script -->
+  <script>
+    const stars = document.querySelectorAll("#stars span");
+    const ratingValue = document.getElementById("rating-value");
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener("mouseover", () => {
+        const val = parseInt(star.getAttribute("data-value"));
+        highlightStars(val);
+      });
+
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
+      });
+
+      star.addEventListener("click", () => {
+        selectedRating = parseInt(star.getAttribute("data-value"));
+        ratingValue.textContent = `${selectedRating}/5`;
+        highlightStars(selectedRating);
+      });
+    });
+
+    function highlightStars(count) {
+      stars.forEach((s, i) => {
+        s.classList.toggle("selected", i < count);
+      });
+    }
+  </script>
+
+</body>
+</html>

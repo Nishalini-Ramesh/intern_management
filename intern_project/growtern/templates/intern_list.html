@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Growtern | Intern List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f2fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+      background-color: #6f42c1;
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      margin-top: 40px;
+      max-width: 1100px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(111, 66, 193, 0.1);
+    }
+
+    .card-header {
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 20px 25px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #6f42c1;
+    }
+
+    .card-body {
+      padding: 25px;
+    }
+
+    .form-control, .form-select {
+      border-radius: 8px;
+    }
+
+    .btn-purple {
+      background-color: #6f42c1;
+      color: white;
+      border: none;
+    }
+
+    .btn-purple:hover {
+      background-color: #5a34a0;
+    }
+
+    .status-completed {
+      background-color: #d7b3ff;
+      color: #3c0060;
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .status-pending {
+      background-color: #f1d2ff;
+      color: #6f42c1;
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #6f42c1;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="#">Growtern</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
+          <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
+          <li class="nav-item"><a class="nav-link" href="assign_mentor.html">Mentors</a></li>
+          <li class="nav-item"><a class="nav-link" href="edit_intern.html">Edit</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Card -->
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Intern Management
+      </div>
+      <div class="card-body">
+
+        <!-- Filters -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by name">
+          </div>
+          <div class="col-md-6">
+            <select id="statusFilter" class="form-select">
+              <option value="">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Intern Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered text-center align-middle" id="internTable">
+            <thead class="table-light">
+              <tr>
+                <th>Name</th>
+                <th>College</th>
+                <th>Department</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Meena</td><td>SEC</td><td>CSE</td><td><span class="status-completed">Completed</span></td></tr>
+              <tr><td>Suji</td><td>RIT</td><td>IT</td><td><span class="status-pending">Pending</span></td></tr>
+              <tr><td>Ram</td><td>REC</td><td>ECE</td><td><span class="status-completed">Completed</span></td></tr>
+              <tr><td>Karthik</td><td>CIT</td><td>CSE</td><td><span class="status-completed">Completed</span></td></tr>
+              <tr><td>Jaswin</td><td>SEC</td><td>IT</td><td><span class="status-pending">Pending</span></td></tr>
+              <tr><td>Lavanya</td><td>RIT</td><td>ECE</td><td><span class="status-pending">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+          <a href="add_intern.html" class="btn btn-purple me-2">+ Add Intern</a>
+          <a href="assign_mentor.html" class="btn btn-outline-secondary">View Mentor Details</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Growtern · Built by M.GAJALAKSHMI
+  </footer>
+
+  <!-- Script: Filter Functionality -->
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+    const tableRows = document.querySelectorAll("#internTable tbody tr");
+
+    function filterTable() {
+      const searchValue = searchInput.value.toLowerCase();
+      const statusValue = statusFilter.value.toLowerCase();
+
+      tableRows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const statusText = row.cells[3].textContent.toLowerCase();
+        const matchesSearch = name.includes(searchValue);
+        const matchesStatus = !statusValue || statusText.includes(statusValue);
+        row.style.display = matchesSearch && matchesStatus ? "" : "none";
+      });
+    }
+
+    searchInput.addEventListener("input", filterTable);
+    statusFilter.addEventListener("change", filterTable);
+  </script>
+
+</body>
+</html>

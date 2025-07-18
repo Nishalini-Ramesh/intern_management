@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Intern | Growtern</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f2fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar {
+      background-color: #6f42c1;
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+    }
+
+    .container {
+      margin-top: 40px;
+      max-width: 750px;
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(111, 66, 193, 0.1);
+    }
+
+    .card-header {
+      background-color: #fff;
+      font-weight: bold;
+      color: #6f42c1;
+      font-size: 22px;
+      padding: 20px 25px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .btn-purple {
+      background-color: #6f42c1;
+      color: white;
+    }
+
+    .btn-purple:hover {
+      background-color: #5a34a0;
+    }
+
+    footer {
+      background-color: #6f42c1;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 50px;
+    }
+
+    #photoPreview {
+      max-width: 150px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="#">Growtern</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
+          <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form Container -->
+  <div class="container">
+    <div class="card">
+      <div class="card-header">Add New Intern</div>
+      <div class="card-body">
+        <form id="internForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Intern Name</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="college" class="form-label">College</label>
+            <input type="text" class="form-control" id="college" required>
+          </div>
+          <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <input type="text" class="form-control" id="department" required>
+          </div>
+          <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" required>
+              <option value="">Choose...</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="photo" class="form-label">Upload Photo (jpg/png)</label>
+            <input type="file" class="form-control" id="photo" accept="image/*" required>
+            <img id="photoPreview" src="#" alt="Preview" style="display: none;" />
+          </div>
+
+          <div class="mb-3">
+            <label for="resume" class="form-label">Upload Resume (pdf)</label>
+            <input type="file" class="form-control" id="resume" accept="application/pdf" required>
+            <small id="resumeName" class="form-text text-muted"></small>
+          </div>
+
+          <button type="submit" class="btn btn-purple w-100">Add Intern</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Growtern · Built by GAJALAKSHMI
+  </footer>
+
+  <script>
+    const photoInput = document.getElementById('photo');
+    const photoPreview = document.getElementById('photoPreview');
+    const resumeInput = document.getElementById('resume');
+    const resumeName = document.getElementById('resumeName');
+    const internForm = document.getElementById('internForm');
+
+    let photoBase64 = "";
+
+    // Preview photo
+    photoInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          photoBase64 = e.target.result;
+          photoPreview.src = photoBase64;
+          photoPreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Show resume file name
+    resumeInput.addEventListener('change', function () {
+      if (this.files.length > 0) {
+        resumeName.textContent = "Uploaded: " + this.files[0].name;
+      }
+    });
+
+    internForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const college = document.getElementById('college').value;
+      const department = document.getElementById('department').value;
+      const status = document.getElementById('status').value;
+      const resumeFile = resumeInput.files[0]?.name || "";
+
+      const newIntern = {
+        name,
+        college,
+        department,
+        status,
+        photo: photoBase64,
+        resume: resumeFile
+      };
+
+      let interns = JSON.parse(localStorage.getItem('interns')) || [];
+      interns.push(newIntern);
+      localStorage.setItem('interns', JSON.stringify(interns));
+
+      alert("Intern added successfully!");
+      window.location.href = 'intern_list.html';
+    });
+  </script>
+
+</body>
+</html>
