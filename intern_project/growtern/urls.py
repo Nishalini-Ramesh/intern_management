@@ -20,8 +20,7 @@ urlpatterns = [
     path('leave-request/', views.leave_request, name='leave_request'),
     path('edit_intern/', views.edit_intern, name='edit_intern'),
     path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
-    path('certificate/', views.issue_certificate, name='issue_certificate'),
-
+   
     # Mentor-related task routes
     path('assign_task/', views.assign_task, name='assign_task'),
     path('task_reports/', views.task_reports, name='task_reports'),
@@ -54,4 +53,11 @@ urlpatterns = [
     path('leave/request/', views.leave_request_view, name='leave_request'),
     path('leave/status/', views.leave_status_view, name='leave_status'),
     path('leave/approval/', views.leave_approval_view, name='leave_approval'),
+]
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('issue-certificate', views.issue_certificate, name='issue_certificate'),
 ]

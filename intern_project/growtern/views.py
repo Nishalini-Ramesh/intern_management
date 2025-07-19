@@ -260,3 +260,11 @@ def leave_approval_view(request):
 def leave_status_view(request):
     leave = LeaveRequest.objects.filter(intern=request.user).order_by('-submitted_on').first()
     return render(request, 'leave_status.html', {'leave': leave})
+from django.shortcuts import render
+
+def issue_certificate_view(request):
+    return render(request, 'issue_certificate.html')
+from django.shortcuts import render
+
+def issue_certificate_view(request):
+    return render(request, 'issue_certificate.html')
