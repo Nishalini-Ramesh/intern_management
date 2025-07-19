@@ -79,6 +79,10 @@ def check_user_exists(request):
     exists = User.objects.filter(email=email).exists()
     return JsonResponse({'exists': exists})
 
+def attendance_tab(request):
+    return render(request, 'attendance_tab.html')
+
+
 # -------------------- MAIN & CHOICE --------------------
 @login_required
 def main_view(request):

@@ -55,5 +55,6 @@ urlpatterns = [
     path('leave/approval/', views.leave_approval_view, name='leave_approval'),
 
     path('issue-certificate/', views.issue_certificate, name='issue_certificate'),
+    path('attendance/', views.attendance_tab, name='attendance_tab'),
 ]
 
