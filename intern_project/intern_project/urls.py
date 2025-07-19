@@ -34,5 +34,9 @@ from growtern import views  # Import views from growtern
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('issue-certificate/', views.issue_certificate_view, name='issue_certificate'),  # ✅ Add this line
+    path('issue-certificate/', views.issue_certificate_view, name='issue_certificate'),
+    path('upload/', views.upload_document, name='upload'),
+    path('internship-report/', views.internship_report, name='internship_report'),
+
+  
 ]
