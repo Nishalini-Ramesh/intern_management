@@ -98,6 +98,16 @@ class LeaveRequest(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     )
+    name = models.CharField(max_length=100, default="Anonymous")
+    ROLE_CHOICES = [
+    ('Intern', 'Intern'),
+    ('Mentor', 'Mentor'),
+    ('Trainer', 'Trainer'),
+    ('HR', 'HR'),
+]
+
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='Intern')
+
     intern = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='leave_requests', limit_choices_to={'role': 'INTERN'})
     start_date = models.DateField()
     end_date = models.DateField()
@@ -107,7 +117,7 @@ class LeaveRequest(models.Model):
     reviewed_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_leaves', limit_choices_to={'role__in': ['HR', 'ADMIN']})
     reviewed_on = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.intern.username} → {self.status} leave"
 
 # ----------------------
@@ -120,7 +130,7 @@ class GeneralFeedback(models.Model):
     rating = models.PositiveIntegerField(default=0)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.name} ({self.role})"
 
 # ----------------------
@@ -163,3 +173,13 @@ class InternDocument(models.Model):
 
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
+    
+
+from django.db import models
+
+class UploadedDocument(models.Model):
+    document = models.FileField(upload_to='uploads/')  # stored in MEDIA_ROOT/uploads/
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.document.name

@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Leave Request</title>
+  <meta charset="UTF-8" />
+  <title>Leave Status</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <style>
-    body {
+ body {
       font-family: 'Nunito', sans-serif;
       background-image: url("{% static 'images/bg-purple.png' %}");
       background-size: cover;
@@ -14,79 +14,84 @@
       background-repeat: no-repeat;
       min-height: 100vh;
       margin: 0;
+      padding: 0;
     }
 
     .navbar {
-      background-color: #6b21a8;
-      color: white;
+      background-color: #a855f7;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .navbar .logo {
-      font-size: 1.5rem;
-      color: #fde68a;
-    }
-
-    .navbar a {
       color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 600;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
     }
 
-    .navbar a:hover {
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
       text-decoration: underline;
     }
 
-    .form-container {
+    .status-box {
       background-color: rgba(255, 255, 255, 0.95);
       padding: 2rem;
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 450px;
       text-align: center;
-      margin: 3rem auto;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin: 50px auto;
     }
 
     h2 {
       color: #6b21a8;
-      margin-bottom: 1.5rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 0.8rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 1rem;
     }
 
-    textarea {
-      height: 100px;
-      resize: none;
+    p {
+      color: #4c1d95;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .status-tag {
+      display: inline-block;
+      background-color: #facc15;
+      color: #6b21a8;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
 
     button {
       background-color: #9333ea;
       color: white;
       border: none;
-      padding: 0.8rem 1.5rem;
+      padding: 10px 20px;
       font-size: 1rem;
       border-radius: 10px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 1rem;
     }
 
     button:hover {
       background-color: #7e22ce;
     }
+  
   </style>
 </head>
 <body>
@@ -109,15 +114,27 @@
   </div>
 </div>
 
+  <!-- Status Box -->
+  <div class="status-box">
+    {% if leave %}
+      <h2>Leave Request Submitted!</h2>
+      <p><strong>Name:</strong> {{ leave.name }}</p>
+      <p><strong>Role:</strong> {{ leave.role }}</p>
+      <p><strong>From:</strong> {{ leave.start_date }}</p>
+      <p><strong>To:</strong> {{ leave.end_date }}</p>
+      <p><strong>Reason:</strong> {{ leave.reason }}</p>
+      <div class="status-tag">{{ leave.status|title }}</div>
 
-  <!-- 🟣 Leave Request Form -->
-  <div class="form-container">
-    <h2>Request Leave</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Submit</button>
-    </form>
+      <a href="{% url 'leave_approval' %}">
+        <button type="button">Go to Approval Page</button>
+      </a>
+    {% else %}
+      <h2>No leave request found.</h2>
+      <p>You haven't submitted any leave request yet.</p>
+      <a href="{% url 'leave_request' %}">
+        <button type="button">Request Leave</button>
+      </a>
+    {% endif %}
   </div>
 
 </body>
