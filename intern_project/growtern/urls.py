@@ -7,7 +7,7 @@ urlpatterns = [
     path('rating/', views.rating_view, name='rating'),
     path('rating/thankyou.html', views.thank_you, name='thank_you'),
 
-    path('', views.main_page, name='home'),
+    
 
     # Dashboard routes
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
@@ -33,7 +33,7 @@ urlpatterns = [
 
 
     path('main/', views.main_page, name='main'),
-    path('login/', views.login_view, name='login'),
+    path('', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('forgot/', views.forgot_view, name='forgot'),
     path('check-user/', views.check_user_exists, name='check_user_exists'),
