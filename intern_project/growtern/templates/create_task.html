@@ -134,31 +134,35 @@
       <div class="back-arrow">&#8592;</div>
       <h1>TASK CREATION</h1>
     </div>
+    <form method="POST" action="{% url 'create_task' %}">
+    {% csrf_token %}
+
 
     <div class="form-group">
       <label for="title">TITLE</label>
-      <input type="text" id="title" placeholder="Enter task title" />
+      <input type="text" id="title" name="title" placeholder="Enter task title" />
     </div>
 
     <div class="form-group">
       <label for="description">DESCRIPTION</label>
-      <textarea id="description" placeholder="Enter task details"></textarea>
+      <textarea id="description" name="description" placeholder="Enter task details"></textarea>
     </div>
 
     <div class="form-group">
       <label for="deadline">DEADLINE</label>
-      <input type="date" id="deadline" />
+      <input type="date"  name="due_date" id="deadline" />
     </div>
 
     <div class="form-group">
       <label for="assigned">ASSIGNED TO</label>
-      <input type="text" id="assigned" placeholder="Assignee name" />
+      <input type="text" id="assigned" name="assigned_to" placeholder="Assignee name" />
     </div>
 
     <div class="button-row">
-      <button class="button">CREATE</button>
+      <button typr="submit" class="button">CREATE</button>
       <button class="button">RESET</button>
     </div>
   </div>
+</form>
 </body>
 </html>

@@ -9,6 +9,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from growtern import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,3 +23,17 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'st
 
 # Serve media files during development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# growtern/urls.py
+from django.urls import path
+
+urlpatterns = [
+    path('create-task/', views.create_task, name='create_task'),
+    path('task-list/', views.task_list, name='task_list'),
+]
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('growtern.urls')),  # Or your actual app name
+]

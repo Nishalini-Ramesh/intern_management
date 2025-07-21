@@ -136,24 +136,21 @@
 
     <div class="task-box">
       <h2>TASKS</h2>
+
+      {% for task in tasks %}
       <div class="task-item">
-        <input type="text" value="1. To draw the ULM ....." readonly />
+        <input type="text" value="{{ forloop.counter }}. {{ task.title }}" readonly />
         <input type="checkbox" />
       </div>
+      {% empty %}
       <div class="task-item">
-        <input type="text" value="2. To do the database..." readonly />
-        <input type="checkbox" />
+        <input type="text" value="No tasks available." readonly />
       </div>
-      <div class="task-item">
-        <input type="text" value="3. get approval for sch..." readonly />
-        <input type="checkbox" />
-      </div>
-      <div class="task-item">
-        <input type="text" value="4. ui model..." />
-        <input type="checkbox" />
-      </div>
+      {% endfor %}
+
       <div class="add-button">+</div>
     </div>
   </div>
 </body>
+
 </html>

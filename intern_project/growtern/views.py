@@ -272,3 +272,29 @@ from django.shortcuts import render
 
 def issue_certificate_view(request):
     return render(request, 'issue_certificate.html')
+
+
+# growtern/views.py
+from django.shortcuts import render, redirect
+from .models import Task
+from .forms import TaskForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def create_task(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.created_by = request.user  # Automatically set creator
+            task.save()
+            return redirect('task_list')
+    else:
+        form = TaskForm()
+    return render(request, 'create_task.html', {'form': form})
+
+@login_required
+def task_list(request):
+    tasks = Task.objects.all()
+    return render(request, 'task_list.html', {'tasks': tasks})
+

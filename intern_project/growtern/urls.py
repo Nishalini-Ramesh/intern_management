@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views
+from growtern import views
+
 
 urlpatterns = [
 # Feedback and rating routes
@@ -56,5 +57,17 @@ urlpatterns = [
 
     path('issue-certificate/', views.issue_certificate, name='issue_certificate'),
     path('attendance/', views.attendance_tab, name='attendance_tab'),
+
+    path('tasks/', views.task_list, name='task_list'),
+        # add other app-level URLs here
 ]
+from django.contrib import admin
+from django.urls import path
+  # ✅ Fix added here
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('create-task/', views.create_task, name='create_task'),
+]
+
 
