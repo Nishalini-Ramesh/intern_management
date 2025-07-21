@@ -23,14 +23,19 @@ class DocumentForm(forms.ModelForm):
         model = UploadedDocument
         fields = ['document']
 
-# growtern/forms.py
 from django import forms
 from .models import Task
+from growtern.models import CustomUser
+
 
 class TaskForm(forms.ModelForm):
+    assigned_to = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='INTERN'),
+        empty_label="Select an Intern",
+        label="Assigned To"
+    )
+
     class Meta:
         model = Task
         fields = ['title', 'description', 'due_date', 'assigned_to']
-        widgets = {
-            'due_date': forms.DateInput(attrs={'type': 'date'}),
-        }
+

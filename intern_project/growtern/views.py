@@ -286,7 +286,8 @@ def create_task(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.created_by = request.user  # Automatically set creator
+            task.created_by = request.user 
+            task.status="pending" # Automatically set creator
             task.save()
             return redirect('task_list')
     else:

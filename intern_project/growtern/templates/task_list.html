@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +7,8 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #f5edf9;
+      font-family: Arial, sans-serif;
+      background-color: #f5edf9; /* Custom background color */
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -20,9 +19,9 @@
       position: relative;
       width: 900px;
       min-height: 600px;
-      background-color: white;
+      background-color: #fff;
       border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
 
@@ -72,10 +71,13 @@
       margin: 0 60px 30px;
       border-radius: 12px;
       padding: 30px;
-      color: white;
+      color: #fff;
       position: relative;
       z-index: 1;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
+      /* Set a maximum height and allow vertical scrolling */
+      max-height: 350px;
+      overflow-y: auto;
     }
 
     .task-box h2 {
@@ -87,10 +89,11 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      transition: opacity 0.3s ease;
     }
 
     .task-item:last-child {
-      margin-bottom: 60px; /* Space for floating button */
+      margin-bottom: 60px; /* Space for floating add button */
     }
 
     .task-item input[type="text"] {
@@ -101,11 +104,13 @@
       margin-right: 15px;
       background-color: #e6d6f2;
       font-size: 16px;
+      color: #4a148c;
     }
 
     .task-item input[type="checkbox"] {
       width: 20px;
       height: 20px;
+      cursor: pointer;
     }
 
     .add-button {
@@ -121,6 +126,7 @@
       position: absolute;
       bottom: 30px;
       right: 80px;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -140,17 +146,33 @@
       {% for task in tasks %}
       <div class="task-item">
         <input type="text" value="{{ forloop.counter }}. {{ task.title }}" readonly />
-        <input type="checkbox" />
+        <input type="checkbox" class="complete-checkbox" />
       </div>
       {% empty %}
       <div class="task-item">
         <input type="text" value="No tasks available." readonly />
       </div>
       {% endfor %}
-
-      <div class="add-button">+</div>
     </div>
-  </div>
-</body>
 
+    <!-- Plus icon wrapped in a link to navigate to create_task page -->
+    <a href="{% url 'create_task' %}" class="add-button">+</a>
+  </div>
+
+  <!-- JavaScript to remove task when checkbox is checked -->
+  <script>
+    document.querySelectorAll('.complete-checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        if(this.checked) {
+          // Optionally add an animation or confirmation here
+          this.parentElement.style.opacity = '0';
+          // Remove element after a short delay (e.g., 0.3s) to allow transition
+          setTimeout(() => {
+            this.parentElement.remove();
+          }, 300);
+        }
+      });
+    });
+  </script>
+</body>
 </html>

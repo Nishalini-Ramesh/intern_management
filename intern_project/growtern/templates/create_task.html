@@ -1,168 +1,123 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Task Creation</title>
+  <meta charset="UTF-8">
+  <title>Create Task</title>
   <style>
     body {
-      margin: 0;
+      background-color: #f5e8fc; /* Light lilac background */
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f4e6fa 0%, #efe2f5 100%);
-      height: 100vh;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Soft circular decorative background elements */
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.4;
-      z-index: 0;
-    }
-
-    .circle1 {
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle at center, #d7b8f3, transparent 70%);
-      top: -50px;
-      left: -50px;
-    }
-
-    .circle2 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle at center, #e0c4f5, transparent 70%);
-      bottom: -80px;
-      right: -80px;
+      min-height: 100vh; /* Full screen height */
     }
 
     .container {
-      position: relative;
-      background-color: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      width: 600px;
-      padding: 30px 40px;
-      z-index: 1;
+      max-width:650px;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .back-arrow {
-      font-size: 24px;
-      margin-right: 15px;
-      cursor: pointer;
-      color: #4b2e83;
-    }
-
-    h1 {
-      font-size: 26px;
-      margin: 0;
-      font-weight: bold;
-      color: #4b2e83;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
+    h2 {
+      text-align: center;
+      color: #6a1b9a;
+      margin-bottom: 25px;
+      font-size: 22px;
     }
 
     label {
       display: block;
       margin-bottom: 6px;
-      color: #6e5192;
-      font-style: italic;
-      font-size: 15px;
+      color: #4a148c;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     input[type="text"],
     input[type="date"],
+    select,
     textarea {
       width: 100%;
-      padding: 10px 12px;
-      border: none;
-      border-radius: 8px;
-      background-color: #f1e4fb;
-      font-size: 15px;
-      resize: none;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f1e5fd;
+      font-size: 14px;
+      color: #4a148c;
     }
 
     textarea {
-      height: 90px;
+      resize: vertical;
+      height: 100px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #7b1fa2;
+      opacity: 0.85;
     }
 
     .button-row {
       display: flex;
-      justify-content: space-around;
-      margin-top: 25px;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+      flex-wrap: wrap;
     }
 
     .button {
-      padding: 12px 28px;
-      background-color: #8e7ab5;
-      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
       border: none;
-      border-radius: 25px;
-      font-size: 15px;
+      border-radius: 20px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      background-color: #9c27b0;
+      color: #fff;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
     }
 
     .button:hover {
-      background-color: #745ba8;
+      background-color: #7b1fa2;
     }
-
   </style>
 </head>
 <body>
-  <!-- Background Circles -->
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
-
-  <!-- Main Form Container -->
   <div class="container">
-    <div class="header">
-      <div class="back-arrow">&#8592;</div>
-      <h1>TASK CREATION</h1>
-    </div>
+    <h2>Create New Task</h2>
     <form method="POST" action="{% url 'create_task' %}">
-    {% csrf_token %}
+      {% csrf_token %}
+      
+      <label for="id_title">Title:</label>
+      <input type="text" id="id_title" name="title" placeholder="Enter Task Title">
 
+      <label for="id_description">Description:</label>
+      <textarea id="id_description" name="description" placeholder="Enter Task Description"></textarea>
 
-    <div class="form-group">
-      <label for="title">TITLE</label>
-      <input type="text" id="title" name="title" placeholder="Enter task title" />
-    </div>
+      <label for="id_due_date">Due Date:</label>
+      <input type="date" id="id_due_date" name="due_date">
 
-    <div class="form-group">
-      <label for="description">DESCRIPTION</label>
-      <textarea id="description" name="description" placeholder="Enter task details"></textarea>
-    </div>
+      <label for="id_assigned_to">Assigned To:</label>
+      <select id="id_assigned_to" name="assigned_to">
+        <option value="">Select an Intern</option>
+        {% for intern in form.fields.assigned_to.queryset %}
+          <option value="{{ intern.id }}">{{ intern.get_full_name }}</option>
+        {% endfor %}
+      </select>
 
-    <div class="form-group">
-      <label for="deadline">DEADLINE</label>
-      <input type="date"  name="due_date" id="deadline" />
-    </div>
-
-    <div class="form-group">
-      <label for="assigned">ASSIGNED TO</label>
-      <input type="text" id="assigned" name="assigned_to" placeholder="Assignee name" />
-    </div>
-
-    <div class="button-row">
-      <button typr="submit" class="button">CREATE</button>
-      <button class="button">RESET</button>
-    </div>
+      <div class="button-row">
+        <button type="submit" class="button">CREATE</button>
+        <button type="reset" class="button">RESET</button>
+        <a href="{% url 'task_list' %}" class="button">VIEW TASK</a>
+      </div>
+    </form>
   </div>
-</form>
 </body>
 </html>
