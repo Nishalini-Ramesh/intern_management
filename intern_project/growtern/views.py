@@ -201,8 +201,8 @@ from .models import LeaveRequest, GeneralFeedback
 
 def submit_feedback_view(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        role = request.POST.get('role')
+        name = request.user.username  
+        role = request.user.role
         comments = request.POST.get('comments')
 
         feedback = GeneralFeedback.objects.create(
