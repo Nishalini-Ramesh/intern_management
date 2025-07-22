@@ -250,25 +250,75 @@ from django.contrib.auth.decorators import login_required
 def main_view(request):
     return render(request, 'main.html')
 
+# views.py
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Intern
+from .forms import InternForm
 
 def intern_list(request):
-    return render(request, 'intern_list.html')
+    interns = Intern.objects.all()
+    return render(request, 'intern_list.html', {'interns': interns})
 
 def add_intern(request):
-    return render(request, 'add_intern.html')
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')
+    else:
+        form = InternForm()
+    return render(request, 'add_intern.html', {'form': form})
 
-def edit_intern(request):
-    return render(request, 'edit_intern.html')
+# growtern/views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Intern
 
 def assign_mentor(request):
-    return render(request, 'assign_mentor.html')
+    interns = Intern.objects.all()
+    if request.method == "POST":
+        intern_id = request.POST.get("intern_id")
+        mentor_name = request.POST.get("mentor")
+
+        intern = get_object_or_404(Intern, id=intern_id)
+        intern.mentor = mentor_name
+        intern.save()
+
+        return redirect('intern_list')  # go back to intern list after assigning
+
+    return render(request, 'assign_mentor.html', {'interns': interns})
 
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern
+
+def edit_interns_list(request):
+    interns = Intern.objects.all()
+    return render(request, 'edit_intern.html', {'interns': interns})
 
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern
+from .forms import InternForm
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern
+from .forms import InternForm
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern
+from .forms import InternForm
 
+def edit_intern(request, intern_id):
+    intern = get_object_or_404(Intern, id=intern_id)
 
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES, instance=intern)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')  # Make sure 'intern_list' is named in urls.py
+    else:
+        form = InternForm(instance=intern)
+
+    return render(request, 'edit_intern.html', {'form': form, 'intern': intern})

@@ -1,3 +1,4 @@
+intern_list.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,24 +87,105 @@
       padding: 10px;
       margin-top: 50px;
     }
+    .brand-text {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar-nav .nav-link {
+    font-weight: 500;
+    margin-left: 10px;
+  }
+
+  .navbar-nav .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+
+  @media (max-width: 991.98px) {
+    .navbar-nav .nav-link {
+      margin: 10px 0;
+    }
+  }
+  .navbar {
+    background-color: darkorchid;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .navbar a:hover {
+    color: #ffd9f8;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .navbar div {
+      margin-top: 10px;
+    }
+
+    .navbar a {
+      display: block;
+      margin: 5px 0;
+    }
+  }
   </style>
 </head>
 <body>
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div>
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_request.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
+
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid px-4">
-      <a class="navbar-brand" href="#">Growtern</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
-          <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
-          <li class="nav-item"><a class="nav-link" href="assign_mentor.html">Mentors</a></li>
-          <li class="nav-item"><a class="nav-link" href="edit_intern.html">Edit</a></li>
-        </ul>
-      </div>
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="#">Growtern</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/interns/">Interns</a></li>
+        <li class="nav-item"><a class="nav-link" href="/add/">Add Intern</a></li>
+        <li class="nav-item"><a class="nav-link" href="/assign_mentor/">Mentors</a></li>
+        <li class="nav-item"><a class="nav-link" href="/edit/">Edit</a></li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Main Card -->
   <div class="container">
@@ -136,24 +218,37 @@
                 <th>College</th>
                 <th>Department</th>
                 <th>Status</th>
+              
               </tr>
             </thead>
             <tbody>
-              <tr><td>Meena</td><td>SEC</td><td>CSE</td><td><span class="status-completed">Completed</span></td></tr>
-              <tr><td>Suji</td><td>RIT</td><td>IT</td><td><span class="status-pending">Pending</span></td></tr>
-              <tr><td>Ram</td><td>REC</td><td>ECE</td><td><span class="status-completed">Completed</span></td></tr>
-              <tr><td>Karthik</td><td>CIT</td><td>CSE</td><td><span class="status-completed">Completed</span></td></tr>
-              <tr><td>Jaswin</td><td>SEC</td><td>IT</td><td><span class="status-pending">Pending</span></td></tr>
-              <tr><td>Lavanya</td><td>RIT</td><td>ECE</td><td><span class="status-pending">Pending</span></td></tr>
+              {% for intern in interns %}
+<tr>
+  <td>{{ intern.name }}</td>
+  <td>{{ intern.college }}</td>
+  <td>{{ intern.department }}</td>
+  
+
+  <td>
+    {% if intern.status == 'completed' %}
+      <span class="status-completed">Completed</span>
+    {% else %}
+      <span class="status-pending">Pending</span>
+    {% endif %}
+  </td>
+  
+
+</tr>
+{% endfor %}
+
             </tbody>
           </table>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="mt-4">
-          <a href="add_intern.html" class="btn btn-purple me-2">+ Add Intern</a>
-          <a href="assign_mentor.html" class="btn btn-outline-secondary">View Mentor Details</a>
-        </div>
+        <div>
+        <a href="{% url 'add_intern' %}" class="btn btn-purple me-2">+ Add Intern</a>
+<a href="{% url 'assign_mentor' %}" class="btn btn-outline-secondary">View Mentor Details</a>
+
 
       </div>
     </div>

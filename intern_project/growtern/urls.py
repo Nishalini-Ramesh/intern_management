@@ -54,6 +54,8 @@ urlpatterns = [
     path('interns/', views.intern_list, name='intern_list'),
     path('add/', views.add_intern, name='add_intern'),
     path('edit/', views.edit_intern, name='edit_intern'),
+    path('edit/<int:intern_id>/', views.edit_intern, name='edit_intern'),
+
     path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
 
 
