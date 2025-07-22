@@ -127,8 +127,8 @@ def leave_request(request):
 def issue_certificate(request):
     return render(request, 'issue_certificate.html')
 
-def edit_intern(request):
-    return render(request, 'edit_intern.html')
+def intern_intern(request):
+    return render(request, 'intern_list.html')
 
 def assign_mentor(request):
     return render(request, 'assign_mentor.html')
@@ -154,10 +154,10 @@ def submit_task(request):
     return render(request, 'task_submission.html')
 
 def view_tasks(request):
-    return render(request, 'upload document.html')
+    return render(request, 'upload.html')
 
 def intern_feedback(request):
-    return render(request, 'internship report.html')
+    return render(request, 'internship_report.html')
 
 # views.py
 from django.shortcuts import render

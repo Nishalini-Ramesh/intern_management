@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,6 +64,47 @@
       color: #7e57c2;
       font-size: 1.2rem;
     }
+    
+  .navbar {
+    background-color: #9b39b6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 40px;
+    color: white;
+  }
+
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 15px;
+    text-transform: lowercase;
+  }
+
+  .nav-links a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  }
+
   </style>
 </head>
 <body>
@@ -76,24 +118,18 @@
   </div>
 
   <!-- NAVIGATION BAR -->
-  <nav class="navbar navbar-expand-lg" style="background-color: darkorchid;">
-    <div class="container-fluid">
-      <span class="navbar-brand text-white brand-text">GROWTERN</span>
-      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link text-white" href="#">Login</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Tasks</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Leave Requests</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Feedback</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Certificate</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    <a href="{% url 'login' %}">login</a>
+    <a href="{% url 'admin_dashboard' %}">dashboard</a>
+    <a href="{% url 'task_list' %}">tasks</a>
+    <a href="{% url 'leave_request' %}">leave request</a>
+    <a href="{% url 'attendance_tab' %}">attendence</a>
+    <a href="{% url 'feedback' %}">feedback</a>
+    <a href="{% url 'issue_certificate' %}">certificate</a>
+  </div>
+</div>
 
   <!-- DASHBOARD CONTENT -->
   <div class="container dashboard-container">
