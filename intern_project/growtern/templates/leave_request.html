@@ -1,13 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Leave Request</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <style>
     body {
       font-family: 'Nunito', sans-serif;
-      background-image: url('../images/bg-purple.png');
+      background-image: url("{% static 'images/bg-purple.png' %}");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -58,7 +59,7 @@
       margin-bottom: 1.5rem;
     }
 
-    input, select, textarea {
+    input, textarea {
       width: 100%;
       padding: 0.8rem;
       margin-bottom: 1rem;
@@ -90,54 +91,34 @@
 </head>
 <body>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">GROWTERN</div>
-    <div>
-      <a href="login.html">Login</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="tasks.html">Tasks</a>
-      <a href="leave_request.html">Leave</a>
-      <a href="feedback.html">Feedback</a>
-      <a href="certificate.html">Certificate</a>
-    </div>
-  </div>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+  <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+  <a href="{% url 'task_list' %}">Tasks</a>
+  <a href="{% url 'leave_request' %}">Leave</a>
+  <a href="{% url 'submit_feedback' %}">Feedback</a>
+  <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
 
-  <!-- Leave Form -->
+  </div>
+</div>
+
+
+  <!-- 🟣 Leave Request Form -->
   <div class="form-container">
     <h2>Request Leave</h2>
-    <form onsubmit="saveLeaveRequest(event)">
-      <input type="text" id="name" placeholder="Your Name" required />
-      <select id="role" required>
-        <option value="" disabled selected>Select Role</option>
-        <option>Intern</option>
-        <option>Mentor</option>
-        <option>Admin</option>
-      </select>
-      <input type="date" id="from_date" required />
-      <input type="date" id="to_date" required />
-      <textarea id="reason" placeholder="Reason for leave" required></textarea>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <!-- Script -->
-  <script>
-    function saveLeaveRequest(event) {
-      event.preventDefault();
-
-      const data = {
-        name: document.getElementById('name').value,
-        role: document.getElementById('role').value,
-        from_date: document.getElementById('from_date').value,
-        to_date: document.getElementById('to_date').value,
-        reason: document.getElementById('reason').value,
-        status: 'Pending'
-      };
-
-      localStorage.setItem('leave_request', JSON.stringify(data));
-      window.location.href = 'leave_status.html';
-    }
-  </script>
 </body>
 </html>

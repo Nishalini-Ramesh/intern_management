@@ -103,36 +103,35 @@
       <div class="brand-text">GROWTERN</div>
 
       <!-- User Info -->
-      <!-- User Info -->
-{% if user.is_authenticated %}
-<div class="text-center mb-3">
-  <h4 class="mt-2 text-dark">{{ user.get_full_name }}</h4>
-  <p class="text-muted">{{ user.get_role_display }}</p>
-</div>
-{% endif %}
+      {% if user.is_authenticated %}
+      <div class="text-center mb-3">
+        <h4 class="mt-2 text-dark">{{ user.get_full_name }}</h4>
+        <p class="text-muted">{{ user.get_role_display }}</p>
+      </div>
+      {% endif %}
 
+      <div class="card-box text-white">
+        <div class="title-text">CLICK TO OPEN</div>
 
-       <div class="card-box text-white">
-  <div class="title-text">CLICK TO OPEN</div>
+        {% if not user.is_authenticated %}
+          <a href="{% url 'login' %}" class="btn btn-custom w-100">LOGIN</a>
+        {% endif %}
 
-  {% if not user.is_authenticated %}
-    <a href="{% url 'login' %}" class="btn btn-custom w-100">LOGIN</a>
-  {% endif %}
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-custom w-100">DASHBOARD</a>
+        <a href="{% url 'task_list' %}" class="btn btn-custom w-100">TASKS</a>
+        <a href="{% url 'attendance_tab' %}" class="btn btn-custom w-100">ATTENDANCE</a>
+        <a href="{% url 'leave_request' %}" class="btn btn-custom w-100">LEAVE REQUESTS</a>
+        <a href="{% url 'submit_feedback' %}" class="btn btn-custom w-100">FEEDBACK</a>
+        <a href="{% url 'issue_certificate' %}" class="btn btn-custom w-100">CERTIFICATE</a>
 
-  <a href="{% url 'admin_dashboard' %}" class="btn btn-custom w-100">DASHBOARD</a>
-  <a href="{% url 'task_list' %}" class="btn btn-custom w-100">TASKS</a>
-  <a href="#" class="btn btn-custom w-100">ATTENDANCE</a>
-  <a href="{% url 'leave_request' %}" class="btn btn-custom w-100">LEAVE REQUESTS</a>
-  <a href="#" class="btn btn-custom w-100">FEEDBACK</a>
-  <a href="#" class="btn btn-custom w-100">CERTIFICATE</a>
+        {% if user.is_authenticated %}
+          <button class="btn btn-danger w-100 mt-3" onclick="confirmLogout()">LOGOUT</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-  {% if user.is_authenticated %}
-    <button class="btn btn-danger w-100 mt-3" onclick="confirmLogout()">LOGOUT</button>
-  {% endif %}
-</div>
-
-      
-  <!-- Logout Confirmation Script --> 
+  <!-- Logout Confirmation Script -->
   <script>
     function confirmLogout() {
       if (confirm("Logout Confirm?")) {
@@ -142,5 +141,4 @@
   </script>
 
 </body>
-
 </html>

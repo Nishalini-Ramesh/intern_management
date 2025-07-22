@@ -1,22 +1,14 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 89dc015d020aace9754f9bb5071fd13a9f4aa21f
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<<<<<<< HEAD
-  <title>Task Lists</title>
-=======
   <title>Task Lists - Desktop</title>
->>>>>>> 89dc015d020aace9754f9bb5071fd13a9f4aa21f
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #f5edf9;
+      font-family: Arial, sans-serif;
+      background-color: #f5edf9; /* Custom background color */
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -27,9 +19,9 @@
       position: relative;
       width: 900px;
       min-height: 600px;
-      background-color: white;
+      background-color: #fff;
       border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
 
@@ -79,10 +71,13 @@
       margin: 0 60px 30px;
       border-radius: 12px;
       padding: 30px;
-      color: white;
+      color: #fff;
       position: relative;
       z-index: 1;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
+      /* Set a maximum height and allow vertical scrolling */
+      max-height: 350px;
+      overflow-y: auto;
     }
 
     .task-box h2 {
@@ -94,15 +89,13 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      transition: opacity 0.3s ease;
     }
 
-<<<<<<< HEAD
-=======
     .task-item:last-child {
-      margin-bottom: 60px; /* Space for floating button */
+      margin-bottom: 60px; /* Space for floating add button */
     }
 
->>>>>>> 89dc015d020aace9754f9bb5071fd13a9f4aa21f
     .task-item input[type="text"] {
       flex-grow: 1;
       padding: 10px 12px;
@@ -111,11 +104,13 @@
       margin-right: 15px;
       background-color: #e6d6f2;
       font-size: 16px;
+      color: #4a148c;
     }
 
     .task-item input[type="checkbox"] {
       width: 20px;
       height: 20px;
+      cursor: pointer;
     }
 
     .add-button {
@@ -131,6 +126,7 @@
       position: absolute;
       bottom: 30px;
       right: 80px;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -146,38 +142,37 @@
 
     <div class="task-box">
       <h2>TASKS</h2>
-<<<<<<< HEAD
-      <div id="task-list">
-        {% for task in tasks %}
-          <div class="task-item">
-            <input type="text" value="{{ forloop.counter }}. {{ task.title }}" readonly />
-            <input type="checkbox" {% if task.completed %}checked{% endif %} />
-          </div>
-        {% empty %}
-          <p>No tasks yet.</p>
-        {% endfor %}
-      </div>
-      <div class="add-button" onclick="window.location.href='{% url 'create_task' %}'">+</div>
-=======
+
+      {% for task in tasks %}
       <div class="task-item">
-        <input type="text" value="1. To draw the ULM ....." readonly />
-        <input type="checkbox" />
+        <input type="text" value="{{ forloop.counter }}. {{ task.title }}" readonly />
+        <input type="checkbox" class="complete-checkbox" />
       </div>
+      {% empty %}
       <div class="task-item">
-        <input type="text" value="2. To do the database..." readonly />
-        <input type="checkbox" />
+        <input type="text" value="No tasks available." readonly />
       </div>
-      <div class="task-item">
-        <input type="text" value="3. get approval for sch..." readonly />
-        <input type="checkbox" />
-      </div>
-      <div class="task-item">
-        <input type="text" value="4. ui model..." />
-        <input type="checkbox" />
-      </div>
-      <div class="add-button">+</div>
->>>>>>> 89dc015d020aace9754f9bb5071fd13a9f4aa21f
+      {% endfor %}
     </div>
+
+    <!-- Plus icon wrapped in a link to navigate to create_task page -->
+    <a href="{% url 'create_task' %}" class="add-button">+</a>
   </div>
+
+  <!-- JavaScript to remove task when checkbox is checked -->
+  <script>
+    document.querySelectorAll('.complete-checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        if(this.checked) {
+          // Optionally add an animation or confirmation here
+          this.parentElement.style.opacity = '0';
+          // Remove element after a short delay (e.g., 0.3s) to allow transition
+          setTimeout(() => {
+            this.parentElement.remove();
+          }, 300);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

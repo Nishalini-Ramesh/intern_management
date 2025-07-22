@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intern Attendance</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4eafd;
+      color: #2e2e2e;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #c5a6f1;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header h1 {
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2e2e2e;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      padding: 20px;
+      background-color: #f4eafd;
+    }
+
+    .search-bar input {
+      padding: 10px;
+      flex: 1;
+      border: 2px solid #c5a6f1;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 16px;
+    }
+
+    th {
+      background-color: #e0d1f7;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f6ff;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .present {
+      background-color: #22c55e;
+      color: white;
+    }
+
+    .absent {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .selected {
+      box-shadow: 0 0 5px 2px rgba(0,0,0,0.2);
+      transform: scale(1.05);
+    }
+
+    .buttons {
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #c5a6f1;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #b68df0;
+    }
+
+    .back-arrow {
+      position: absolute;
+      font-size: 24px;
+      left: 30px;
+      top: 20px;
+      color: #333;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <span class="back-arrow">&#8592;</span>
+      <h1>INTERN ATTENDANCE</h1>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search intern name">
+      <input type="text" placeholder="Status">
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Intern</th>
+          <th>College</th>
+          <th>Dept</th>
+          <th>Attendance</th>
+        </tr>
+      </thead>
+      <tbody id="attendance-body">
+        <!-- Intern rows -->
+        <tr>
+          <td>Meena</td>
+          <td>SEC</td>
+          <td>CSE</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Suji</td>
+          <td>RIT</td>
+          <td>IT</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Ram</td>
+          <td>REC</td>
+          <td>ECE</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Karthik</td>
+          <td>CIT</td>
+          <td>CSE</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Jaswin</td>
+          <td>SEC</td>
+          <td>IT</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Lavanya</td>
+          <td>RIT</td>
+          <td>ECE</td>
+          <td>
+            <span class="badge present" onclick="mark(this, 'present')">Present</span>
+            <span class="badge absent" onclick="mark(this, 'absent')">Absent</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="buttons">
+      <button class="btn" onclick="resetAttendance()">REFRESH</button>
+      <button class="btn">VIEW ATTENDANCE DETAILS</button>
+    </div>
+  </div>
+
+  <script>
+    function mark(element, type) {
+      const parentTd = element.parentElement;
+      const presentBtn = parentTd.querySelector('.present');
+      const absentBtn = parentTd.querySelector('.absent');
+
+      // Reset both
+      presentBtn.classList.remove('selected');
+      absentBtn.classList.remove('selected');
+      presentBtn.style.display = 'inline-block';
+      absentBtn.style.display = 'inline-block';
+
+      // Apply selection
+      element.classList.add('selected');
+
+      // Hide the opposite one
+      if (type === 'present') {
+        absentBtn.style.display = 'none';
+      } else {
+        presentBtn.style.display = 'none';
+      }
+    }
+
+    function resetAttendance() {
+      const presentButtons = document.querySelectorAll('.present');
+      const absentButtons = document.querySelectorAll('.absent');
+
+      presentButtons.forEach(btn => {
+        btn.style.display = 'inline-block';
+        btn.classList.remove('selected');
+      });
+
+      absentButtons.forEach(btn => {
+        btn.style.display = 'inline-block';
+        btn.classList.remove('selected');
+      });
+    }
+  </script>
+
+</body>
+</html>

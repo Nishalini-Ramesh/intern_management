@@ -192,68 +192,71 @@
       <h1>TASK FEEDBACK</h1>
     </div>
 
-    <div class="form-group">
-      <label for="task-title">TASK TITLE</label>
-      <input type="text" id="task-title" placeholder="Enter task title">
-    </div>
-
-    <div class="form-group">
-      <label for="intern-name">INTERN NAME</label>
-      <input type="text" id="intern-name" placeholder="Enter intern name">
-    </div>
-
-    <div class="form-group">
-      <label for="feedback">FEEDBACK</label>
-      <textarea id="feedback" placeholder="Write your feedback..."></textarea>
-    </div>
-
-    <div class="form-group rating">
-      <label>RATING</label>
-      <div class="stars" id="stars">
-        <span data-value="1">&#9733;</span>
-        <span data-value="2">&#9733;</span>
-        <span data-value="3">&#9733;</span>
-        <span data-value="4">&#9733;</span>
-        <span data-value="5">&#9733;</span>
-      </div>
-      <div class="rating-value" id="rating-value">0/5</div>
-    </div>
-
-    <div class="buttons">
-      <button class="button">SAVE</button>
-      <button class="button close-btn">CLOSE</button>
-    </div>
+  <form method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="{{ form.task.id_for_label }}">TASK TITLE</label>
+    {{ form.task }}
   </div>
 
-  <!-- Star Rating Script -->
-  <script>
-    const stars = document.querySelectorAll("#stars span");
-    const ratingValue = document.getElementById("rating-value");
-    let selectedRating = 0;
+  <div class="form-group">
+    <label for="{{ form.intern.id_for_label }}">INTERN NAME</label>
+    {{ form.intern }}
+  </div>
 
-    stars.forEach(star => {
-      star.addEventListener("mouseover", () => {
-        const val = parseInt(star.getAttribute("data-value"));
-        highlightStars(val);
-      });
+  <div class="form-group">
+    <label for="{{ form.feedback.id_for_label }}">FEEDBACK</label>
+    {{ form.feedback }}
+  </div>
 
-      star.addEventListener("mouseout", () => {
-        highlightStars(selectedRating);
-      });
+  <div class="form-group rating">
+    <label>RATING</label>
+    <div class="stars" id="stars">
+      <span data-value="1">&#9733;</span>
+      <span data-value="2">&#9733;</span>
+      <span data-value="3">&#9733;</span>
+      <span data-value="4">&#9733;</span>
+      <span data-value="5">&#9733;</span>
+    </div>
+    <div class="rating-value" id="rating-value">0/5</div>
+    {{ form.rating }}
+  </div>
 
-      star.addEventListener("click", () => {
-        selectedRating = parseInt(star.getAttribute("data-value"));
-        ratingValue.textContent = `${selectedRating}/5`;
-        highlightStars(selectedRating);
-      });
+  <div class="buttons">
+    <button type="submit" class="button">SAVE</button>
+    <button type="button" class="button close-btn">CLOSE</button>
+  </div>
+</form>
+
+<script>
+  const stars = document.querySelectorAll("#stars span");
+  const ratingInput = document.querySelector("input[name='rating']");
+  const ratingValue = document.getElementById("rating-value");
+  let selectedRating = 0;
+
+  stars.forEach(star => {
+    star.addEventListener("mouseover", () => {
+      const val = parseInt(star.getAttribute("data-value"));
+      highlightStars(val);
     });
 
-    function highlightStars(count) {
-      stars.forEach((s, i) => {
-        s.classList.toggle("selected", i < count);
-      });
-    }
-  </script>
+    star.addEventListener("mouseout", () => {
+      highlightStars(selectedRating);
+    });
 
+    star.addEventListener("click", () => {
+      selectedRating = parseInt(star.getAttribute("data-value"));
+      ratingInput.value = selectedRating;
+      ratingValue.textContent = `${selectedRating}/5`;
+      highlightStars(selectedRating);
+    });
+  });
+
+  function highlightStars(count) {
+    stars.forEach((s, i) => {
+      s.classList.toggle("selected", i < count);
+    });
+  }
+</script>
 </body>
 </html>
