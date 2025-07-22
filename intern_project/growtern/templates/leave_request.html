@@ -113,11 +113,16 @@
   <!-- 🟣 Leave Request Form -->
   <div class="form-container">
     <h2>Request Leave</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Submit</button>
-    </form>
+<form method="post">
+  {% csrf_token %}
+  
+
+  <input type="date" name="start_date" required placeholder="Start Date">
+  <input type="date" name="end_date" required placeholder="End Date">
+  <input type="text" name="reason" placeholder="Reason for leave" required>
+  <button type="submit">Submit</button>
+</form>
+
   </div>
 
 </body>

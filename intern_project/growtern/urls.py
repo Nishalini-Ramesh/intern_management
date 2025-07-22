@@ -24,7 +24,7 @@ urlpatterns = [
     path('hr-dashboard/', views.hr_dashboard, name='hr_dashboard'),
 
     # HR-related views
-    path('leave-request/', views.leave_request, name='leave_request'),
+    path('leave/request/', views.leave_request, name='leave_request'),
     path('intern_list/', views.intern_list, name='intern_list'),
     path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
@@ -65,7 +65,7 @@ urlpatterns = [
     path('upload/', views.upload_document, name='upload'),
 
 #leave request and approval routes
-    path('leave/request/', views.leave_request_view, name='leave_request'),
+    path('leave-request/', views.leave_request_view, name='leave_request'),
     path('leave/status/', views.leave_status_view, name='leave_status'),
     path('leave/approval/', views.leave_approval_view, name='leave_approval'),
 
