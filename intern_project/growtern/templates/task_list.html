@@ -8,21 +8,58 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5edf9; /* Custom background color */
-      height: 100vh;
+      background-color: #f5edf9;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      background-color: #9b39b6;
+      color: white;
+      padding: 12px 40px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar ul li {
+      display: inline;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffddff;
     }
 
     .container {
-      position: relative;
+      margin: 40px auto;
       width: 900px;
       min-height: 600px;
       background-color: #fff;
       border-radius: 20px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      position: relative;
     }
 
     .background-shape1,
@@ -74,10 +111,9 @@
       color: #fff;
       position: relative;
       z-index: 1;
-      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
-      /* Set a maximum height and allow vertical scrolling */
       max-height: 350px;
       overflow-y: auto;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
     }
 
     .task-box h2 {
@@ -93,7 +129,7 @@
     }
 
     .task-item:last-child {
-      margin-bottom: 60px; /* Space for floating add button */
+      margin-bottom: 60px;
     }
 
     .task-item input[type="text"] {
@@ -131,6 +167,22 @@
   </style>
 </head>
 <body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo">GROWTERN</div>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+      <li><a href="{% url 'task_list' %}">Tasks</a></li>
+      <li><a href="{% url 'leave_request' %}">Leave Request</a></li>
+      <li><a href="{% url 'attendance_tab' %}">Attendance</a></li>
+      <li><a href="{% url 'feedback' %}">Feedback</a></li>
+      <li><a href="{% url 'issue_certificate' %}">Certificate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Container -->
   <div class="container">
     <div class="background-shape1"></div>
     <div class="background-shape2"></div>
@@ -155,18 +207,14 @@
       {% endfor %}
     </div>
 
-    <!-- Plus icon wrapped in a link to navigate to create_task page -->
     <a href="{% url 'create_task' %}" class="add-button">+</a>
   </div>
 
-  <!-- JavaScript to remove task when checkbox is checked -->
   <script>
     document.querySelectorAll('.complete-checkbox').forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
         if(this.checked) {
-          // Optionally add an animation or confirmation here
           this.parentElement.style.opacity = '0';
-          // Remove element after a short delay (e.g., 0.3s) to allow transition
           setTimeout(() => {
             this.parentElement.remove();
           }, 300);
@@ -174,5 +222,6 @@
       });
     });
   </script>
+
 </body>
 </html>

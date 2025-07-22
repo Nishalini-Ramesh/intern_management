@@ -59,39 +59,18 @@ urlpatterns = [
     path('attendance/', views.attendance_tab, name='attendance_tab'),
 
     path('tasks/', views.task_list, name='task_list'),
-        # add other app-level URLs here
-]
-from django.contrib import admin
-from django.urls import path
-  # ✅ Fix added here
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('create-task/', views.create_task, name='create_task'),
-]
-
-
-
-from django.urls import path
-from . import views
-
-urlpatterns = [
+    path('submit-task/', views.task_submission_view, name='task_submission'),
     path('task-list/', views.task_list, name='task_list'),
     path('create-task/', views.create_task, name='create_task'),
-]
-# growtern/urls.py
-from django.urls import path
-from . import views
-
-urlpatterns = [
     path('task-feedback/', views.task_feedback, name='task_feedback'),
-]
 
-# growtern/urls.py
 
-from django.urls import path
-from . import views
 
-urlpatterns = [
-    path('submit-task/', views.task_submission_view, name='task_submission'),
+    path('login/', views.login_view, name='login'),
+    path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('tasks/', views.task_list, name='task_list'),
+    path('leave-request/', views.leave_request, name='leave_request'),
+    path('attendance/', views.attendance_tab, name='attendance_tab'),
+    path('feedback/', views.feedback, name='feedback'),
+    path('certificate/', views.issue_certificate, name='issue_certificate'),
 ]

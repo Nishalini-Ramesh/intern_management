@@ -336,4 +336,8 @@ def task_submission_view(request):
     else:
         form = TaskSubmissionForm()
     return render(request, 'task_submission.html', {'form': form})
+from django.shortcuts import render
+
+def feedback(request):
+    return render(request, 'index.html')
 

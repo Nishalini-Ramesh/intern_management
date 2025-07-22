@@ -4,14 +4,54 @@
   <meta charset="UTF-8">
   <title>Submit Task</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #f6f1ff;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #9b39b6;;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-size: 15px;
+      text-transform: lowercase;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffe6ff;
+    }
+
+    /* Task Submission Layout */
+    .main-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 40px 0;
+      min-height: calc(100vh - 60px); /* adjust for navbar height */
     }
 
     .main-container {
@@ -42,6 +82,13 @@
     .left-panel p {
       font-size: 16px;
       line-height: 1.5;
+    }
+
+    .support-text {
+      margin-top: auto;
+      font-size: 12px;
+      color: #eee;
+      margin-top: 30px;
     }
 
     .right-panel {
@@ -90,67 +137,85 @@
       background: linear-gradient(135deg, #5a189a, #7b2cbf);
     }
 
-    .support-text {
-      margin-top: auto;
-      font-size: 12px;
-      color: #eee;
-      margin-top: 30px;
-    }
-
     @media (max-width: 768px) {
       .main-container {
         flex-direction: column;
         height: auto;
+        margin: 20px;
       }
 
       .left-panel, .right-panel {
         width: 100%;
         padding: 30px;
       }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="main-container">
-    <!-- Left Panel -->
-    <div class="left-panel">
-      <h2>Task Submission Portal</h2>
-      <p>Effortlessly submit your tasks and track your progress with ease.</p>
-      <div class="support-text">
-        Need help? Contact support.
+  <div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    <a href="{% url 'login' %}">login</a>
+    <a href="{% url 'admin_dashboard' %}">dashboard</a>
+    <a href="{% url 'task_list' %}">tasks</a>
+    <a href="{% url 'leave_request' %}">leave request</a>
+    <a href="{% url 'attendance_tab' %}">attendence</a>
+    <a href="{% url 'feedback' %}">feedback</a>
+    <a href="{% url 'issue_certificate' %}">certificate</a>
+  </div>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <div class="main-container">
+      <!-- Left Panel -->
+      <div class="left-panel">
+        <h2>Task Submission Portal</h2>
+        <p>Effortlessly submit your tasks and track your progress with ease.</p>
+        <div class="support-text">
+          Need help? Contact support.
+        </div>
       </div>
-    </div>
 
-    <!-- Right Panel -->
-    <div class="right-panel">
-      <h2>TASK SUBMISSION</h2>
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+      <!-- Right Panel -->
+      <div class="right-panel">
+        <h2>TASK SUBMISSION</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
 
-        <!-- Task Dropdown -->
-        <label for="task">Task Title:</label>
-        <select name="task" id="task">
-          {% for task in form.task.field.queryset %}
-            <option value="{{ task.id }}">{{ task.title }}</option>
-          {% endfor %}
-        </select>
+          <!-- Task Dropdown -->
+          <label for="task">Task Title:</label>
+          <select name="task" id="task">
+            {% for task in form.task.field.queryset %}
+              <option value="{{ task.id }}">{{ task.title }}</option>
+            {% endfor %}
+          </select>
 
-        <!-- Intern Dropdown -->
-        <label for="intern">Intern Name:</label>
-        <select name="intern" id="intern">
-          {% for intern in form.intern.field.queryset %}
-            <option value="{{ intern.id }}">{{ intern.get_full_name }}</option>
-          {% endfor %}
-        </select>
+          <!-- Intern Dropdown -->
+          <label for="intern">Intern Name:</label>
+          <select name="intern" id="intern">
+            {% for intern in form.intern.field.queryset %}
+              <option value="{{ intern.id }}">{{ intern.get_full_name }}</option>
+            {% endfor %}
+          </select>
 
-        <!-- File Upload -->
-        <label for="file">Upload File</label>
-        <input type="file" name="file" id="file">
+          <!-- File Upload -->
+          <label for="file">Upload File</label>
+          <input type="file" name="file" id="file">
 
-        <!-- Submit Button -->
-        <button type="submit">Submit Task</button>
-      </form>
+          <!-- Submit Button -->
+          <button type="submit">Submit Task</button>
+        </form>
+      </div>
     </div>
   </div>
 
