@@ -398,7 +398,7 @@ def task_submission_view(request):
 from django.shortcuts import render
 
 def feedback(request):
-    return render(request, 'index.html')
+    
  
 
     if request.method == 'POST':
@@ -406,7 +406,9 @@ def feedback(request):
         if form.is_valid():
             form.save()
             return redirect('intern_list')  # Make sure 'intern_list' is named in urls.py
+        
     else:
         form = InternForm(instance=intern)
+    intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})

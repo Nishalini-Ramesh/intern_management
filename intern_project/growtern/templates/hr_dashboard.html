@@ -1,177 +1,164 @@
-<!-- templates/hr_dashboard.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>HR Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Tailwind + Bootstrap -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
     body {
-      background: linear-gradient(135deg, #f8f3fd 40%, #eee5f7 100%);
       font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f3e8ff, #f8f3fd);
       min-height: 100vh;
     }
     .top-bar {
       background-color: #7e57c2;
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
-    .dashboard-container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
+    .navbar-custom {
+      background-color: #9b39b6;
     }
-    .section-box {
-      background-color: #f3e8ff;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-    }
-    .btn-action {
-      background-color: #a78bfa;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      margin: 6px;
-      font-weight: 600;
-      display: inline-block;
-      transition: background-color 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-action:hover {
-      background-color: #8e7cc3;
-    }
-    .intern-count-circle {
-      background-color: #e0d7f7;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-      margin: 10px auto;
-    }
-    .growtern-text {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      font-weight: bold;
-      color: #7e57c2;
-      font-size: 1.2rem;
-    }
-
-    
-  .navbar {
-    background-color: #9b39b6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 40px;
-    color: white;
-  }
-
-  .logo {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 15px;
-    text-transform: lowercase;
-  }
-
-  .nav-links a:hover {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-  }
-
   </style>
 </head>
 <body>
 
   <!-- Top Bar -->
-  <div class="top-bar">
-    <div>
-      <a href="{% url 'admin_dashboard' %}" class="text-white fs-4 text-decoration-none">&larr;</a>
-      <span class="ms-3 fw-bold">HR DASHBOARD</span>
+  <div class="top-bar text-white px-5 py-3 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <a href="{% url 'admin_dashboard' %}" class="text-white text-xl"><i class="bi bi-arrow-left"></i></a>
+      <span class="font-semibold text-xl">HR DASHBOARD</span>
     </div>
+    <span class="hidden md:inline text-sm">Welcome HR</span>
   </div>
 
   <!-- Navigation Bar -->
-<div class="navbar">
-  <div class="logo">GROWTERN</div>
-  <div class="nav-links">
-    <a href="{% url 'login' %}">login</a>
-    <a href="{% url 'admin_dashboard' %}">dashboard</a>
-    <a href="{% url 'task_list' %}">tasks</a>
-    <a href="{% url 'leave_request' %}">leave request</a>
-    <a href="{% url 'attendance_tab' %}">attendence</a>
-    <a href="{% url 'feedback' %}">feedback</a>
-    <a href="{% url 'issue_certificate' %}">certificate</a>
-  </div>
-</div>
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white fw-bold" href="#">GROWTERN</a>
+      <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'login' %}">Login</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'task_list' %}">Tasks</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'leave_request' %}">Leave Request</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'attendance_tab' %}">Attendance</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'feedback' %}">Feedback</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'issue_certificate' %}">Certificate</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
   <!-- Dashboard Content -->
-  <div class="container dashboard-container">
-    <!-- Intern Record -->
-    <div class="section-box">
-      <h6 class="fw-bold">INTERN RECORD</h6>
-      <i class="bi bi-people-fill fs-2 text-secondary"></i>
-      <div class="intern-count-circle">25</div>
-    </div>
+  <div class="container mx-auto px-4 py-10">
+    
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="bg-white p-4 shadow rounded text-center border-start border-5 border-purple-400">
+          <i class="bi bi-people-fill fs-1 text-purple-600"></i>
+          <h5 class="mt-3 fw-bold">25</h5>
+          <p class="text-muted mb-0">Interns Enrolled</p>
+        </div>
+      </div>
 
-    <!-- Attendance -->
-    <div class="section-box">
-      <h6 class="fw-bold mb-3">ATTENDANCE</h6>
-      <p class="mb-1">AVERAGE RATE:</p>
-      <p class="fs-5 mb-2"><strong>85%</strong></p>
-      <i class="bi bi-bar-chart-line-fill fs-2 text-secondary"></i>
-    </div>
+      <div class="col-md-4">
+        <div class="bg-white p-4 shadow rounded text-center border-start border-5 border-green-400">
+          <i class="bi bi-bar-chart-line-fill fs-1 text-green-600"></i>
+          <h5 class="mt-3 fw-bold">85%</h5>
+          <p class="text-muted mb-0">Avg Attendance</p>
+        </div>
+      </div>
 
-    <!-- Action Buttons -->
-    <div class="section-box">
-      <a href="{% url 'leave_request' %}" class="btn-action w-100 mb-3">LEAVE APPROVAL</a>
-      <div class="btn-group d-flex justify-content-center flex-wrap">
-        <a href="{% url 'edit_intern' %}" class="btn-action me-2 mb-2">INTERN MGMT</a>
-        <a href="{% url 'assign_mentor' %}" class="btn-action me-2 mb-2">ASSIGN MENTOR</a>
-        <a href="{% url 'view_feedback' %}" class="btn-action mb-2">VIEW FEEDBACK</a>
+      <div class="col-md-4">
+        <div class="bg-white p-4 shadow rounded text-center border-start border-5 border-yellow-400">
+          <i class="bi bi-journal-check fs-1 text-yellow-600"></i>
+          <h5 class="mt-3 fw-bold">10</h5>
+          <p class="text-muted mb-0">Leave Requests</p>
+        </div>
       </div>
     </div>
 
-    <!-- Certificate Section -->
-    <div class="section-box">
-      <a href="{% url 'issue_certificate' %}" class="btn-action w-100">ISSUE CERTIFICATE</a>
+    <!-- Function Buttons -->
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="{% url 'leave_request' %}" class="text-decoration-none">
+          <div class="bg-purple-100 p-4 rounded shadow text-center hover:shadow-lg transition">
+            <i class="bi bi-file-earmark-check-fill fs-2 text-purple-700"></i>
+            <h6 class="mt-2 fw-bold text-purple-800">Leave Approval</h6>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="{% url 'edit_intern' %}" class="text-decoration-none">
+          <div class="bg-indigo-100 p-4 rounded shadow text-center hover:shadow-lg transition">
+            <i class="bi bi-pencil-square fs-2 text-indigo-700"></i>
+            <h6 class="mt-2 fw-bold text-indigo-800">Intern Management</h6>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="{% url 'assign_mentor' %}" class="text-decoration-none">
+          <div class="bg-blue-100 p-4 rounded shadow text-center hover:shadow-lg transition">
+            <i class="bi bi-person-plus-fill fs-2 text-blue-700"></i>
+            <h6 class="mt-2 fw-bold text-blue-800">Assign Mentor</h6>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="{% url 'view_feedback' %}" class="text-decoration-none">
+          <div class="bg-yellow-100 p-4 rounded shadow text-center hover:shadow-lg transition">
+            <i class="bi bi-chat-left-dots fs-2 text-yellow-700"></i>
+            <h6 class="mt-2 fw-bold text-yellow-800">View Feedback</h6>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="{% url 'issue_certificate' %}" class="text-decoration-none">
+          <div class="bg-green-100 p-4 rounded shadow text-center hover:shadow-lg transition">
+            <i class="bi bi-award-fill fs-2 text-green-700"></i>
+            <h6 class="mt-2 fw-bold text-green-800">Issue Certificate</h6>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 
-  <div class="growtern-text">GROWTERN</div>
+  <!-- Footer -->
+  <div class="fixed bottom-4 left-4 text-purple-700 font-bold text-lg">GROWTERN</div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+<script>
+  // Tailwind CSS configuration
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'purple-400': '#7e57c2',
+          'purple-600': '#9b39b6',
+          'green-400': '#66bb6a',
+          'yellow-400': '#ffca28',
+          'indigo-400': '#5c6bc0',
+          'blue-400': '#42a5f5',
+          'yellow-600': '#fdd835',
+          'green-600': '#43a047'
+        }
+      }
+    }
+  };
