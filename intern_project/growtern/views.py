@@ -213,8 +213,8 @@ from .models import LeaveRequest, GeneralFeedback
 
 def submit_feedback_view(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        role = request.POST.get('role')
+        name = request.user.username  
+        role = request.user.role
         comments = request.POST.get('comments')
 
         feedback = GeneralFeedback.objects.create(
@@ -235,18 +235,32 @@ def rating_view(request):
 def thank_you(request):
     return render(request, 'thankyou.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import LeaveRequest, CustomUser
+
 @login_required
 def leave_request_view(request):
     if request.method == 'POST':
-        form = LeaveRequestForm(request.POST)
-        if form.is_valid():
-            leave = form.save(commit=False)
-            leave.intern = request.user  # assuming ForeignKey to CustomUser
-            leave.save()
-            return redirect('leave_status')  # or any status/confirmation page
-    else:
-        form = LeaveRequestForm()
-    return render(request, 'leave_request.html', {'form': form})
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        reason = request.POST.get('reason')
+
+        if not all([start_date, end_date, reason]):
+            return render(request, 'leave_request.html', {'error': 'All fields are required.'})
+
+        LeaveRequest.objects.create(
+            intern=request.user,
+            name=request.user.username,
+            role=request.user.role,  # assumes your CustomUser has `role` field
+            start_date=start_date,
+            end_date=end_date,
+            reason=reason
+        )
+        return redirect('leave_status')  # or any confirmation page
+
+    return render(request, 'leave_request.html')
+
 
 
 from django.utils import timezone
