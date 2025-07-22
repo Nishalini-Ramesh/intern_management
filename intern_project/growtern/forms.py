@@ -39,3 +39,38 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['title', 'description', 'due_date', 'assigned_to']
 
+from django import forms
+from .models import Task, CustomUser
+
+class TaskFeedbackForm(forms.Form):
+    task = forms.ModelChoiceField(
+        queryset=Task.objects.all(),
+        label='Task Title',
+        widget=forms.Select(attrs={
+            'class': '',  # leave empty for custom styling
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px;'
+        })
+    )
+
+    intern = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='INTERN'),
+        label='Intern Name',
+        widget=forms.Select(attrs={
+            'class': '',
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px;'
+        })
+    )
+
+    feedback = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Write your feedback...',
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px; height: 100px; resize: vertical;'
+        }),
+        required=True
+    )
+
+    rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        widget=forms.HiddenInput()
+    )

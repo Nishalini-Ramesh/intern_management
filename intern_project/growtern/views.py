@@ -298,4 +298,28 @@ def create_task(request):
 def task_list(request):
     tasks = Task.objects.all()
     return render(request, 'task_list.html', {'tasks': tasks})
+from django.shortcuts import render, redirect
+from .forms import TaskFeedbackForm
+from .models import TaskFeedback  # assuming you have this model
+
+def task_feedback(request):
+    if request.method == 'POST':
+        form = TaskFeedbackForm(request.POST)
+        if form.is_valid():
+            task = form.cleaned_data['task']
+            intern = form.cleaned_data['intern']
+            feedback = form.cleaned_data['feedback']
+            rating = form.cleaned_data['rating']
+
+            TaskFeedback.objects.create(
+                task=task,
+                intern=intern,
+                feedback=feedback,
+                rating=rating
+            )
+            return redirect('task_feedback')  # reload page or redirect elsewhere
+    else:
+        form = TaskFeedbackForm()
+
+    return render(request, 'task_feedback.html', {'form': form})
 
