@@ -87,3 +87,11 @@ urlpatterns = [
     path('task-feedback/', views.task_feedback, name='task_feedback'),
 ]
 
+# growtern/urls.py
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('submit-task/', views.task_submission_view, name='task_submission'),
+]

@@ -322,4 +322,18 @@ def task_feedback(request):
         form = TaskFeedbackForm()
 
     return render(request, 'task_feedback.html', {'form': form})
+# growtern/views.py
+
+from django.shortcuts import render, redirect
+from .forms import TaskSubmissionForm
+
+def task_submission_view(request):
+    if request.method == 'POST':
+        form = TaskSubmissionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('task_submission')  # reload the same page after submission
+    else:
+        form = TaskSubmissionForm()
+    return render(request, 'task_submission.html', {'form': form})
 

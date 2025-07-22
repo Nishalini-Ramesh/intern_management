@@ -74,3 +74,15 @@ class TaskFeedbackForm(forms.Form):
         max_value=5,
         widget=forms.HiddenInput()
     )
+# growtern/forms.py
+# growtern/forms.py
+from django import forms
+from .models import TaskSubmission, Task, CustomUser
+
+class TaskSubmissionForm(forms.ModelForm):
+    task = forms.ModelChoiceField(queryset=Task.objects.all(), label="Task Title")
+    intern = forms.ModelChoiceField(queryset=CustomUser.objects.filter(role='INTERN'), label="Intern Name")
+
+    class Meta:
+        model = TaskSubmission
+        fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
