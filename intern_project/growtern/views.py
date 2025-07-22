@@ -257,10 +257,12 @@ def leave_request_view(request):
             end_date=end_date,
             reason=reason
         )
-        return redirect('leave_status')  # or any confirmation page
+        return redirect('thank_you')  # or any confirmation page
 
     return render(request, 'leave_request.html')
 
+def thank_you_view(request):
+    return render(request, 'thanks.html')  # use your file name here
 
 
 from django.utils import timezone

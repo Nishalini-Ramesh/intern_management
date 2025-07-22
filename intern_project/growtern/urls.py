@@ -68,6 +68,7 @@ urlpatterns = [
     path('leave-request/', views.leave_request_view, name='leave_request'),
     path('leave/status/', views.leave_status_view, name='leave_status'),
     path('leave/approval/', views.leave_approval_view, name='leave_approval'),
+    path('thankyou/', views.thank_you_view, name='thank_you'),  # URL name should be 'thank_you'
 
     path('issue-certificate/', views.issue_certificate, name='issue_certificate'),
     path('attendance/', views.attendance_tab, name='attendance_tab'),
