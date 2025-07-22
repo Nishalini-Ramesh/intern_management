@@ -5,71 +5,43 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Tailwind + Bootstrap CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
     body {
-      background: linear-gradient(135deg, #f8f3fd 40%, #eee5f7 100%);
       font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f3e8ff, #f8f3fd);
       min-height: 100vh;
-      position: relative;
     }
-    .top-bar {
-      background-color: #7e57c2;
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
-    .admin-section, .btn-dashboard {
-      background-color: #f3e8ff;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
-      padding: 16px;
-    }
-    .btn-dashboard {
-      width: 100%;
-      color: white;
-      background-color: #a78bfa;
-      font-weight: 600;
-      border: none;
-      margin-bottom: 10px;
-    }
-    .btn-dashboard:hover { background-color: #8e7cc3; }
-    .dashboard-container { max-width: 500px; margin: 40px auto 0 auto; text-align: center; }
-    .growtern-text {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      font-weight: bold;
-      color: #7e57c2;
-      font-size: 1.2rem;
-    }
-    a { text-decoration: none; }
   </style>
 </head>
 <body>
 
-  <!-- TOP BAR with BACK ARROW -->
-  <div class="top-bar">
-    <div>
-      <a href="{% url 'main' %}" class="text-white fs-4 text-decoration-none">
-        <i class="bi bi-arrow-left"></i>
-      </a>
-      <span class="ms-3 fw-bold">ADMIN DASHBOARD</span>
+  <!-- Top Bar -->
+  <div class="top-bar bg-purple-700 text-white px-5 py-3 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <a href="{% url 'main' %}" class="text-white text-xl"><i class="bi bi-arrow-left"></i></a>
+      <span class="font-semibold text-xl">ADMIN DASHBOARD</span>
     </div>
+    <span class="hidden md:inline text-sm">Welcome Admin</span>
   </div>
 
-  <!-- NAVIGATION BAR -->
-  <nav class="navbar navbar-expand-lg" style="background-color: darkorchid;">
+  <!-- Unified Navigation Menu -->
+  <nav class="navbar navbar-expand-lg" style="background-color: #6b21a8;">
     <div class="container-fluid">
-      <span class="navbar-brand text-white brand-text">GROWTERN</span>
-      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <a class="navbar-brand text-white font-bold" href="#">GROWTERN</a>
+      <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="collapse navbar-collapse justify-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link text-white" href="#">Login</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="#">Dashboard</a></li>
@@ -82,27 +54,158 @@
     </div>
   </nav>
 
-  <!-- DASHBOARD CONTENT -->
-  <div class="container dashboard-container">
-    <a href="{% url 'mentor_dashboard' %}"><button class="btn-dashboard">MENTOR DASHBOARD</button></a>
-    <a href="{% url 'intern_dashboard' %}"><button class="btn-dashboard">INTERN DASHBOARD</button></a>
-    <a href="{% url 'hr_dashboard' %}"><button class="btn-dashboard">HR DASHBOARD</button></a>
+  <!-- Dashboard Body -->
+  <div class="container mx-auto px-4 py-10">
 
-    <div class="admin-section">
-      <h5 class="fw-bold">RECENT ACTIVITY</h5>
-      <p>SUJI SUBMITTED THE TASK</p>
-      <p>MENTOR 1 ASSIGNED TASK TO LAVANYA</p>
-      <p>INTERN RAM MISSED TWO DAYS</p>
-    </div>
+    <!-- Cards Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-    <div class="admin-section">
-      <h6 class="fw-bold mb-2">ACTIVE INTERNS</h6>
-      <div class="fs-3">24</div>
-      <i class="bi bi-graph-up text-secondary fs-4"></i>
+      <!-- Recent Activity -->
+      <div class="bg-white shadow-md rounded-lg p-5">
+        <h4 class="font-semibold text-lg mb-4">Recent Activities</h4>
+        <ul class="space-y-3 text-gray-700">
+          <div class="grid gap-3">
+
+  <a href="{% url 'submit_task' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-check-circle-fill text-success me-2"></i>Suji submitted a task</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'assign_task' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-person-plus-fill text-primary me-2"></i>Mentor 1 assigned task to Lavanya</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'leave_request' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Intern Ram missed two days</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'edit_intern' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-pencil-fill text-warning me-2"></i>HR edited intern profile</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'rating' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-star-fill text-warning me-2"></i>Intern Ravi submitted a rating</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'submit_feedback' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-chat-dots-fill text-info me-2"></i>Mentor 2 submitted feedback</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'task_reports' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-bar-chart-line-fill text-indigo-500 me-2"></i>Mentor 3 uploaded a task report</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+  <a href="{% url 'task_feedback' %}" class="btn btn-light shadow-sm d-flex justify-between align-items-center border border-purple-200">
+    <span><i class="bi bi-hand-thumbs-up-fill text-success me-2"></i>Intern A received task feedback</span>
+    <i class="bi bi-chevron-right"></i>
+  </a>
+
+</div>
+</ul>
+      </div>
+
+      <!-- Active Interns -->
+      <div class="bg-white shadow-md rounded-lg p-5 flex items-center justify-between">
+        <div>
+          <h6 class="text-muted">Active Interns</h6>
+          <div class="text-4xl font-bold text-indigo-600">24</div>
+        </div>
+        <div>
+          <h6 class="text-muted">Active Mentors</h6>
+          <div class="text-4xl font-bold text-indigo-600">4</div>
+        </div>
+        <div>
+          <h6 class="text-muted">Active HR</h6>
+          <div class="text-4xl font-bold text-indigo-600">2</div>
+        </div>
+        <div class="text-indigo-400 text-3xl">
+          <i class="bi bi-graph-up"></i>
+        </div>
+      </div>
+
     </div>
   </div>
+<!-- Functional Dashboard Actions Section -->
+<div class="bg-white shadow-md rounded-lg p-5">
+  <h4 class="font-semibold text-lg mb-4">Dashboard Functions</h4>
 
-  <div class="growtern-text">GROWTERN</div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+    <a href="{% url 'assign_task' %}" class="flex items-center bg-indigo-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-indigo-600 text-3xl me-4"><i class="bi bi-person-plus-fill"></i></div>
+      <div>
+        <p class="font-semibold">Assign Task</p>
+        <small class="text-muted">Assign tasks to users</small>
+      </div>
+    </a>
+
+    <a href="{% url 'submit_task' %}" class="flex items-center bg-green-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-green-600 text-3xl me-4"><i class="bi bi-check-circle-fill"></i></div>
+      <div>
+        <p class="font-semibold">Submit Task</p>
+        <small class="text-muted">Intern task submission</small>
+      </div>
+    </a>
+
+    <a href="{% url 'leave_request' %}" class="flex items-center bg-yellow-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-yellow-600 text-3xl me-4"><i class="bi bi-journal-text"></i></div>
+      <div>
+        <p class="font-semibold">Leave Requests</p>
+        <small class="text-muted">Review all leave forms</small>
+      </div>
+    </a>
+
+    <a href="{% url 'edit_intern' %}" class="flex items-center bg-red-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-red-600 text-3xl me-4"><i class="bi bi-pencil-square"></i></div>
+      <div>
+        <p class="font-semibold">Edit Intern</p>
+        <small class="text-muted">Modify intern data</small>
+      </div>
+    </a>
+
+    <a href="{% url 'submit_feedback' %}" class="flex items-center bg-blue-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-blue-600 text-3xl me-4"><i class="bi bi-chat-left-text"></i></div>
+      <div>
+        <p class="font-semibold">Submit Feedback</p>
+        <small class="text-muted">Give feedback</small>
+      </div>
+    </a>
+
+    <a href="{% url 'rating' %}" class="flex items-center bg-yellow-200 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-yellow-600 text-3xl me-4"><i class="bi bi-star-fill"></i></div>
+      <div>
+        <p class="font-semibold">Submit Rating</p>
+        <small class="text-muted">Rate the program</small>
+      </div>
+    </a>
+
+    <a href="{% url 'task_reports' %}" class="flex items-center bg-violet-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-violet-600 text-3xl me-4"><i class="bi bi-bar-chart-line-fill"></i></div>
+      <div>
+        <p class="font-semibold">Task Reports</p>
+        <small class="text-muted">View uploaded reports</small>
+      </div>
+    </a>
+
+    <a href="{% url 'task_feedback' %}" class="flex items-center bg-teal-100 p-4 rounded-lg shadow hover:shadow-lg transition">
+      <div class="text-teal-600 text-3xl me-4"><i class="bi bi-hand-thumbs-up"></i></div>
+      <div>
+        <p class="font-semibold">Task Feedback</p>
+        <small class="text-muted">Mentor's review</small>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+  <!-- Footer Brand -->
+  <div class="fixed bottom-4 left-4 text-purple-700 font-bold text-lg">GROWTERN</div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
