@@ -20,25 +20,37 @@ from .models import GeneralFeedback
 User = get_user_model()
 
 # -------------------- AUTH --------------------
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return redirect('signup')
-
         user = authenticate(request, email=email, password=password)
-
         if user is not None:
             login(request, user)
-            return redirect('main')
+            request.session['user_id'] = user.id
+
+            role = user.role.lower()
+            if role == 'admin':
+                return redirect('admin_dashboard')
+            elif role == 'hr':
+                return redirect('hr_dashboard')
+            elif role == 'mentor':
+                return redirect('mentor_dashboard')
+            else:
+                return redirect('intern_dashboard')  # default fallback
         else:
-            return render(request, 'login.html', {'error': 'Incorrect password.'})
+            return render(request, 'login.html', {'error': 'Invalid email or password'})
 
     return render(request, 'login.html')
+
+
 
 def signup_view(request):
     if request.method == 'POST':
