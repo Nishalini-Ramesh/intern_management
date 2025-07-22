@@ -1,3 +1,4 @@
+assign_mentor.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,50 +54,113 @@
       padding: 10px;
       margin-top: 50px;
     }
+    .navbar {
+    background-color: darkorchid;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .navbar a:hover {
+    color: #ffd9f8;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .navbar div {
+      margin-top: 10px;
+    }
+
+    .navbar a {
+      display: block;
+      margin: 5px 0;
+    }
+  }
+
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
+{% load static %}
+
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid px-4">
     <a class="navbar-brand" href="#">Growtern</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
-        <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
-        <li class="nav-item"><a class="nav-link" href="assign_mentor.html">Assign Mentor</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'intern_list' %}">Interns</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'add_intern' %}">Add Intern</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'assign_mentor' %}">Assign Mentor</a></li>
       </ul>
     </div>
   </div>
 </nav>
-
+<body>
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div>
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_request.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
 <!-- Form Card -->
 <div class="container">
   <div class="card">
     <div class="card-header">Assign Mentor to Intern</div>
     <div class="card-body">
-      <form id="assignForm">
-        <div class="mb-3">
-          <label for="internSelect" class="form-label">Select Intern</label>
-          <select class="form-select" id="internSelect" required>
-            <option value="">Choose...</option>
-          </select>
-        </div>
+      <form method="POST" action="{% url 'assign_mentor' %}">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="intern_id" class="form-label">Select Intern</label>
+    <select class="form-select" name="intern_id" required>
+      <option value="">Choose...</option>
+      {% for intern in interns %}
+        <option value="{{ intern.id }}">{{ intern.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-        <div class="mb-3">
-          <label for="mentorSelect" class="form-label">Select Mentor</label>
-          <select class="form-select" id="mentorSelect" required>
-            <option value="">Choose...</option>
-            <option value="Sathya">Sathya</option>
-            <option value="Kavya">Kavya</option>
-            <option value="Prakash">Prakash</option>
-            <option value="Gayathri">Gayathri</option>
-          </select>
-        </div>
+  <div class="mb-3">
+    <label for="mentor" class="form-label">Select Mentor</label>
+    <select class="form-select" name="mentor" required>
+      <option value="">Choose...</option>
+      <option value="Sathya">Sathya</option>
+      <option value="Kavya">Kavya</option>
+      <option value="Prakash">Prakash</option>
+      <option value="Gayathri">Gayathri</option>
+    </select>
+  </div>
 
-        <button type="submit" class="btn btn-purple w-100">Assign</button>
-      </form>
+  <button type="submit" class="btn btn-purple w-100">Assign</button>
+</form>
+
     </div>
   </div>
 </div>

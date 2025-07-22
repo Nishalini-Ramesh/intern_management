@@ -173,6 +173,31 @@ class InternDocument(models.Model):
 
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
+<<<<<<< HEAD
+# ----------------------
+# intern details
+# ----------------------
+# models.py
+
+from django.db import models
+# growtern/models.py
+class Mentor(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Intern(models.Model):
+    name = models.CharField(max_length=100)
+    college = models.CharField(max_length=100)
+    department = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=[('completed', 'Completed'), ('pending', 'Pending')])
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True)  # ✅ Add this
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)    # ✅ Add this
+
+    def __str__(self):
+        return self.name
+=======
     
 
 from django.db import models
@@ -183,3 +208,4 @@ class UploadedDocument(models.Model):
 
     def __str__(self):
         return self.document.name
+>>>>>>> 56b3dee8b98c7cf164b1caa1bac3c9084227f274

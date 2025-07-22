@@ -46,7 +46,13 @@ urlpatterns = [
 
     path('add/', views.add_intern, name='add_intern'),
     path('edit/', views.edit_intern, name='edit_intern'),
+<<<<<<< HEAD
+    path('edit/<int:intern_id>/', views.edit_intern, name='edit_intern'),
+
+    path('assign_mentor/', views.assign_mentor, name='assign_mentor'),
+=======
     path('internship-report/', views.internship_report, name='internship_report'),
+>>>>>>> 56b3dee8b98c7cf164b1caa1bac3c9084227f274
 
     path('upload/', views.upload_document, name='upload'),
 
