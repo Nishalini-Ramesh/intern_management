@@ -12,3 +12,8 @@ admin.site.register(InternshipReport)
 admin.site.register(Certificate)
 admin.site.register(InternDocument)
 admin.site.register(MentorAssignment)
+admin.site.register(UploadedDocument)
+
+from django.contrib import admin
+from .models import UploadedDocument
+admin.register(UploadedDocument)

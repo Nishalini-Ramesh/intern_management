@@ -1,3 +1,4 @@
+add_intern.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,64 +60,121 @@
       border-radius: 8px;
       margin-top: 10px;
     }
+    .navbar {
+    background-color: darkorchid;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .navbar a:hover {
+    color: #ffd9f8;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .navbar div {
+      margin-top: 10px;
+    }
+
+    .navbar a {
+      display: block;
+      margin: 5px 0;
+    }
+  }
   </style>
 </head>
 <body>
+  <body>
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div>
+      <a href="login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="leave_request.html">Leave</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="certificate.html">Certificate</a>
+    </div>
+  </div>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid px-4">
-      <a class="navbar-brand" href="#">Growtern</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
-          <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
-        </ul>
-      </div>
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="#">Growtern</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/interns/">Interns</a></li>
+        <li class="nav-item"><a class="nav-link" href="/add/">Add Intern</a></li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Form Container -->
   <div class="container">
     <div class="card">
       <div class="card-header">Add New Intern</div>
       <div class="card-body">
-        <form id="internForm">
-          <div class="mb-3">
-            <label for="name" class="form-label">Intern Name</label>
-            <input type="text" class="form-control" id="name" required>
-          </div>
-          <div class="mb-3">
-            <label for="college" class="form-label">College</label>
-            <input type="text" class="form-control" id="college" required>
-          </div>
-          <div class="mb-3">
-            <label for="department" class="form-label">Department</label>
-            <input type="text" class="form-control" id="department" required>
-          </div>
-          <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" id="status" required>
-              <option value="">Choose...</option>
-              <option value="completed">Completed</option>
-              <option value="pending">Pending</option>
-            </select>
-          </div>
+        <form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="name" class="form-label">Intern Name</label>
+    <input type="text" class="form-control" name="name" required>
+  </div>
+  <div class="mb-3">
+    <label for="college" class="form-label">College</label>
+    <input type="text" class="form-control" name="college" required>
+  </div>
+  <div class="mb-3">
+    <label for="department" class="form-label">Department</label>
+    <input type="text" class="form-control" name="department" required>
+  </div>
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select class="form-select" name="status" required>
+      <option value="">Choose...</option>
+      <option value="completed">Completed</option>
+      <option value="pending">Pending</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="photo" class="form-label">Upload Photo</label>
+    <input type="file" class="form-control" name="photo" accept="image/*" required>
+  </div>
+  <div class="mb-3">
+    <label for="resume" class="form-label">Upload Resume (PDF)</label>
+    <input type="file" class="form-control" name="resume" accept="application/pdf" required>
 
-          <div class="mb-3">
-            <label for="photo" class="form-label">Upload Photo (jpg/png)</label>
-            <input type="file" class="form-control" id="photo" accept="image/*" required>
-            <img id="photoPreview" src="#" alt="Preview" style="display: none;" />
-          </div>
+  
 
-          <div class="mb-3">
-            <label for="resume" class="form-label">Upload Resume (pdf)</label>
-            <input type="file" class="form-control" id="resume" accept="application/pdf" required>
-            <small id="resumeName" class="form-text text-muted"></small>
-          </div>
+  <button type="submit" class="btn btn-purple w-100">Add Intern</button>
+</form>
 
-          <button type="submit" class="btn btn-purple w-100">Add Intern</button>
-        </form>
+
       </div>
     </div>
   </div>
@@ -131,7 +189,7 @@
     const resumeInput = document.getElementById('resume');
     const resumeName = document.getElementById('resumeName');
     const internForm = document.getElementById('internForm');
-
+    
     let photoBase64 = "";
 
     // Preview photo
@@ -163,12 +221,14 @@
       const department = document.getElementById('department').value;
       const status = document.getElementById('status').value;
       const resumeFile = resumeInput.files[0]?.name || "";
+      const mentor = document.getElementById('mentor').value;
 
       const newIntern = {
         name,
         college,
         department,
         status,
+        mentor,
         photo: photoBase64,
         resume: resumeFile
       };

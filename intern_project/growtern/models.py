@@ -98,6 +98,16 @@ class LeaveRequest(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     )
+    name = models.CharField(max_length=100, default="Anonymous")
+    ROLE_CHOICES = [
+    ('Intern', 'Intern'),
+    ('Mentor', 'Mentor'),
+    ('Trainer', 'Trainer'),
+    ('HR', 'HR'),
+]
+
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='Intern')
+
     intern = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='leave_requests', limit_choices_to={'role': 'INTERN'})
     start_date = models.DateField()
     end_date = models.DateField()
@@ -107,7 +117,7 @@ class LeaveRequest(models.Model):
     reviewed_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_leaves', limit_choices_to={'role__in': ['HR', 'ADMIN']})
     reviewed_on = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.intern.username} → {self.status} leave"
 
 # ----------------------
@@ -120,7 +130,7 @@ class GeneralFeedback(models.Model):
     rating = models.PositiveIntegerField(default=0)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.name} ({self.role})"
 
 # ----------------------
@@ -163,3 +173,33 @@ class InternDocument(models.Model):
 
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
+# ----------------------
+# intern details
+# ----------------------
+# models.py
+
+from django.db import models
+# growtern/models.py
+class Mentor(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Intern(models.Model):
+    name = models.CharField(max_length=100)
+    college = models.CharField(max_length=100)
+    department = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=[('completed', 'Completed'), ('pending', 'Pending')])
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True)  # ✅ Add this
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)    # ✅ Add this
+
+    def __str__(self):
+        return self.name
+
+class UploadedDocument(models.Model):
+    document = models.FileField(upload_to='uploaded_documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Document {self.id} uploaded at {self.uploaded_at}"
