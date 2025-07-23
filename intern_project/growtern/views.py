@@ -476,3 +476,78 @@ def complete_task(request, task_id):
         except Task.DoesNotExist:
             return JsonResponse({'error': 'Task not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+    
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('Error generating PDF <pre>' + html + '</pre>')
+        return response
+
+from django.contrib.auth import get_user_model
+from django.shortcuts import render
+
+User = get_user_model()
+
+def internship_report_form(request):
+    active_users = User.objects.filter(is_active=True)
+    context = {'active_users': active_users}
+
+    if request.method == 'POST':
+        # handle form submission
+        ...
+        
+    return render(request, 'your_template.html', context)

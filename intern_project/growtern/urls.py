@@ -89,3 +89,9 @@ urlpatterns = [
     path('feedback/', views.feedback, name='feedback'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
 ]
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('download-report/', views.internship_report, name='internship_report')
+]

@@ -17,7 +17,6 @@
       background-color: #ffffff;
     }
 
-    /* Navbar Styling */
     .navbar {
       background-color: #9b39b6;
     }
@@ -42,7 +41,6 @@
       text-decoration: underline;
     }
 
-    /* Internship Report Form */
     .report-container {
       max-width: 900px;
       margin: 60px auto;
@@ -73,16 +71,19 @@
 
     input[type="text"],
     input[type="date"],
-    input[type="number"] {
+    input[type="number"],
+    textarea,
+    select {
       border-radius: 8px;
     }
 
-    .form-control:focus {
+    .form-control:focus, .form-select:focus {
       border-color: #9b39b6;
       box-shadow: 0 0 0 0.2rem rgba(155, 57, 182, 0.25);
     }
 
-    .btn-submit {
+    .btn-submit,
+    .btn-download {
       background-color: #7a1cda;
       color: white;
       border: none;
@@ -90,9 +91,11 @@
       border-radius: 25px;
       font-weight: bold;
       transition: background-color 0.3s ease;
+      width: 100%;
     }
 
-    .btn-submit:hover {
+    .btn-submit:hover,
+    .btn-download:hover {
       background-color: #6900c1;
     }
 
@@ -128,14 +131,16 @@
 
     <form method="POST">
       {% csrf_token %}
+      
+      <!-- Intern Dropdown -->
       <div class="mb-3">
         <label for="intern_name" class="form-label">Intern Name</label>
-        <input type="text" class="form-control" id="intern_name" name="intern_name" placeholder="Enter name" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="intern_id" class="form-label">Intern ID</label>
-        <input type="text" class="form-control" id="intern_id" name="intern_id" placeholder="Enter ID" required>
+        <select class="form-select" id="intern_name" name="intern_name" required>
+          <option value="" disabled selected>Select intern</option>
+          {% for user in active_users %}
+            <option value="{{ user.id }}">{{ user.get_full_name|default:user.username }}</option>
+          {% endfor %}
+        </select>
       </div>
 
       <div class="mb-3">
@@ -159,7 +164,19 @@
         <input type="number" class="form-control" id="total_hours" name="total_hours" placeholder="Hours" required>
       </div>
 
-      <button type="submit" class="btn btn-submit">Submit Report</button>
+      <div class="mb-3">
+        <label for="performance_grade" class="form-label">Performance Grade</label>
+        <input type="text" class="form-control" id="performance_grade" name="performance_grade" placeholder="A+ / A / B+" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="remarks" class="form-label">Remarks</label>
+        <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Write your remarks here..." required></textarea>
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-submit">submit</button>
+      </div>
     </form>
   </div>
 
