@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Task Lists - Desktop</title>
+  <title>All Tasks</title>
   <style>
     body {
       margin: 0;
@@ -11,7 +11,6 @@
       background-color: #f5edf9;
     }
 
-    /* Navbar styles */
     .navbar {
       background-color: #9b39b6;
       color: white;
@@ -34,10 +33,6 @@
       padding: 0;
       display: flex;
       gap: 30px;
-    }
-
-    .navbar ul li {
-      display: inline;
     }
 
     .navbar ul li a {
@@ -111,7 +106,7 @@
       color: #fff;
       position: relative;
       z-index: 1;
-      max-height: 350px;
+      max-height: 500px;
       overflow-y: auto;
       box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
     }
@@ -125,46 +120,56 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
-      transition: opacity 0.3s ease;
-    }
-
-    .task-item:last-child {
-      margin-bottom: 60px;
-    }
-
-    .task-item input[type="text"] {
-      flex-grow: 1;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: none;
-      margin-right: 15px;
+      justify-content: space-between;
       background-color: #e6d6f2;
-      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 10px;
       color: #4a148c;
     }
 
-    .task-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
+    .task-details {
+      flex-grow: 1;
     }
 
-    .add-button {
+    .task-status {
+      margin-left: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .complete-btn {
       background-color: #4b2e83;
       color: white;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 30px;
-      text-align: center;
-      line-height: 50px;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
-      position: absolute;
-      bottom: 30px;
-      right: 80px;
-      text-decoration: none;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    .complete-btn:hover {
+      background-color: #351d5c;
     }
   </style>
+
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+  </script>
 </head>
 <body>
 
@@ -173,52 +178,75 @@
     <div class="logo">GROWTERN</div>
     <ul>
       <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
       <li><a href="{% url 'task_list' %}">Tasks</a></li>
-      <li><a href="{% url 'leave_request' %}">Leave Request</a></li>
+      <li><a href="{% url 'leave_request' %}">Leave</a></li>
       <li><a href="{% url 'attendance_tab' %}">Attendance</a></li>
       <li><a href="{% url 'feedback' %}">Feedback</a></li>
       <li><a href="{% url 'issue_certificate' %}">Certificate</a></li>
     </ul>
   </nav>
 
-  <!-- Main Container -->
   <div class="container">
     <div class="background-shape1"></div>
     <div class="background-shape2"></div>
 
     <div class="header">
-      <div class="back-arrow">&#8592;</div>
-      <h1>TASK LISTS</h1>
+      <div class="back-arrow" onclick="history.back()">&#8592;</div>
+      <h1>ALL TASKS</h1>
     </div>
 
     <div class="task-box">
-      <h2>TASKS</h2>
+      <h2>Task List</h2>
 
       {% for task in tasks %}
-      <div class="task-item">
-        <input type="text" value="{{ forloop.counter }}. {{ task.title }}" readonly />
-        <input type="checkbox" class="complete-checkbox" />
+      <div class="task-item" id="task-{{ task.id }}">
+        <div class="task-details">
+          {{ forloop.counter }}. <strong>{{ task.title }}</strong>
+          {% if is_admin %} ({{ task.assigned_to.username }}) {% endif %}
+        </div>
+
+        {% if task.status != 'completed' %}
+          {% if is_admin %}
+            <button class="complete-btn" data-task-id="{{ task.id }}">Mark as Completed</button>
+          {% else %}
+            <span class="task-status" style="color: orange;">Pending</span>
+          {% endif %}
+        {% else %}
+          <span class="task-status" style="color: green;">✔ Completed</span>
+        {% endif %}
       </div>
       {% empty %}
-      <div class="task-item">
-        <input type="text" value="No tasks available." readonly />
-      </div>
+      <p>No tasks available.</p>
       {% endfor %}
     </div>
-
-    <a href="{% url 'create_task' %}" class="add-button">+</a>
   </div>
 
+  <!-- ✅ AJAX -->
   <script>
-    document.querySelectorAll('.complete-checkbox').forEach(function(checkbox) {
-      checkbox.addEventListener('change', function() {
-        if(this.checked) {
-          this.parentElement.style.opacity = '0';
-          setTimeout(() => {
-            this.parentElement.remove();
-          }, 300);
-        }
+    document.querySelectorAll('.complete-btn').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const taskId = this.getAttribute('data-task-id');
+        const taskDiv = this.parentElement;
+
+        fetch(`/complete-task/${taskId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({})
+        }).then(response => {
+          if (response.ok) {
+            taskDiv.querySelector('.complete-btn').remove();
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'task-status';
+            statusSpan.style.color = 'green';
+            statusSpan.innerText = '✔ Completed';
+            taskDiv.appendChild(statusSpan);
+          } else {
+            alert('Failed to complete the task.');
+          }
+        });
       });
     });
   </script>

@@ -440,3 +440,39 @@ def feedback(request):
     intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Task
+
+# ✅ Task list view — shared for both Admin and Intern
+@login_required
+def task_list(request):
+    user = request.user
+
+    if user.role == 'ADMIN':
+        tasks = Task.objects.all()
+    else:
+        tasks = Task.objects.filter(assigned_to=user, status='pending')
+
+    return render(request, 'task_list.html', {
+        'tasks': tasks,
+        'is_admin': user.role == 'ADMIN'  # ✅ Include this
+    })
+
+
+# ✅ Complete task (only for ADMIN)
+@login_required
+def complete_task(request, task_id):
+    if request.user.role != 'ADMIN':
+        return JsonResponse({'error': 'Permission denied'}, status=403)
+
+    if request.method == 'POST':
+        try:
+            task = Task.objects.get(id=task_id)
+            task.status = 'completed'
+            task.save()
+            return JsonResponse({'success': True})
+        except Task.DoesNotExist:
+            return JsonResponse({'error': 'Task not found'}, status=404)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
