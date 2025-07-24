@@ -1,9 +1,18 @@
 from django.contrib import admin
 from .models import (
+
+    CustomUser, Task, TaskFeedback, TaskSubmission,
+    Attendance, LeaveRequest, GeneralFeedback,
+    InternshipReport, Certificate, InternDocument,
+    MentorAssignment, UploadedDocument, Intern
+)
+
+# Registering normal models
+
     CustomUser, Task, TaskFeedback, TaskSubmission, Attendance,
     LeaveRequest, GeneralFeedback, InternshipReport, Certificate,
     InternDocument, MentorAssignment, UploadedDocument, Intern
-)
+
 
 # Register all models
 admin.site.register(CustomUser)
@@ -17,6 +26,21 @@ admin.site.register(InternshipReport)
 admin.site.register(Certificate)
 admin.site.register(InternDocument)
 admin.site.register(MentorAssignment)
+
+admin.site.register(Intern)
+from .models import Mentor
+
+admin.site.register(Mentor)
+
+
+# Special admin config for UploadedDocument
+@admin.register(UploadedDocument)
+class UploadedDocumentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'document', 'uploaded_at')
+    list_filter = ('uploaded_at',)
+    search_fields = ('document',)
+    ordering = ('-uploaded_at',)
+
 admin.site.register(UploadedDocument)
 
 # Admin customization for Intern model
@@ -25,3 +49,4 @@ class InternAdmin(admin.ModelAdmin):
     list_display = ('name', 'college', 'department', 'status')
     list_filter = ('status', 'college', 'department')
     search_fields = ('name', 'college', 'department')
+

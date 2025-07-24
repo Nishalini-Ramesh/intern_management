@@ -309,6 +309,9 @@ from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
+
+
+
 def main_view(request):
     return render(request, 'main.html')
 
@@ -358,6 +361,8 @@ from .models import Intern
 def edit_interns_list(request):
     interns = Intern.objects.all()
     return render(request, 'edit_intern.html', {'interns': interns})
+
+
 def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -379,6 +384,8 @@ from django.shortcuts import render, redirect
 from .forms import TaskFeedbackForm
 from .models import TaskFeedback  # assuming you have this model
 
+
+
 def task_feedback(request):
     if request.method == 'POST':
         form = TaskFeedbackForm(request.POST)
@@ -387,10 +394,13 @@ def task_feedback(request):
             intern = form.cleaned_data['intern']
             feedback = form.cleaned_data['feedback']
             rating = form.cleaned_data['rating']
- 
+
+
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
 from .forms import InternForm
+
+
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
@@ -399,9 +409,35 @@ from .forms import InternForm
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
 from .forms import InternForm
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern, TaskFeedback
+from .forms import TaskFeedbackForm
 
 def edit_intern(request, intern_id):
     intern = get_object_or_404(Intern, id=intern_id)
+
+
+    if request.method == 'POST':
+        form = TaskFeedbackForm(request.POST)
+        if form.is_valid():
+            task = form.cleaned_data['task']
+            feedback = form.cleaned_data['feedback']
+            rating = form.cleaned_data['rating']
+            
+            TaskFeedback.objects.create(
+                task=task,
+                intern=intern,
+                feedback=feedback,
+                rating=rating
+            )
+            return redirect('task_feedback')  # or any other success page
+    else:
+        form = TaskFeedbackForm()
+
+    return render(request, 'task_feedback.html', {'form': form})
+
+
     if request.method == 'POST':
         form = InternForm(request.POST, request.FILES, instance=intern)
         if form.is_valid():
@@ -410,6 +446,7 @@ def edit_intern(request, intern_id):
     else:
         form = InternForm(instance=intern)  
 # growtern/views.py
+
 
 from django.shortcuts import render, redirect
 from .forms import TaskSubmissionForm
@@ -423,11 +460,15 @@ def task_submission_view(request):
     else:
         form = TaskSubmissionForm()
     return render(request, 'task_submission.html', {'form': form})
+
+
+
 from django.shortcuts import render
 
 def feedback(request):
     
  
+
 
     if request.method == 'POST':
         form = InternForm(request.POST, request.FILES, instance=intern)
@@ -440,6 +481,69 @@ def feedback(request):
     intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Intern
+from .forms import InternForm
+
+# views.py
+
+
+def intern_list(request):
+    interns = Intern.objects.all()  # ✅ fetch all interns including Almaas, Priya, etc.
+    return render(request, 'intern_list.html', {'interns': interns})
+
+def add_intern(request):
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')
+    else:
+        form = InternForm()
+    return render(request, 'add_intern.html', {'form': form})
+
+# growtern/views.py
+
+from django.shortcuts import render, redirect
+from .models import Intern, Mentor
+
+def assign_mentor(request):
+    interns = Intern.objects.all()
+    mentors = Mentor.objects.all()
+
+    if request.method == 'POST':
+        intern_id = request.POST.get('intern_id')
+        mentor_name = request.POST.get('mentor')
+
+        intern = Intern.objects.get(id=intern_id)
+        mentor = Mentor.objects.get(name=mentor_name)
+
+        intern.mentor = mentor
+        intern.save()
+
+        return redirect('intern_list')
+
+    return render(request, 'assign_mentor.html', {'interns': interns, 'mentors': mentors})
+
+
+
+from django.shortcuts import get_object_or_404
+
+def edit_intern(request, intern_id):
+    intern = get_object_or_404(Intern, pk=intern_id)
+
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES, instance=intern)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')  # redirect after saving
+    else:
+        form = InternForm(instance=intern)
+
+    return render(request, 'edit_intern.html', {'form': form})
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -477,6 +581,7 @@ def complete_task(request, task_id):
             return JsonResponse({'error': 'Task not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+
 #====attendance=====
 from django.utils import timezone
 from .models import CustomUser, Attendance
@@ -502,3 +607,80 @@ def mark_attendance(request):
         return redirect("mark_attendance")
 
     return render(request, "attendance.html", {"interns": interns})
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+    
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('Error generating PDF <pre>' + html + '</pre>')
+        return response
+
+from django.contrib.auth import get_user_model
+from django.shortcuts import render
+
+User = get_user_model()
+
+def internship_report_form(request):
+    active_users = User.objects.filter(is_active=True)
+    context = {'active_users': active_users}
+
+    if request.method == 'POST':
+        # handle form submission
+        ...
+        
+    return render(request, 'your_template.html', context)
+
+ 
