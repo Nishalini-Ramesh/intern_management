@@ -88,4 +88,7 @@ urlpatterns = [
     path('attendance/', views.attendance_tab, name='attendance_tab'),
     path('feedback/', views.feedback, name='feedback'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
+
+    # Attendance Routes
+    path('mentor_dashboard/attendance/', views.mark_attendance, name='mark_attendance'),
 ]

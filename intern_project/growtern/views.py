@@ -476,3 +476,29 @@ def complete_task(request, task_id):
         except Task.DoesNotExist:
             return JsonResponse({'error': 'Task not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+#====attendance=====
+from django.utils import timezone
+from .models import CustomUser, Attendance
+from django.contrib import messages
+
+def mark_attendance(request):
+    interns = CustomUser.objects.filter(role='INTERN')
+
+    if request.method == "POST":
+        intern_id = request.POST.get("intern")
+        date = request.POST.get("date")
+        status = request.POST.get("status")
+
+        intern = CustomUser.objects.get(id=intern_id)
+
+        Attendance.objects.create(
+            intern=intern,
+            date=date if date else timezone.now().date(),
+            status=status
+        )
+
+        messages.success(request, "Attendance recorded successfully!")
+        return redirect("mark_attendance")
+
+    return render(request, "attendance.html", {"interns": interns})
