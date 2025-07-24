@@ -162,7 +162,9 @@ intern_list.html
     <div class="logo">GROWTERN</div>
     <div>
       <a href="login.html">Login</a>
-      <a href="dashboard.html">Dashboard</a>
+      
+       <a href="{% url 'dashboard' %}">Dashboard</a>
+
       <a href="tasks.html">Tasks</a>
       <a href="leave_request.html">Leave</a>
       <a href="feedback.html">Feedback</a>
@@ -180,11 +182,14 @@ intern_list.html
         <li class="nav-item"><a class="nav-link" href="/interns/">Interns</a></li>
         <li class="nav-item"><a class="nav-link" href="/add/">Add Intern</a></li>
         <li class="nav-item"><a class="nav-link" href="/assign_mentor/">Mentors</a></li>
-        <li class="nav-item"><a class="nav-link" href="/edit/">Edit</a></li>
+      
+
       </ul>
     </div>
   </div>
 </nav>
+
+
 
 
   <!-- Main Card -->
@@ -218,7 +223,7 @@ intern_list.html
                 <th>College</th>
                 <th>Department</th>
                 <th>Status</th>
-              
+                 <th>Edit</th> 
               </tr>
             </thead>
             <tbody>
@@ -227,8 +232,6 @@ intern_list.html
   <td>{{ intern.name }}</td>
   <td>{{ intern.college }}</td>
   <td>{{ intern.department }}</td>
-  
-
   <td>
     {% if intern.status == 'completed' %}
       <span class="status-completed">Completed</span>
@@ -236,9 +239,11 @@ intern_list.html
       <span class="status-pending">Pending</span>
     {% endif %}
   </td>
-  
-
+  <td>
+    <a href="{% url 'edit_intern' intern.id %}" class="btn btn-sm btn-primary">Edit</a>
+  </td>
 </tr>
+
 {% endfor %}
 
             </tbody>

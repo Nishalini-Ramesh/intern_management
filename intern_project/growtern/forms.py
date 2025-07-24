@@ -1,18 +1,15 @@
-<<<<<<< HEAD
+
 # forms.py
 
 from django import forms
 from .models import Intern,Mentor
-class AssignMentorForm(forms.ModelForm):
-    class Meta:
-        model = Intern
-        fields = []
+
     
 class InternForm(forms.ModelForm):
     class Meta:
         model = Intern
         fields = ['name', 'college', 'department', 'status', 'photo', 'resume']
-=======
+
 from django import forms
 from .models import LeaveRequest, GeneralFeedback
 class LeaveRequestForm(forms.ModelForm):
@@ -101,4 +98,4 @@ class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
         fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
->>>>>>> 56b3dee8b98c7cf164b1caa1bac3c9084227f274
+

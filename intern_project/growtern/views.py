@@ -281,7 +281,7 @@ from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
-<<<<<<< HEAD
+
 def main_view(request):
     return render(request, 'main.html')
 
@@ -331,7 +331,7 @@ from .models import Intern
 def edit_interns_list(request):
     interns = Intern.objects.all()
     return render(request, 'edit_intern.html', {'interns': interns})
-=======
+
 def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -352,7 +352,7 @@ def task_list(request):
 from django.shortcuts import render, redirect
 from .forms import TaskFeedbackForm
 from .models import TaskFeedback  # assuming you have this model
->>>>>>> 56b3dee8b98c7cf164b1caa1bac3c9084227f274
+
 
 def task_feedback(request):
     if request.method == 'POST':
@@ -363,7 +363,11 @@ def task_feedback(request):
             feedback = form.cleaned_data['feedback']
             rating = form.cleaned_data['rating']
 
-<<<<<<< HEAD
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Intern
+from .forms import InternForm
+
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
 from .forms import InternForm
@@ -373,24 +377,31 @@ from .models import Intern
 from .forms import InternForm
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Intern
-from .forms import InternForm
+from .models import Intern, TaskFeedback
+from .forms import TaskFeedbackForm
 
 def edit_intern(request, intern_id):
     intern = get_object_or_404(Intern, id=intern_id)
-=======
+
+    if request.method == 'POST':
+        form = TaskFeedbackForm(request.POST)
+        if form.is_valid():
+            task = form.cleaned_data['task']
+            feedback = form.cleaned_data['feedback']
+            rating = form.cleaned_data['rating']
+            
             TaskFeedback.objects.create(
                 task=task,
                 intern=intern,
                 feedback=feedback,
                 rating=rating
             )
-            return redirect('task_feedback')  # reload page or redirect elsewhere
+            return redirect('task_feedback')  # or any other success page
     else:
         form = TaskFeedbackForm()
 
     return render(request, 'task_feedback.html', {'form': form})
-# growtern/views.py
+
 
 from django.shortcuts import render, redirect
 from .forms import TaskSubmissionForm
@@ -404,7 +415,7 @@ def task_submission_view(request):
     else:
         form = TaskSubmissionForm()
     return render(request, 'task_submission.html', {'form': form})
->>>>>>> 56b3dee8b98c7cf164b1caa1bac3c9084227f274
+
 
     if request.method == 'POST':
         form = InternForm(request.POST, request.FILES, instance=intern)
@@ -415,3 +426,64 @@ def task_submission_view(request):
         form = InternForm(instance=intern)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Intern
+from .forms import InternForm
+
+# views.py
+
+
+def intern_list(request):
+    interns = Intern.objects.all()  # ✅ fetch all interns including Almaas, Priya, etc.
+    return render(request, 'intern_list.html', {'interns': interns})
+
+def add_intern(request):
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')
+    else:
+        form = InternForm()
+    return render(request, 'add_intern.html', {'form': form})
+
+# growtern/views.py
+
+from django.shortcuts import render, redirect
+from .models import Intern, Mentor
+
+def assign_mentor(request):
+    interns = Intern.objects.all()
+    mentors = Mentor.objects.all()
+
+    if request.method == 'POST':
+        intern_id = request.POST.get('intern_id')
+        mentor_name = request.POST.get('mentor')
+
+        intern = Intern.objects.get(id=intern_id)
+        mentor = Mentor.objects.get(name=mentor_name)
+
+        intern.mentor = mentor
+        intern.save()
+
+        return redirect('intern_list')
+
+    return render(request, 'assign_mentor.html', {'interns': interns, 'mentors': mentors})
+
+
+
+from django.shortcuts import get_object_or_404
+
+def edit_intern(request, intern_id):
+    intern = get_object_or_404(Intern, pk=intern_id)
+
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES, instance=intern)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')  # redirect after saving
+    else:
+        form = InternForm(instance=intern)
+
+    return render(request, 'edit_intern.html', {'form': form})
