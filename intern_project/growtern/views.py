@@ -20,25 +20,37 @@ from .models import GeneralFeedback
 User = get_user_model()
 
 # -------------------- AUTH --------------------
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return redirect('signup')
-
         user = authenticate(request, email=email, password=password)
-
         if user is not None:
             login(request, user)
-            return redirect('main')
+            request.session['user_id'] = user.id
+
+            role = user.role.lower()
+            if role == 'admin':
+                return redirect('admin_dashboard')
+            elif role == 'hr':
+                return redirect('hr_dashboard')
+            elif role == 'mentor':
+                return redirect('mentor_dashboard')
+            else:
+                return redirect('intern_dashboard')  # default fallback
         else:
-            return render(request, 'login.html', {'error': 'Incorrect password.'})
+            return render(request, 'login.html', {'error': 'Invalid email or password'})
 
     return render(request, 'login.html')
+
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -127,8 +139,8 @@ def leave_request(request):
 def issue_certificate(request):
     return render(request, 'issue_certificate.html')
 
-def edit_intern(request):
-    return render(request, 'edit_intern.html')
+def intern_intern(request):
+    return render(request, 'intern_list.html')
 
 def assign_mentor(request):
     return render(request, 'assign_mentor.html')
@@ -154,10 +166,10 @@ def submit_task(request):
     return render(request, 'task_submission.html')
 
 def view_tasks(request):
-    return render(request, 'upload document.html')
+    return render(request, 'upload.html')
 
 def intern_feedback(request):
-    return render(request, 'internship report.html')
+    return render(request, 'internship_report.html')
 
 # views.py
 from django.shortcuts import render
@@ -201,8 +213,8 @@ from .models import LeaveRequest, GeneralFeedback
 
 def submit_feedback_view(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        role = request.POST.get('role')
+        name = request.user.username  
+        role = request.user.role
         comments = request.POST.get('comments')
 
         feedback = GeneralFeedback.objects.create(
@@ -223,18 +235,34 @@ def rating_view(request):
 def thank_you(request):
     return render(request, 'thankyou.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import LeaveRequest, CustomUser
+
 @login_required
 def leave_request_view(request):
     if request.method == 'POST':
-        form = LeaveRequestForm(request.POST)
-        if form.is_valid():
-            leave = form.save(commit=False)
-            leave.intern = request.user  # assuming ForeignKey to CustomUser
-            leave.save()
-            return redirect('leave_status')  # or any status/confirmation page
-    else:
-        form = LeaveRequestForm()
-    return render(request, 'leave_request.html', {'form': form})
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        reason = request.POST.get('reason')
+
+        if not all([start_date, end_date, reason]):
+            return render(request, 'leave_request.html', {'error': 'All fields are required.'})
+
+        LeaveRequest.objects.create(
+            intern=request.user,
+            name=request.user.username,
+            role=request.user.role,  # assumes your CustomUser has `role` field
+            start_date=start_date,
+            end_date=end_date,
+            reason=reason
+        )
+        return redirect('thank_you')  # or any confirmation page
+
+    return render(request, 'leave_request.html')
+
+def thank_you_view(request):
+    return render(request, 'thanks.html')  # use your file name here
 
 
 from django.utils import timezone
@@ -281,6 +309,8 @@ from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
+
+
 
 def main_view(request):
     return render(request, 'main.html')
@@ -332,6 +362,7 @@ def edit_interns_list(request):
     interns = Intern.objects.all()
     return render(request, 'edit_intern.html', {'interns': interns})
 
+
 def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -354,6 +385,7 @@ from .forms import TaskFeedbackForm
 from .models import TaskFeedback  # assuming you have this model
 
 
+
 def task_feedback(request):
     if request.method == 'POST':
         form = TaskFeedbackForm(request.POST)
@@ -367,6 +399,8 @@ def task_feedback(request):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
 from .forms import InternForm
+
+
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
@@ -382,6 +416,7 @@ from .forms import TaskFeedbackForm
 
 def edit_intern(request, intern_id):
     intern = get_object_or_404(Intern, id=intern_id)
+
 
     if request.method == 'POST':
         form = TaskFeedbackForm(request.POST)
@@ -403,6 +438,16 @@ def edit_intern(request, intern_id):
     return render(request, 'task_feedback.html', {'form': form})
 
 
+    if request.method == 'POST':
+        form = InternForm(request.POST, request.FILES, instance=intern)
+        if form.is_valid():
+            form.save()
+            return redirect('intern_list')  # Make sure 'intern_list' is named in urls.py
+    else:
+        form = InternForm(instance=intern)  
+# growtern/views.py
+
+
 from django.shortcuts import render, redirect
 from .forms import TaskSubmissionForm
 
@@ -417,15 +462,26 @@ def task_submission_view(request):
     return render(request, 'task_submission.html', {'form': form})
 
 
+
+from django.shortcuts import render
+
+def feedback(request):
+    
+ 
+
+
     if request.method == 'POST':
         form = InternForm(request.POST, request.FILES, instance=intern)
         if form.is_valid():
             form.save()
             return redirect('intern_list')  # Make sure 'intern_list' is named in urls.py
+        
     else:
         form = InternForm(instance=intern)
+    intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
+
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Intern
@@ -487,3 +543,116 @@ def edit_intern(request, intern_id):
         form = InternForm(instance=intern)
 
     return render(request, 'edit_intern.html', {'form': form})
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Task
+
+# ✅ Task list view — shared for both Admin and Intern
+@login_required
+def task_list(request):
+    user = request.user
+
+    if user.role == 'ADMIN':
+        tasks = Task.objects.all()
+    else:
+        tasks = Task.objects.filter(assigned_to=user, status='pending')
+
+    return render(request, 'task_list.html', {
+        'tasks': tasks,
+        'is_admin': user.role == 'ADMIN'  # ✅ Include this
+    })
+
+
+# ✅ Complete task (only for ADMIN)
+@login_required
+def complete_task(request, task_id):
+    if request.user.role != 'ADMIN':
+        return JsonResponse({'error': 'Permission denied'}, status=403)
+
+    if request.method == 'POST':
+        try:
+            task = Task.objects.get(id=task_id)
+            task.status = 'completed'
+            task.save()
+            return JsonResponse({'success': True})
+        except Task.DoesNotExist:
+            return JsonResponse({'error': 'Task not found'}, status=404)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+    
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_report(request):
+    if request.method == "POST":
+        template_path = 'report_template.html'
+        context = {
+            'intern_name': request.POST.get('intern_name'),
+            'intern_id': request.POST.get('intern_id'),
+            'department': request.POST.get('department'),
+            'start_date': request.POST.get('start_date'),
+            'end_date': request.POST.get('end_date'),
+            'total_hours': request.POST.get('total_hours'),
+            'performance_grade': request.POST.get('performance_grade'),
+            'remarks': request.POST.get('remarks'),
+        }
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="internship_report.pdf"'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('Error generating PDF <pre>' + html + '</pre>')
+        return response
+
+from django.contrib.auth import get_user_model
+from django.shortcuts import render
+
+User = get_user_model()
+
+def internship_report_form(request):
+    active_users = User.objects.filter(is_active=True)
+    context = {'active_users': active_users}
+
+    if request.method == 'POST':
+        # handle form submission
+        ...
+        
+    return render(request, 'your_template.html', context)
+

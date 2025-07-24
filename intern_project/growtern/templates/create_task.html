@@ -5,22 +5,60 @@
   <title>Create Task</title>
   <style>
     body {
-      background-color: #f5e8fc; /* Light lilac background */
+      background-color: #f5e8fc;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh; /* Full screen height */
     }
 
+    /* ✅ Navbar Styles */
+    .navbar {
+      background-color: #9b39b6;
+      color: white;
+      padding: 12px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar ul li {
+      display: inline;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffddff;
+    }
+
+    /* Container & Form Styles */
     .container {
-      max-width:650px;
+      max-width: 650px;
       background-color: #ffffff;
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      margin: 40px auto;
     }
 
     h2 {
@@ -90,6 +128,22 @@
   </style>
 </head>
 <body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo">Intern Portal</div>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+      <li><a href="{% url 'task_list' %}">Tasks</a></li>
+      <li><a href="{% url 'leave_request' %}">Leave Request</a></li>
+      <li><a href="{% url 'attendance_tab' %}">Attendance</a></li>
+      <li><a href="{% url 'feedback' %}">Feedback</a></li>
+      <li><a href="{% url 'issue_certificate' %}">Certificate</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Create Task Form -->
   <div class="container">
     <h2>Create New Task</h2>
     <form method="POST" action="{% url 'create_task' %}">
@@ -119,5 +173,6 @@
       </div>
     </form>
   </div>
+
 </body>
 </html>

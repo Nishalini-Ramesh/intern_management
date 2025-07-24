@@ -174,6 +174,8 @@ class InternDocument(models.Model):
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
 
+
+
 # ----------------------
 # intern details
 # ----------------------
@@ -200,17 +202,48 @@ class Intern(models.Model):
     def __str__(self):
         return self.name
 
+
     
 
 from django.db import models
 
+
+
 class UploadedDocument(models.Model):
-    document = models.FileField(upload_to='uploads/')  # stored in MEDIA_ROOT/uploads/
+    document = models.FileField(upload_to='uploaded_documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.document.name
+        return f"Document {self.id} uploaded at {self.uploaded_at}"
 
 
+from django.db import models
+from django.contrib.auth import get_user_model
 
+CustomUser = get_user_model()
 
+# Intern status choices
+STATUS_CHOICES = (
+    ('pending', 'Pending'),
+    ('active', 'Active'),
+    ('completed', 'Completed'),
+)
+
+class Intern(models.Model):
+    name = models.CharField(max_length=100)
+    college = models.CharField(max_length=150)
+    department = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class MentorAssignment(models.Model):
+    intern = models.ForeignKey(Intern, on_delete=models.CASCADE)
+    mentor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'MENTOR'})
+    assigned_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.intern.name} → {self.mentor.username}"
