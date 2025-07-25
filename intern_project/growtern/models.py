@@ -178,6 +178,9 @@ class InternDocument(models.Model):
 
     def __str__(self):
         return f"{self.intern.username} - {self.document_name}"
+
+
+
 # ----------------------
 # intern details
 # ----------------------
@@ -198,9 +201,18 @@ class Intern(models.Model):
     status = models.CharField(max_length=20, choices=[('completed', 'Completed'), ('pending', 'Pending')])
     resume = models.FileField(upload_to='resumes/', null=True, blank=True)  # ✅ Add this
     photo = models.ImageField(upload_to='photos/', null=True, blank=True)    # ✅ Add this
-
+    mentor = models.ForeignKey('Mentor', on_delete=models.SET_NULL, null=True, blank=True)  # ✅ this line is required
+    
+    
     def __str__(self):
         return self.name
+
+
+    
+
+from django.db import models
+
+
 
 class UploadedDocument(models.Model):
     document = models.FileField(upload_to='uploaded_documents/')

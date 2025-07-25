@@ -1,11 +1,9 @@
+
 # forms.py
 
 from django import forms
 from .models import Intern,Mentor
-class AssignMentorForm(forms.ModelForm):
-    class Meta:
-        model = Intern
-        fields = []
+
     
 class InternForm(forms.ModelForm):
     class Meta:
@@ -99,6 +97,7 @@ class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
         fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
+<<<<<<< HEAD
 # growtern/forms.py
 from django import forms
 from .models import TaskFeedback
@@ -107,3 +106,6 @@ class TaskFeedbackForm(forms.ModelForm):
     class Meta:
         model = TaskFeedback
         fields = ['task', 'intern', 'feedback', 'rating']
+=======
+
+>>>>>>> 4b0be66d8d0d77d99884c34c22eb1c8e82474be3
