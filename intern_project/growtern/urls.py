@@ -49,7 +49,6 @@ urlpatterns = [
     path('leave/status/', views.leave_status_view, name='leave_status'),
     path('leave/approval/', views.leave_approval_view, name='leave_approval'),
 
-<<<<<<< HEAD
     path('issue-certificate/', views.issue_certificate, name='issue_certificate'),
     path('attendance/', views.attendance_tab, name='attendance_tab'),
 
@@ -61,7 +60,6 @@ urlpatterns = [
 
     path('login/', views.login_view, name='login'),
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('tasks/', views.task_list, name='task_list'),
     path('leave-request/', views.leave_request, name='leave_request'),
     path('attendance/', views.attendance_tab, name='attendance_tab'),
     path('feedback/', views.feedback, name='feedback'),
@@ -69,7 +67,7 @@ urlpatterns = [
     path('task_feedback/', views.task_feedback, name='task_feedback'),
     path('intern-tasks/', views.intern_task_list, name='intern_task_list'),
     path('hr-tasks/', views.hr_task_list, name='hr_task_list'),
-=======
+
     # Certificates & Attendance
     path('certificate/', views.issue_certificate, name='issue_certificate'),
     path('issue-certificate/', views.issue_certificate, name='issue_certificate'),  # Alias
@@ -82,7 +80,7 @@ urlpatterns = [
     # Reports
     path('internship-report/', views.internship_report, name='internship_report'),
     path('download-report/', views.internship_report, name='internship_report'),  # Alias
->>>>>>> 4b0be66d8d0d77d99884c34c22eb1c8e82474be3
+
 ]
 
 

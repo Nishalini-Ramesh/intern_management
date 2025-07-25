@@ -6,10 +6,6 @@ from django.utils import timezone
 # 1. Custom User Model
 # ----------------------
 
-    ('INTERN', 'Intern'),
-    ('MENTOR', 'Mentor'),
-    ('HR', 'HR'),
-    ('ADMIN', 'Admin'),
 ROLE_CHOICES = (
     ('INTERN', 'Intern'),
     ('MENTOR', 'Mentor'),

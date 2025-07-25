@@ -381,17 +381,6 @@ def task_feedback(request):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern
 from .forms import InternForm
-
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Intern
-from .forms import InternForm
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Intern
-from .forms import InternForm
-
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Intern, TaskFeedback
 from .forms import TaskFeedbackForm
@@ -463,8 +452,7 @@ def feedback(request):
     intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
-<<<<<<< HEAD
-=======
+
 
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -547,7 +535,7 @@ def task_list(request):
         'tasks': tasks,
         'is_admin': user.role == 'ADMIN'  # ✅ Include this
     })
->>>>>>> 4b0be66d8d0d77d99884c34c22eb1c8e82474be3
+
 
 
 from django.shortcuts import render, redirect
@@ -555,7 +543,7 @@ from .models import CustomUser, Task
 
 def create_task(request):
     if request.method == 'POST':
-<<<<<<< HEAD
+
         title = request.POST['title']
         description = request.POST['description']
         due_date = request.POST['due_date']
@@ -591,26 +579,8 @@ def task_feedback(request):
         form = TaskFeedbackForm()
 
     return render(request, 'task_feedback.html', {'form': form})
+    
 
-
-
-
-
-
-
-
-=======
-        try:
-            task = Task.objects.get(id=task_id)
-            task.status = 'completed'
-            task.save()
-            return JsonResponse({'success': True})
-        except Task.DoesNotExist:
-            return JsonResponse({'error': 'Task not found'}, status=404)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
-
-
-#====attendance=====
 from django.utils import timezone
 from .models import CustomUser, Attendance
 from django.contrib import messages
@@ -710,5 +680,25 @@ def internship_report_form(request):
         
     return render(request, 'your_template.html', context)
 
- 
->>>>>>> 4b0be66d8d0d77d99884c34c22eb1c8e82474be3
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Task
+
+@login_required
+def intern_task_list(request):
+    if request.user.role != 'INTERN':
+        return redirect('unauthorized')  # optional
+
+    tasks = Task.objects.filter(assigned_to=request.user, status='todo')
+    return render(request, 'intern_task.html', {'tasks': tasks})
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Task
+
+@login_required
+def hr_task_list(request):
+    if request.user.role != 'HR':
+        return redirect('unauthorized')  # or show an error page
+    tasks = Task.objects.all()
+    return render(request, 'hr_task_list.html', {'tasks': tasks})
+
