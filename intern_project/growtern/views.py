@@ -367,13 +367,11 @@ def create_task(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            task = form.save(commit=False)
-            task.created_by = request.user 
-            task.status="pending" # Automatically set creator
-            task.save()
+            form.save()
             return redirect('task_list')
     else:
         form = TaskForm()
+
     return render(request, 'create_task.html', {'form': form})
 
 @login_required
@@ -610,7 +608,6 @@ def mark_attendance(request):
 
 from django.http import HttpResponse
 from django.template.loader import get_template
-from xhtml2pdf import pisa
 
 def download_report(request):
     if request.method == "POST":
@@ -640,7 +637,7 @@ def download_report(request):
     
 from django.http import HttpResponse
 from django.template.loader import get_template
-from xhtml2pdf import pisa
+
 
 def download_report(request):
     if request.method == "POST":

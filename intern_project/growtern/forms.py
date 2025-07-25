@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315
 # forms.py
 
 from django import forms
@@ -12,10 +9,6 @@ class InternForm(forms.ModelForm):
     class Meta:
         model = Intern
         fields = ['name', 'college', 'department', 'status', 'photo', 'resume']
-<<<<<<< HEAD
-
-=======
->>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315
 from django import forms
 from .models import LeaveRequest, GeneralFeedback
 class LeaveRequestForm(forms.ModelForm):
@@ -104,7 +97,4 @@ class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
         fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
-<<<<<<< HEAD
 
-=======
->>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315
