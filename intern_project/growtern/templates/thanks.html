@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url("{% static 'images/bg-purple.png' %}");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 70px;
+      color: white;
+      text-align: center;
+    }
+
+    .navbar {
+      background-color: #6b21a8;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      color: #fde68a;
+    }
+
+    .navbar a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .thankyou-container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem 3rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      margin: 100px auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #fde68a;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    a.button {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #9333ea;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+
+    a.button:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+      <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+      <a href="{% url 'task_list' %}">Tasks</a>
+      <a href="{% url 'leave_request' %}">Leave</a>
+      <a href="{% url 'submit_feedback' %}">Feedback</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}">Signup</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Thank You Message -->
+<div class="thankyou-container">
+  <h1>Leave Request Submitted!</h1>
+  <p>Thank you. Your leave request has been submitted successfully.</p>
+</div>
+
+</body>
+</html>

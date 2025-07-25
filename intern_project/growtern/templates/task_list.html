@@ -1,29 +1,60 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Task Lists - Desktop</title>
+  <title>All Tasks</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #f5edf9;
-      height: 100vh;
+    }
+
+    .navbar {
+      background-color: #9b39b6;
+      color: white;
+      padding: 12px 40px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffddff;
     }
 
     .container {
-      position: relative;
+      margin: 40px auto;
       width: 900px;
       min-height: 600px;
-      background-color: white;
+      background-color: #fff;
       border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      position: relative;
     }
 
     .background-shape1,
@@ -72,10 +103,12 @@
       margin: 0 60px 30px;
       border-radius: 12px;
       padding: 30px;
-      color: white;
+      color: #fff;
       position: relative;
       z-index: 1;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.1);
+      max-height: 500px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
     }
 
     .task-box h2 {
@@ -87,73 +120,136 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
-    }
-
-    .task-item:last-child {
-      margin-bottom: 60px; /* Space for floating button */
-    }
-
-    .task-item input[type="text"] {
-      flex-grow: 1;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: none;
-      margin-right: 15px;
+      justify-content: space-between;
       background-color: #e6d6f2;
-      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      color: #4a148c;
     }
 
-    .task-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+    .task-details {
+      flex-grow: 1;
     }
 
-    .add-button {
+    .task-status {
+      margin-left: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .complete-btn {
       background-color: #4b2e83;
       color: white;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 30px;
-      text-align: center;
-      line-height: 50px;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
-      position: absolute;
-      bottom: 30px;
-      right: 80px;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    .complete-btn:hover {
+      background-color: #351d5c;
     }
   </style>
+
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+  </script>
 </head>
 <body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo">GROWTERN</div>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'task_list' %}">Tasks</a></li>
+      <li><a href="{% url 'leave_request' %}">Leave</a></li>
+      <li><a href="{% url 'attendance_tab' %}">Attendance</a></li>
+      <li><a href="{% url 'feedback' %}">Feedback</a></li>
+      <li><a href="{% url 'issue_certificate' %}">Certificate</a></li>
+    </ul>
+  </nav>
+
   <div class="container">
     <div class="background-shape1"></div>
     <div class="background-shape2"></div>
 
     <div class="header">
-      <div class="back-arrow">&#8592;</div>
-      <h1>TASK LISTS</h1>
+      <div class="back-arrow" onclick="history.back()">&#8592;</div>
+      <h1>ALL TASKS</h1>
     </div>
 
     <div class="task-box">
-      <h2>TASKS</h2>
-      <div class="task-item">
-        <input type="text" value="1. To draw the ULM ....." readonly />
-        <input type="checkbox" />
+      <h2>Task List</h2>
+
+      {% for task in tasks %}
+      <div class="task-item" id="task-{{ task.id }}">
+        <div class="task-details">
+          {{ forloop.counter }}. <strong>{{ task.title }}</strong>
+          {% if is_admin %} ({{ task.assigned_to.username }}) {% endif %}
+        </div>
+
+        {% if task.status != 'completed' %}
+          {% if is_admin %}
+            <button class="complete-btn" data-task-id="{{ task.id }}">Mark as Completed</button>
+          {% else %}
+            <span class="task-status" style="color: orange;">Pending</span>
+          {% endif %}
+        {% else %}
+          <span class="task-status" style="color: green;">✔ Completed</span>
+        {% endif %}
       </div>
-      <div class="task-item">
-        <input type="text" value="2. To do the database..." readonly />
-        <input type="checkbox" />
-      </div>
-      <div class="task-item">
-        <input type="text" value="3. get approval for sch..." readonly />
-        <input type="checkbox" />
-      </div>
-      <div class="task-item">
-        <input type="text" value="4. ui model..." />
-        <input type="checkbox" />
-      </div>
-      <div class="add-button">+</div>
+      {% empty %}
+      <p>No tasks available.</p>
+      {% endfor %}
     </div>
   </div>
+
+  <!-- ✅ AJAX -->
+  <script>
+    document.querySelectorAll('.complete-btn').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const taskId = this.getAttribute('data-task-id');
+        const taskDiv = this.parentElement;
+
+        fetch(`/complete-task/${taskId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({})
+        }).then(response => {
+          if (response.ok) {
+            taskDiv.querySelector('.complete-btn').remove();
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'task-status';
+            statusSpan.style.color = 'green';
+            statusSpan.innerText = '✔ Completed';
+            taskDiv.appendChild(statusSpan);
+          } else {
+            alert('Failed to complete the task.');
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>

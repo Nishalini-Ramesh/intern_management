@@ -11,11 +11,32 @@
     }
 
     .navbar {
-      background-color: #6f42c1;
+      background-color: darkorchid;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
-    .navbar-brand, .nav-link {
-      color: white !important;
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ffd9f8;
+      text-decoration: underline;
     }
 
     .container {
@@ -53,45 +74,72 @@
       padding: 10px;
       margin-top: 50px;
     }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar div {
+        margin-top: 10px;
+      }
+
+      .navbar a {
+        display: block;
+        margin: 5px 0;
+      }
+    }
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid px-4">
-    <a class="navbar-brand" href="#">Growtern</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
-        <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
-        <li class="nav-item"><a class="nav-link" href="assign_mentor.html">Assign Mentor</a></li>
-      </ul>
-    </div>
+{% load static %}
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div>
+    <a href="{% url 'intern_list' %}">Interns</a>
+    <a href="{% url 'add_intern' %}">Add Intern</a>
+    <a href="{% url 'assign_mentor' %}">Assign Mentor</a>
+     <!-- BAD -->
+
+<a href="{% url 'hr_dashboard' %}">Dashboard</a>
+
+    <a href="#">Tasks</a>
+    <a href="#">Leave</a>
+    <a href="#">Feedback</a>
+    <a href="#">Certificate</a>
   </div>
-</nav>
+</div>
 
 <!-- Form Card -->
 <div class="container">
   <div class="card">
     <div class="card-header">Assign Mentor to Intern</div>
     <div class="card-body">
-      <form id="assignForm">
+      <form method="POST" action="{% url 'assign_mentor' %}">
+        {% csrf_token %}
+        
+        <!-- Intern Dropdown -->
         <div class="mb-3">
-          <label for="internSelect" class="form-label">Select Intern</label>
-          <select class="form-select" id="internSelect" required>
-            <option value="">Choose...</option>
+          <label class="form-label">Select Intern</label>
+          <select class="form-select" name="intern_id" required>
+            <option value="" disabled selected>Choose Intern</option>
+            {% for intern in interns %}
+              <option value="{{ intern.id }}">{{ intern.name }}</option>
+            {% endfor %}
           </select>
         </div>
 
+        <!-- Mentor Dropdown -->
         <div class="mb-3">
-          <label for="mentorSelect" class="form-label">Select Mentor</label>
-          <select class="form-select" id="mentorSelect" required>
-            <option value="">Choose...</option>
-            <option value="Sathya">Sathya</option>
-            <option value="Kavya">Kavya</option>
-            <option value="Prakash">Prakash</option>
-            <option value="Gayathri">Gayathri</option>
+          <label class="form-label">Select Mentor</label>
+          <select class="form-select" name="mentor" required>
+            <option value="" disabled selected>Choose Mentor</option>
+            {% for mentor in mentors %}
+              <option value="{{ mentor.name }}">{{ mentor.name }}</option>
+            {% endfor %}
           </select>
         </div>
 
@@ -104,36 +152,6 @@
 <footer>
   © 2025 Growtern · Built BY GAJALAKSHMI
 </footer>
-
-<script>
-  const internSelect = document.getElementById('internSelect');
-  const mentorSelect = document.getElementById('mentorSelect');
-  const assignForm = document.getElementById('assignForm');
-
-  let interns = JSON.parse(localStorage.getItem('interns')) || [];
-
-  // Fill intern dropdown
-  interns.forEach((intern, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = intern.name;
-    internSelect.appendChild(option);
-  });
-
-  assignForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const internIndex = internSelect.value;
-    const selectedMentor = mentorSelect.value;
-
-    if (internIndex !== "" && selectedMentor !== "") {
-      interns[internIndex].mentor = selectedMentor;
-      localStorage.setItem('interns', JSON.stringify(interns));
-      alert("Mentor assigned successfully!");
-      window.location.href = "intern_list.html";
-    }
-  });
-</script>
 
 </body>
 </html>

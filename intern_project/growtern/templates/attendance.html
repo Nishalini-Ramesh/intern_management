@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-color: #f3f0ff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card {
+            margin: 60px auto;
+            max-width: 550px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            background-color: #6f42c1;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .card-header h2 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-control {
+            width: 80%;
+            margin: 0 auto;
+            height: 45px;
+            font-size: 15px;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .btn-purple {
+            background-color: #6f42c1;
+            color: white;
+            transition: background-color 0.3s ease;
+            width: 80%;
+            margin: 20px auto 0;
+            display: block;
+        }
+
+        .btn-purple:hover {
+            background-color: #5a32a3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>📋 Mark Intern Attendance</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="intern">Intern Name</label>
+                        <select class="form-control" name="intern" required>
+                            {% for intern in interns %}
+                                <option value="{{ intern.id }}">{{ intern }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status" required>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="leave">Leave</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-purple">Submit Attendance</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

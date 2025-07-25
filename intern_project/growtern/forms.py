@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315
+# forms.py
+
+from django import forms
+from .models import Intern,Mentor
+
+    
+class InternForm(forms.ModelForm):
+    class Meta:
+        model = Intern
+        fields = ['name', 'college', 'department', 'status', 'photo', 'resume']
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315
 from django import forms
 from .models import LeaveRequest, GeneralFeedback
 class LeaveRequestForm(forms.ModelForm):
@@ -22,3 +40,71 @@ class DocumentForm(forms.ModelForm):
     class Meta:
         model = UploadedDocument
         fields = ['document']
+
+from django import forms
+from .models import Task
+from growtern.models import CustomUser
+
+
+class TaskForm(forms.ModelForm):
+    assigned_to = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='INTERN'),
+        empty_label="Select an Intern",
+        label="Assigned To"
+    )
+
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'due_date', 'assigned_to']
+
+from django import forms
+from .models import Task, CustomUser
+
+class TaskFeedbackForm(forms.Form):
+    task = forms.ModelChoiceField(
+        queryset=Task.objects.all(),
+        label='Task Title',
+        widget=forms.Select(attrs={
+            'class': '',  # leave empty for custom styling
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px;'
+        })
+    )
+
+    intern = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='INTERN'),
+        label='Intern Name',
+        widget=forms.Select(attrs={
+            'class': '',
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px;'
+        })
+    )
+
+    feedback = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Write your feedback...',
+            'style': 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #bbb; background-color: #f7efff; font-size: 15px; height: 100px; resize: vertical;'
+        }),
+        required=True
+    )
+
+    rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        widget=forms.HiddenInput()
+    )
+# growtern/forms.py
+# growtern/forms.py
+from django import forms
+from .models import TaskSubmission, Task, CustomUser
+
+class TaskSubmissionForm(forms.ModelForm):
+    task = forms.ModelChoiceField(queryset=Task.objects.all(), label="Task Title")
+    intern = forms.ModelChoiceField(queryset=CustomUser.objects.filter(role='INTERN'), label="Intern Name")
+
+    class Meta:
+        model = TaskSubmission
+        fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2018490d0f685a061fa3c7e8f62ba5642ee40315

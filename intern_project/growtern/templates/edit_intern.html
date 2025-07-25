@@ -3,160 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <title>Edit Intern | Growtern</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     body {
       background-color: #f4f2fa;
       font-family: 'Segoe UI', sans-serif;
     }
-
     .navbar {
-      background-color: #6f42c1;
+      background-color: darkorchid;
+      padding: 10px 30px;
     }
-
-    .navbar-brand, .nav-link {
-      color: white !important;
-    }
-
-    .container {
-      margin-top: 40px;
-      max-width: 700px;
-    }
-
-    .card {
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(111, 66, 193, 0.1);
-    }
-
-    .card-header {
-      background-color: #fff;
+    .navbar .logo {
+      font-size: 24px;
       font-weight: bold;
-      color: #6f42c1;
-      font-size: 22px;
-      padding: 20px 25px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .btn-purple {
-      background-color: #6f42c1;
       color: white;
     }
-
-    .btn-purple:hover {
-      background-color: #5a34a0;
+    .form-container {
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    footer {
-      background-color: #6f42c1;
-      color: white;
+    .form-title {
       text-align: center;
-      padding: 10px;
-      margin-top: 50px;
+      margin-bottom: 25px;
+      color: darkorchid;
+      font-weight: bold;
+      font-size: 28px;
+    }
+    .form-label {
+      font-weight: 500;
+      margin-top: 15px;
+    }
+    .btn-purple {
+      background-color: darkorchid;
+      color: white;
+      border: none;
+    }
+    .btn-purple:hover {
+      background-color: purple;
+    }
+    .file-view {
+      font-size: 14px;
+    }
+    .file-view a {
+      text-decoration: none;
+      color: #4b0082;
     }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid px-4">
-    <a class="navbar-brand" href="#">Growtern</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="intern_list.html">Interns</a></li>
-        <li class="nav-item"><a class="nav-link" href="add_intern.html">Add Intern</a></li>
-        <li class="nav-item"><a class="nav-link" href="edit_intern.html">Edit</a></li>
-      </ul>
-    </div>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
   </div>
-</nav>
 
-<!-- Container -->
-<div class="container">
-  <div class="card">
-    <div class="card-header">Edit Intern</div>
-    <div class="card-body">
-      <form id="editForm">
-        <div class="mb-3">
-          <label for="selectIntern" class="form-label">Select Intern</label>
-          <select class="form-select" id="selectIntern" required>
-            <option value="">Choose...</option>
-          </select>
+  <!-- Edit Intern Form -->
+  <div class="form-container">
+    <h2 class="form-title">Edit Intern Details</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label class="form-label">Name:</label>
+      {{ form.name }}
+
+      <label class="form-label">College:</label>
+      {{ form.college }}
+
+      <label class="form-label">Department:</label>
+      {{ form.department }}
+
+      <label class="form-label">Status:</label>
+      {{ form.status }}
+
+      <label class="form-label">Photo:</label><br>
+      {% if form.instance.photo %}
+        <div class="file-view mb-2">
+          <strong>Currently:</strong> {{ form.instance.photo.name }}<br>
+          <img src="{{ form.instance.photo.url }}" alt="Current Photo" width="100">
         </div>
-        <div class="mb-3">
-          <label for="name" class="form-label">Intern Name</label>
-          <input type="text" class="form-control" id="name">
+      {% endif %}
+      {{ form.photo }}
+
+      <label class="form-label">Resume:</label><br>
+      {% if form.instance.resume %}
+        <div class="file-view mb-2">
+          <strong>Currently:</strong> {{ form.instance.resume.name }}<br>
+          <a href="{{ form.instance.resume.url }}" target="_blank">View Resume</a>
         </div>
-        <div class="mb-3">
-          <label for="college" class="form-label">College</label>
-          <input type="text" class="form-control" id="college">
-        </div>
-        <div class="mb-3">
-          <label for="department" class="form-label">Department</label>
-          <input type="text" class="form-control" id="department">
-        </div>
-        <div class="mb-3">
-          <label for="status" class="form-label">Status</label>
-          <select class="form-select" id="status">
-            <option value="">Choose...</option>
-            <option value="completed">Completed</option>
-            <option value="pending">Pending</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-purple w-100">Update Intern</button>
-      </form>
-    </div>
+      {% endif %}
+      {{ form.resume }}
+
+      <div class="mt-4 text-center">
+        <button type="submit" class="btn btn-purple">Save Changes</button>
+      </div>
+    </form>
   </div>
-</div>
-
-<footer>
-  © 2025 Growtern · Built BY GAJALAKSHMI
-</footer>
-
-<script>
-  const selectIntern = document.getElementById('selectIntern');
-  const nameInput = document.getElementById('name');
-  const collegeInput = document.getElementById('college');
-  const departmentInput = document.getElementById('department');
-  const statusInput = document.getElementById('status');
-  const editForm = document.getElementById('editForm');
-
-  let interns = JSON.parse(localStorage.getItem('interns')) || [];
-
-  // Populate dropdown
-  interns.forEach((intern, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = intern.name;
-    selectIntern.appendChild(option);
-  });
-
-  // Load intern details when selected
-  selectIntern.addEventListener('change', () => {
-    const selected = interns[selectIntern.value];
-    if (selected) {
-      nameInput.value = selected.name;
-      collegeInput.value = selected.college;
-      departmentInput.value = selected.department;
-      statusInput.value = selected.status;
-    }
-  });
-
-  // Submit update
-  editForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const index = selectIntern.value;
-    if (index !== "") {
-      interns[index].name = nameInput.value;
-      interns[index].college = collegeInput.value;
-      interns[index].department = departmentInput.value;
-      interns[index].status = statusInput.value;
-      localStorage.setItem('interns', JSON.stringify(interns));
-      alert("Intern updated successfully!");
-      window.location.href = 'intern_list.html';
-    }
-  });
-</script>
 
 </body>
 </html>
