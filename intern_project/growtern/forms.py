@@ -43,7 +43,7 @@ from growtern.models import CustomUser
 
 class TaskForm(forms.ModelForm):
     assigned_to = forms.ModelChoiceField(
-        queryset=CustomUser.objects.filter(role='INTERN'),
+        queryset=CustomUser.objects.filter(role='Intern'),
         empty_label="Select an Intern",
         label="Assigned To"
     )
@@ -99,3 +99,11 @@ class TaskSubmissionForm(forms.ModelForm):
     class Meta:
         model = TaskSubmission
         fields = ['task', 'intern', 'file']  # ✅ changed from 'submission_file' to 'file'
+# growtern/forms.py
+from django import forms
+from .models import TaskFeedback
+
+class TaskFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = TaskFeedback
+        fields = ['task', 'intern', 'feedback', 'rating']

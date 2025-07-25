@@ -75,9 +75,7 @@ urlpatterns = [
 
     path('tasks/', views.task_list, name='task_list'),
     path('submit-task/', views.task_submission_view, name='task_submission'),
-    path('task-list/', views.task_list, name='task_list'),
     path('create-task/', views.create_task, name='create_task'),
-    path('task-feedback/', views.task_feedback, name='task_feedback'),
 
 
 
@@ -88,4 +86,10 @@ urlpatterns = [
     path('attendance/', views.attendance_tab, name='attendance_tab'),
     path('feedback/', views.feedback, name='feedback'),
     path('certificate/', views.issue_certificate, name='issue_certificate'),
+    path('task_feedback/', views.task_feedback, name='task_feedback'),
+    path('intern-tasks/', views.intern_task_list, name='intern_task_list'),
+    path('hr-tasks/', views.hr_task_list, name='hr_task_list'),
 ]
+
+
+

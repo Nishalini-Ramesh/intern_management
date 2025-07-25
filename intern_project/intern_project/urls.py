@@ -16,8 +16,8 @@ urlpatterns = [
     # 👇 Include all routes from growtern app
     path('', include('growtern.urls')),
     path('create-task/', views.create_task, name='create_task'),
-    path('task-list/', views.task_list, name='task_list'),
     path('', include('growtern.urls')), 
+    
 ]
 
 # Serve static files during development
@@ -25,4 +25,15 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'st
 
 # Serve media files during development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
- 
+
+# intern_project/urls.py
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('growtern.urls')),  # Make sure your app's urls are included here
+]
+
+

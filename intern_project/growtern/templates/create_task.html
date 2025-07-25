@@ -11,7 +11,6 @@
       padding: 0;
     }
 
-    /* ✅ Navbar Styles */
     .navbar {
       background-color: #9b39b6;
       color: white;
@@ -51,7 +50,6 @@
       color: #ffddff;
     }
 
-    /* Container & Form Styles */
     .container {
       max-width: 650px;
       background-color: #ffffff;
@@ -148,7 +146,7 @@
     <h2>Create New Task</h2>
     <form method="POST" action="{% url 'create_task' %}">
       {% csrf_token %}
-      
+
       <label for="id_title">Title:</label>
       <input type="text" id="id_title" name="title" placeholder="Enter Task Title">
 
@@ -161,7 +159,7 @@
       <label for="id_assigned_to">Assigned To:</label>
       <select id="id_assigned_to" name="assigned_to">
         <option value="">Select an Intern</option>
-        {% for intern in form.fields.assigned_to.queryset %}
+        {% for intern in interns %}
           <option value="{{ intern.id }}">{{ intern.get_full_name }}</option>
         {% endfor %}
       </select>

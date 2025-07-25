@@ -1,0 +1,157 @@
+<html>
+  <head><style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5edf9;
+}
+.container {
+  margin: 40px auto;
+  width: 900px;
+  min-height: 600px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+.background-shape1,
+.background-shape2 {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: #e0c4f5;
+  transform: rotate(45deg);
+  z-index: 0;
+  opacity: 0.8;
+}
+.background-shape1 { top: -80px; left: -80px; }
+.background-shape2 { bottom: -80px; right: -80px; }
+.header {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  z-index: 1;
+  position: relative;
+}
+.back-arrow {
+  font-size: 28px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+h1 {
+  font-size: 32px;
+  margin: 0;
+  font-weight: bold;
+}
+.task-box {
+  background-color: #8e7ab5;
+  margin: 0 60px 30px;
+  border-radius: 12px;
+  padding: 30px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  max-height: 500px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.1);
+}
+.task-box h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e6d6f2;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #4a148c;
+  margin-bottom: 15px;
+}
+.task-details {
+  flex-grow: 1;
+}
+.task-status {
+  font-weight: bold;
+}
+.complete-btn {
+  background-color: #4b2e83;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.complete-btn:hover {
+  background-color: #351d5c;
+}
+</style>
+ </head>
+ <body>
+<div class="container">
+  <div class="background-shape1"></div>
+  <div class="background-shape2"></div>
+
+  <div class="header">
+    <div class="back-arrow" onclick="history.back()">&#8592;</div>
+    <h1>TASK LISTS</h1>
+  </div>
+
+  <div class="task-box">
+    <h2>TASKS</h2>
+
+    {% if tasks %}
+      {% for task in tasks %}
+        <div class="task-item" id="task-{{ task.id }}">
+          <div class="task-details">
+            {{ forloop.counter }}. {{ task.title|truncatechars:25 }} ({{ task.assigned_to.username }})
+          </div>
+
+          {% if task.status != 'completed' %}
+            <button class="complete-btn" data-task-id="{{ task.id }}">✓</button>
+          {% else %}
+            <span class="task-status" style="color: green;">✔ Completed</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No tasks available.</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const csrftoken = '{{ csrf_token }}';
+
+  document.querySelectorAll('.complete-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const taskId = button.getAttribute('data-task-id');
+      const taskDiv = document.getElementById(`task-${taskId}`);
+
+      fetch(`/complete-task/${taskId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      }).then(response => {
+        if (response.ok) {
+          button.remove();
+          const statusSpan = document.createElement('span');
+          statusSpan.className = 'task-status';
+          statusSpan.style.color = 'green';
+          statusSpan.innerText = '✔ Completed';
+          taskDiv.appendChild(statusSpan);
+        } else {
+          alert("Could not mark as completed.");
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

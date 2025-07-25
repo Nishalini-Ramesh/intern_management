@@ -116,22 +116,6 @@ def hr_dashboard(request):
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
 
-# -------------------- TASKS --------------------
-task_store = []
-
-def task_list(request):
-    return render(request, 'task_list.html', {'tasks': task_store})
-
-def create_task(request):
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        if title:
-            task_store.append({'title': title, 'completed': False})
-        return redirect('task_list')
-    return render(request, 'create_task.html')
-
-
-
 # -------------------- HR FUNCTIONS --------------------
 def leave_request(request):
     return render(request, 'leave_request.html')
@@ -440,39 +424,53 @@ def feedback(request):
     intern = get_object_or_404(Intern, id=intern_id)
 
     return render(request, 'edit_intern.html', {'form': form, 'intern': intern})
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render
-from .models import Task
-
-# ✅ Task list view — shared for both Admin and Intern
-@login_required
-def task_list(request):
-    user = request.user
-
-    if user.role == 'ADMIN':
-        tasks = Task.objects.all()
-    else:
-        tasks = Task.objects.filter(assigned_to=user, status='pending')
-
-    return render(request, 'task_list.html', {
-        'tasks': tasks,
-        'is_admin': user.role == 'ADMIN'  # ✅ Include this
-    })
 
 
-# ✅ Complete task (only for ADMIN)
-@login_required
-def complete_task(request, task_id):
-    if request.user.role != 'ADMIN':
-        return JsonResponse({'error': 'Permission denied'}, status=403)
+from django.shortcuts import render, redirect
+from .models import CustomUser, Task
 
+def create_task(request):
     if request.method == 'POST':
-        try:
-            task = Task.objects.get(id=task_id)
-            task.status = 'completed'
-            task.save()
-            return JsonResponse({'success': True})
-        except Task.DoesNotExist:
-            return JsonResponse({'error': 'Task not found'}, status=404)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+        title = request.POST['title']
+        description = request.POST['description']
+        due_date = request.POST['due_date']
+        assigned_to_id = request.POST['assigned_to']
+        
+        if assigned_to_id:
+            assigned_to = CustomUser.objects.get(id=assigned_to_id)
+            Task.objects.create(
+                title=title,
+                description=description,
+                due_date=due_date,
+                assigned_to=assigned_to
+            )
+        return redirect('task_list')
+
+    # Send only interns
+    interns = CustomUser.objects.filter(role='INTERN')
+    return render(request, 'create_task.html', {'interns': interns})
+# growtern/views.py
+from django.shortcuts import render, redirect
+from .models import TaskFeedback, Task, CustomUser
+from .forms import TaskFeedbackForm  # Assuming you're using a form
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def task_feedback(request):
+    if request.method == 'POST':
+        form = TaskFeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_feedback')  # or redirect to a success page
+    else:
+        form = TaskFeedbackForm()
+
+    return render(request, 'task_feedback.html', {'form': form})
+
+
+
+
+
+
+
+
