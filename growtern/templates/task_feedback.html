@@ -1,0 +1,318 @@
+<!-- Only the dropdown input sizes and padding adjusted -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task Feedback</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3eaff;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* NAVBAR CSS */
+    .navbar {
+      background-color: #9b39b6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      color: white;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 15px;
+      text-transform: lowercase;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    }
+
+    /* Background geometric shapes */
+    .bg-shape {
+      position: absolute;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 200px solid transparent;
+      border-right: 200px solid transparent;
+      border-bottom: 200px solid #a259ff;
+    }
+
+    .half-rect {
+      width: 300px;
+      height: 150px;
+      background-color: #c29ffa;
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+
+    .bg1 { top: -40px; left: -40px; transform: rotate(25deg); }
+    .bg2 { top: 300px; right: -100px; transform: rotate(-20deg); }
+    .bg3 { bottom: -50px; left: 200px; transform: rotate(45deg); }
+    .bg4 { top: 150px; left: 50%; transform: translateX(-50%) rotate(15deg); }
+
+    /* Main container */
+    .container {
+      width: 600px;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 40px;
+      z-index: 1;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin: 60px auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      margin-right: 15px;
+      cursor: pointer;
+      color: #844cd9;
+      transition: transform 0.3s;
+    }
+
+    .back-arrow:hover {
+      transform: scale(1.2);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #5e2d91;
+      margin: 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #5a3d94;
+      margin-bottom: 6px;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid #bbb;
+      background-color: #f7efff;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #a259ff;
+      box-shadow: 0 0 8px #c59cff;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stars span {
+      font-size: 28px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.2s ease;
+    }
+
+    .stars span.selected,
+    .stars span.hover {
+      color: #a259ff;
+    }
+
+    .rating-value {
+      font-size: 16px;
+      color: #5a3d94;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      background-color: #a259ff;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #8a3ee0;
+    }
+
+    .close-btn {
+      background-color: #d6c3f9;
+      color: #4b2e83;
+    }
+
+    .close-btn:hover {
+      background-color: #c5b0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">GROWTERN</div>
+    <div class="nav-links">
+      <a href="{% url 'login' %}">login</a>
+      <a href="{% url 'admin_dashboard' %}">dashboard</a>
+      <a href="{% url 'task_list' %}">tasks</a>
+      <a href="{% url 'leave_request' %}">leave request</a>
+      <a href="{% url 'attendance_tab' %}">attendence</a>
+      <a href="{% url 'feedback' %}">feedback</a>
+      <a href="{% url 'issue_certificate' %}">certificate</a>
+    </div>
+  </div>
+
+  <!-- Geometric Background -->
+  <div class="bg-shape triangle bg1"></div>
+  <div class="bg-shape half-rect bg2"></div>
+  <div class="bg-shape triangle bg3"></div>
+  <div class="bg-shape half-rect bg4"></div>
+
+  <!-- Feedback Form -->
+  <div class="container">
+    <div class="header">
+      <div class="back-arrow">&#8592;</div>
+      <h1>TASK FEEDBACK</h1>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.task.id_for_label }}">TASK TITLE</label>
+        {{ form.task }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.intern.id_for_label }}">INTERN NAME</label>
+        {{ form.intern }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.feedback.id_for_label }}">FEEDBACK</label>
+        {{ form.feedback }}
+      </div>
+
+      <div class="form-group rating">
+        <label>RATING</label>
+        <div class="stars" id="stars">
+          <span data-value="1">&#9733;</span>
+          <span data-value="2">&#9733;</span>
+          <span data-value="3">&#9733;</span>
+          <span data-value="4">&#9733;</span>
+          <span data-value="5">&#9733;</span>
+        </div>
+        <div class="rating-value" id="rating-value">0/5</div>
+        {{ form.rating }}
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="button">SAVE</button>
+        <button type="button" class="button close-btn">CLOSE</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll("#stars span");
+    const ratingInput = document.querySelector("input[name='rating']");
+    const ratingValue = document.getElementById("rating-value");
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener("mouseover", () => {
+        const val = parseInt(star.getAttribute("data-value"));
+        highlightStars(val);
+      });
+
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
+      });
+
+      star.addEventListener("click", () => {
+        selectedRating = parseInt(star.getAttribute("data-value"));
+        ratingInput.value = selectedRating;
+        ratingValue.textContent = `${selectedRating}/5`;
+        highlightStars(selectedRating);
+      });
+    });
+
+    function highlightStars(count) {
+      stars.forEach((s, i) => {
+        s.classList.toggle("selected", i < count);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feedback Rating</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-image: url("{% static 'images/bg-purple.png' %}");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #a855f7;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin: 3rem auto;
+    }
+
+    h2 {
+      color: #6b21a8;
+      margin-bottom: 1.5rem;
+    }
+
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 2.5rem;
+      color: #d1aaff;
+      cursor: pointer;
+    }
+
+    .star-rating .star:hover,
+    .star-rating .star.hover,
+    .star-rating .star.selected {
+      color: #9333ea;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 10px 20px;
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    a {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #6b21a8;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+
+    #rating-value {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #6b21a8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">GROWTERN</div>
+  <div class="nav-links">
+   {% if user.is_authenticated %}
+  <a href="{% url 'intern_dashboard' %}">Dashboard</a>
+  <a href="{% url 'task_list' %}">Tasks</a>
+  <a href="{% url 'leave_request' %}">Leave</a>
+  <a href="{% url 'submit_feedback' %}">Feedback</a>
+  <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
+  </div>
+</div>
+
+
+  <!-- Feedback Form -->
+  <div class="container">
+    <a href="{% url 'submit_feedback' %}">← Back</a>
+    <h2>Rate Us</h2>
+    <form onsubmit="event.preventDefault(); window.location.href='thankyou.html';">
+      <div class="star-rating" id="starRating">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+
+      <input type="hidden" id="ratingInput">
+      <div id="rating-value">/5</div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Star rating JS -->
+  <script>
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingText = document.getElementById('rating-value');
+    let selected = 0;
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => highlight(parseInt(star.dataset.value)));
+      star.addEventListener('mouseout', () => highlight(selected));
+      star.addEventListener('click', () => {
+        selected = parseInt(star.dataset.value);
+        ratingInput.value = selected;
+        ratingText.textContent = `${selected}/5`;
+      });
+    });
+
+    function highlight(limit) {
+      stars.forEach(star => {
+        star.classList.remove('selected');
+        if (parseInt(star.dataset.value) <= limit) {
+          star.classList.add('selected');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

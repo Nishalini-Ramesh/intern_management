@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Intern List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen p-5">
+
+  <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4 text-center text-purple-700">Intern List</h2>
+
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for intern in interns %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ intern.full_name }}</td>
+          <td>{{ intern.email }}</td>
+          <td>{{ intern.phone }}</td>
+          <td>
+            <span class="badge bg-success">{{ intern.status|default:"Active" }}</span>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center text-muted">No interns found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

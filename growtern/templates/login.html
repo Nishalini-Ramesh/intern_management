@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Growtern Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Lato Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .bg-shape {
+      position: absolute;
+      z-index: 0;
+      background-color: #7030e7;
+      opacity: 0.5;
+    }
+
+    .shape1 { top: -50px; left: -100px; width: 300px; height: 300px; transform: rotate(45deg); }
+    .shape2 { top: -60px; right: -150px; width: 400px; height: 300px; transform: rotate(30deg); }
+    .shape3 { bottom: -100px; left: -50px; width: 400px; height: 300px; transform: rotate(-30deg); }
+
+    .login-container {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      margin: 100px auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 12px;
+      color: white;
+    }
+
+    .form-control {
+      background-color: #555;
+      border: none;
+      color: white;
+    }
+
+    .form-control::placeholder {
+      color: #ccc;
+    }
+
+    .btn-login {
+      background-color: black;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-login:hover {
+      background-color: #333;
+    }
+
+    .brand-text {
+      color: aliceblue;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg" style="background-color: darkorchid;">
+  <div class="container-fluid">
+    <span class="navbar-brand text-white brand-text">GROWTERN</span>
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Background Shapes -->
+<div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
+<div class="bg-shape shape3"></div>
+
+<!-- Login Form -->
+<div class="login-container shadow">
+  <h4 class="text-center fw-bold mb-4">LOG IN</h4>
+  <p class="mb-1">WELCOME BACK!</p>
+  <p class="mb-4" style="font-size: 0.9rem;">Log in to manage your intern program</p>
+
+  <form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+
+    {% if error %}
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+    </div>
+
+    <div class="mb-2">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+    </div>
+
+    <div class="mb-3 text-end">
+      <a href="{% url 'forgot' %}" style="font-size: 0.85rem;">Forgot Password?</a>
+    </div>
+
+    <div class="d-grid mb-2">
+      <button type="submit" class="btn btn-login">SIGN IN</button>
+    </div>
+  </form>
+
+  <div class="text-center mt-3">
+    <span style="font-size: 0.85rem;">New here? <a href="{% url 'signup' %}"><strong>Sign up</strong></a></span>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

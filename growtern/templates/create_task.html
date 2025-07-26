@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Task</title>
+  <style>
+    body {
+      background-color: #f5e8fc;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #9b39b6;
+      color: white;
+      padding: 12px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar ul li {
+      display: inline;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffddff;
+    }
+
+    .container {
+      max-width: 650px;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      margin: 40px auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #6a1b9a;
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #4a148c;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f1e5fd;
+      font-size: 14px;
+      color: #4a148c;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #7b1fa2;
+      opacity: 0.85;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background-color: #9c27b0;
+      color: #fff;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background-color: #7b1fa2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo">Intern Portal</div>
+    <ul>
+      <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'login' %}">Login</a></li>
+      <li><a href="{% url 'task_list' %}">Tasks</a></li>
+      <li><a href="{% url 'leave_request' %}">Leave Request</a></li>
+      <li><a href="{% url 'attendance_tab' %}">Attendance</a></li>
+      <li><a href="{% url 'index' %}">Feedback</a></li>
+      <li><a href="{% url 'issue_certificate' %}">Certificate</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Create Task Form -->
+  <div class="container">
+    <h2>Create New Task</h2>
+    <form method="POST" action="{% url 'create_task' %}">
+      {% csrf_token %}
+
+      <label for="id_title">Title:</label>
+      <input type="text" id="id_title" name="title" placeholder="Enter Task Title">
+
+      <label for="id_description">Description:</label>
+      <textarea id="id_description" name="description" placeholder="Enter Task Description"></textarea>
+
+      <label for="id_due_date">Due Date:</label>
+      <input type="date" id="id_due_date" name="due_date">
+
+      <label for="id_assigned_to">Assigned To:</label>
+      <select id="id_assigned_to" name="assigned_to">
+        <option value="">Select an Intern</option>
+        {% for intern in interns %}
+          <option value="{{ intern.id }}">{{ intern.get_full_name }}</option>
+        {% endfor %}
+      </select>
+
+      <div class="button-row">
+        <button type="submit" class="button">CREATE</button>
+        <button type="reset" class="button">RESET</button>
+        <a href="{% url 'task_list' %}" class="button">VIEW TASK</a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

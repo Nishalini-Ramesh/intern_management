@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Role - Growtern</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-shape {
+      position: absolute;
+      background-color: #b844cf;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .shape1 {
+      top: -50px;
+      left: -100px;
+      width: 300px;
+      height: 300px;
+      transform: rotate(45deg);
+    }
+
+    .shape2 {
+      top: -60px;
+      right: -150px;
+      width: 400px;
+      height: 300px;
+      transform: rotate(30deg);
+    }
+
+    .shape3 {
+      bottom: -100px;
+      left: -50px;
+      width: 400px;
+      height: 300px;
+      transform: rotate(-30deg);
+    }
+
+    .brand-text {
+      color: #9339d3;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 80px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .role-card {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      text-align: center;
+      padding: 25px 15px;
+      transition: transform 0.2s ease;
+      height: 220px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .role-card:hover {
+      transform: translateY(-5px);
+      background-color: #d3c2e0;
+    }
+
+    .role-card img {
+      width: 70px;
+      margin-bottom: 10px;
+    }
+
+    .role-label {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .role-desc {
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .bottom-right {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      z-index: 1;
+    }
+
+    .bottom-right a {
+      color: black;
+      text-decoration: none;
+    }
+
+    .bottom-right a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .bottom-right {
+        position: static;
+        margin-top: 20px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg" style="background-color: #9339d3;">
+    <div class="container-fluid">
+      <span class="navbar-brand text-white brand-text">GROWTERN</span>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'login' %}">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Background Shapes -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
+  <div class="bg-shape shape3"></div>
+
+  <!-- Title -->
+  <h3 class="title">CHOOSE YOUR ROLE</h3>
+
+  <!-- Grid Layout -->
+  <div class="container position-relative" style="z-index:1;">
+    <div class="row justify-content-center">
+      <div class="col-md-3 col-10 mb-4">
+        <div class="role-card d-block" onclick="promptCode('intern')">
+          <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="Intern">
+          <div class="role-label">INTERN</div>
+          <div class="role-desc">View your Daily tasks</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-10 mb-4">
+        <div class="role-card d-block" onclick="promptCode('mentor')">
+          <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Mentor">
+          <div class="role-label">MENTOR</div>
+          <div class="role-desc">Guiding you to your potential</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-3 col-10 mb-4">
+        <div class="role-card d-block" onclick="promptCode('hr')">
+          <img src="https://cdn-icons-png.flaticon.com/512/706/706830.png" alt="HR">
+          <div class="role-label">HR</div>
+          <div class="role-desc">Nurturing Talents,<br>Shaping Futures</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-10 mb-4">
+        <div class="role-card d-block" onclick="promptCode('admin')">
+          <img src="https://cdn-icons-png.flaticon.com/512/706/706830.png" alt="Admin">
+          <div class="role-label">ADMIN</div>
+          <div class="role-desc">We Handle,<br>You Excel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Right Text -->
+<div class="bottom-right">
+  <a href="{% url 'main' %}">Continue with INDEX ▸</a>
+</div>
+
+
+  <!-- Script for Role Code Prompt -->
+  <script>
+    function promptCode(role) {
+      let codes = {
+        intern: "INTERN123",
+        mentor: "MENTOR456",
+        hr: "HR789",
+        admin: "ADMIN000"
+      };
+
+      let urls = {
+        intern: "{% url 'intern_dashboard' %}",
+        mentor: "{% url 'mentor_dashboard' %}",
+        hr: "{% url 'hr_dashboard' %}",
+        admin: "{% url 'admin_dashboard' %}"
+      };
+
+      let entered = prompt("Enter " + role.toUpperCase() + " secret code:");
+      if (entered === codes[role]) {
+        window.location.href = urls[role];
+      } else {
+        alert("Incorrect code. Please try again.");
+      }
+    }
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
